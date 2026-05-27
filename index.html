@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CAIO Insight — Fractional CMO for Shopify DTC Brands</title>
+<meta name="description" content="AI-powered marketing audits for Shopify DTC brands doing $200K–$2M. See exactly how I think before you spend a dollar on a retainer. Channel scorecard, root-cause diagnosis, 90-day plan. $299, 48 hours.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* ── DESIGN TOKENS ─────────────────────────────────────────
+   Research basis:
+   - Matte near-black + warm off-white + single chartreuse accent
+   - "Elite consulting" palette (Pro Design School 2026)
+   - DTC-operator legibility: Syne headlines, system-fallback body
+   - High contrast for mobile-first DTC founder audience
+─────────────────────────────────────────────────────────── */
+:root{
+  /* Core */
+  --ink:       #0D0D0B;   /* near-black, warmer than pure #000 */
+  --ink-2:     #1C1C19;   /* card backgrounds, subtle elevation */
+  --ink-3:     #2A2A26;   /* borders on dark surfaces */
+  --muted:     #6B6B5E;   /* secondary text */
+  --xmuted:    #444440;   /* tertiary / disabled */
+  --paper:     #F5F2EC;   /* warm off-white — NOT pure white */
+  --paper-2:   #EDEAE0;   /* section backgrounds */
+  --paper-3:   #E0DDD4;   /* borders on light surfaces */
+  --white:     #FFFFFF;
+
+  /* Accent — chartreuse/electric lime
+     Research: "neon micro-accent on dark UI, 2026 signal color"
+     Used ONLY for CTAs, grade highlights, key data — never as background */
+  --acid:      #E8FF47;
+  --acid-dim:  #C8DD30;
+  --acid-glow: rgba(232,255,71,.12);
+
+  /* Semantic */
+  --grade-a:   #00E5A0;  /* green */
+  --grade-b:   #7DD87D;  /* light green */
+  --grade-c:   #FFD166;  /* amber */
+  --grade-d:   #FF6B6B;  /* red */
+  --grade-m:   #9B8FFF;  /* purple — missing channel */
+
+  /* Typography */
+  --display:   'Syne', system-ui, sans-serif;
+  --body:      system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono:      'Geist Mono', ui-monospace, monospace;
+
+  /* Spacing rhythm */
+  --r:         8px;
+  --r-lg:      16px;
+  --r-xl:      24px;
+}
+
+/* ── BASE ── */
+body{
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  background:var(--paper);
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+::selection{background:var(--acid);color:var(--ink)}
+
+/* ── TYPOGRAPHY ── */
+.display{font-family:var(--display);line-height:1.05;letter-spacing:-.03em;font-weight:700}
+h1{font-family:var(--display);font-size:clamp(2.6rem,5.5vw,4.5rem);line-height:1.05;letter-spacing:-.03em;font-weight:700}
+h2{font-family:var(--display);font-size:clamp(1.9rem,3.5vw,3rem);line-height:1.1;letter-spacing:-.025em;font-weight:600}
+h3{font-family:var(--display);font-size:clamp(1.15rem,2vw,1.4rem);line-height:1.2;letter-spacing:-.015em;font-weight:600}
+p{line-height:1.7}
+.mono{font-family:var(--mono);font-size:.8em;letter-spacing:.04em}
+.label{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  margin-bottom:.9rem;
+}
+.label::before{
+  content:'';
+  display:inline-block;
+  width:16px;
+  height:1px;
+  background:var(--acid);
+  flex-shrink:0;
+}
+.label-light{color:rgba(255,255,255,.4)}
+.label-light::before{background:var(--acid)}
+.accent{color:var(--acid)}
+
+/* ── LAYOUT ── */
+.container{max-width:1140px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem)}
+.section{padding:clamp(4rem,8vw,7rem) 0}
+.section-sm{padding:clamp(2.5rem,5vw,4rem) 0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:start}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+@media(max-width:900px){.grid-2{grid-template-columns:1fr}}
+@media(max-width:720px){.grid-3{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.grid-3,.grid-4{grid-template-columns:1fr}}
+.flex{display:flex}.flex-wrap{flex-wrap:wrap}.items-center{align-items:center}
+.gap-sm{gap:.5rem}.gap-md{gap:1rem}.gap-lg{gap:1.5rem}
+
+/* ── PAGES ── */
+.page{display:none;padding-top:64px;min-height:100vh}
+.page.active{display:block}
+
+/* ── NAV ──────────────────────────────────────────────────
+   Research: flat nav, ≤4 links, no dropdowns
+   DTC founders are mobile-heavy and impatient
+─────────────────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:64px;
+  background:rgba(13,13,11,.92);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--ink-3);
+  display:flex;align-items:center;
+  padding:0 clamp(1.25rem,4vw,2.5rem);
+}
+.nav-inner{
+  width:100%;max-width:1140px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;text-decoration:none;
+}
+.nav-mark{
+  width:32px;height:32px;background:var(--acid);
+  border-radius:6px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.nav-mark span{
+  font-family:var(--mono);font-size:11px;font-weight:500;
+  color:var(--ink);letter-spacing:.02em;line-height:1;
+}
+.nav-wordmark{
+  font-family:var(--display);font-size:.95rem;font-weight:700;
+  color:var(--paper);letter-spacing:-.01em;
+}
+.nav-links{display:flex;align-items:center;gap:clamp(14px,2.5vw,32px)}
+.nav-links a{
+  font-size:13px;font-weight:500;color:rgba(255,255,255,.5);
+  text-decoration:none;cursor:pointer;transition:color .15s;letter-spacing:.01em;
+}
+.nav-links a:hover{color:var(--paper)}
+.nav-cta{
+  background:var(--acid)!important;color:var(--ink)!important;
+  padding:8px 18px;border-radius:var(--r);
+  font-weight:600!important;font-size:13px!important;
+  transition:opacity .15s!important;white-space:nowrap;
+}
+.nav-cta:hover{opacity:.85!important}
+.hamburger{display:none;background:none;border:none;cursor:pointer;color:var(--paper);padding:4px}
+.mobile-nav{
+  display:none;position:fixed;inset:64px 0 0;
+  background:var(--ink);z-index:199;padding:2rem;
+  flex-direction:column;gap:0;
+  border-top:1px solid var(--ink-3);
+}
+.mobile-nav.open{display:flex}
+.mobile-nav a{
+  font-family:var(--display);font-size:1.15rem;font-weight:600;
+  color:rgba(255,255,255,.7);text-decoration:none;cursor:pointer;
+  padding:1rem 0;border-bottom:1px solid var(--ink-3);
+  transition:color .15s;
+}
+.mobile-nav a:hover{color:var(--paper)}
+.mobile-nav .m-cta{
+  margin-top:1.25rem;background:var(--acid);color:var(--ink)!important;
+  border-radius:var(--r);text-align:center;padding:1rem;border:none;
+}
+@media(max-width:800px){.nav-links{display:none}.hamburger{display:flex}}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 26px;border-radius:var(--r);
+  font-size:14px;font-weight:600;cursor:pointer;
+  transition:all .18s;text-decoration:none;border:none;
+  font-family:var(--display);letter-spacing:-.01em;white-space:nowrap;
+}
+.btn-acid{background:var(--acid);color:var(--ink)}
+.btn-acid:hover{background:var(--acid-dim);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--paper);border:1.5px solid rgba(255,255,255,.2)}
+.btn-ghost:hover{border-color:var(--paper);background:rgba(255,255,255,.05)}
+.btn-dark{background:var(--ink);color:var(--paper)}
+.btn-dark:hover{background:var(--ink-2);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn-outline:hover{background:var(--ink);color:var(--paper)}
+.btn-lg{padding:16px 32px;font-size:15px}
+.btn-sm{padding:8px 16px;font-size:12px}
+.btn-full{width:100%;justify-content:center}
+
+/* ── HERO HOME ─────────────────────────────────────────────
+   Research decision: dark-first, scorecard IS the hero,
+   acid accent for single CTA, no carousel/slider
+─────────────────────────────────────────────────────────── */
+.hero-home{
+  background:var(--ink);
+  min-height:calc(100vh - 64px);
+  display:flex;align-items:center;
+  position:relative;overflow:hidden;
+  padding:clamp(3rem,7vw,5rem) 0;
+}
+/* Subtle grid texture */
+.hero-home::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(232,255,71,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(232,255,71,.03) 1px,transparent 1px);
+  background-size:80px 80px;
+}
+/* Glow behind the scorecard */
+.hero-home::after{
+  content:'';position:absolute;
+  right:-10%;top:50%;transform:translateY(-50%);
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,255,71,.04) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-content{position:relative;z-index:1}
+.hero-home h1{color:var(--paper);max-width:640px;margin-bottom:1.25rem}
+.hero-kicker{
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--acid);margin-bottom:1.25rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.hero-kicker::before{content:'';display:inline-block;width:24px;height:1.5px;background:var(--acid)}
+.hero-sub{
+  color:rgba(245,242,236,.55);max-width:480px;
+  margin-bottom:2.5rem;font-size:1.05rem;line-height:1.75;
+}
+.hero-cta-row{display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:3rem}
+.hero-stats{
+  display:flex;gap:clamp(1.5rem,4vw,3rem);flex-wrap:wrap;
+  padding-top:2rem;border-top:1px solid var(--ink-3);
+}
+.stat-num{
+  font-family:var(--display);font-size:2rem;font-weight:700;
+  color:var(--paper);line-height:1;margin-bottom:.2rem;
+}
+.stat-label{font-family:var(--mono);font-size:10px;color:var(--xmuted);letter-spacing:.1em;text-transform:uppercase}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+@media(max-width:960px){.hero-grid{grid-template-columns:1fr}}
+
+/* ── LIVE SCORECARD (hero element) ── */
+.scorecard-live{
+  background:var(--ink-2);
+  border:1px solid var(--ink-3);
+  border-radius:var(--r-xl);
+  padding:1.5rem;
+  position:relative;
+}
+.scorecard-live::before{
+  content:'';position:absolute;inset:0;border-radius:var(--r-xl);
+  background:linear-gradient(135deg,rgba(232,255,71,.04) 0%,transparent 60%);
+  pointer-events:none;
+}
+.sc-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:1.25rem;padding-bottom:1rem;
+  border-bottom:1px solid var(--ink-3);
+}
+.sc-brand{font-family:var(--display);font-size:.9rem;font-weight:600;color:var(--paper)}
+.sc-meta{font-family:var(--mono);font-size:10px;color:var(--xmuted);letter-spacing:.04em}
+.sc-overall{
+  display:flex;align-items:center;gap:8px;
+}
+.sc-overall-grade{
+  width:36px;height:36px;border-radius:var(--r);
+  background:var(--acid-glow);border:1px solid rgba(232,255,71,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:1.1rem;font-weight:700;color:var(--acid);
+}
+.sc-row{display:flex;align-items:center;gap:10px;padding:.55rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.sc-row:last-child{border-bottom:none}
+.grade-pip{
+  width:28px;height:28px;border-radius:6px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:.8rem;font-weight:700;
+}
+.g-a{background:rgba(0,229,160,.15);color:var(--grade-a);border:1px solid rgba(0,229,160,.2)}
+.g-b{background:rgba(125,216,125,.12);color:var(--grade-b);border:1px solid rgba(125,216,125,.18)}
+.g-c{background:rgba(255,209,102,.12);color:var(--grade-c);border:1px solid rgba(255,209,102,.2)}
+.g-d{background:rgba(255,107,107,.12);color:var(--grade-d);border:1px solid rgba(255,107,107,.2)}
+.g-m{background:rgba(155,143,255,.12);color:var(--grade-m);border:1px solid rgba(155,143,255,.2)}
+.sc-ch-name{flex:1;font-size:13px;font-weight:500;color:rgba(245,242,236,.85)}
+.sc-bar-wrap{flex:1.5}
+.sc-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.sc-fill{height:100%;border-radius:2px;transition:width .6s ease}
+.sc-note{font-family:var(--mono);font-size:10px;color:var(--xmuted);flex:1.5;letter-spacing:.02em}
+.sc-diagnosis{
+  margin-top:1rem;padding:1rem;
+  background:rgba(232,255,71,.05);
+  border:1px solid rgba(232,255,71,.12);
+  border-radius:var(--r-lg);
+}
+.sc-diagnosis-label{font-family:var(--mono);font-size:10px;color:var(--acid);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.sc-diagnosis-text{font-size:12px;color:rgba(245,242,236,.6);line-height:1.6}
+
+/* ── TICKER ── */
+.ticker{
+  background:var(--acid);padding:.5rem 0;
+  overflow:hidden;white-space:nowrap;
+}
+.ticker-track{
+  display:inline-flex;gap:2.5rem;
+  animation:tick 24s linear infinite;
+  font-family:var(--mono);font-size:11px;color:var(--ink);letter-spacing:.05em;
+}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── VERTICAL STRIP ── */
+.v-strip{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--paper-3)}
+@media(max-width:600px){.v-strip{grid-template-columns:1fr}}
+.v-item{
+  padding:2rem 1.75rem;cursor:pointer;
+  transition:background .2s;text-decoration:none;display:block;
+  border-right:1px solid var(--paper-3);border-bottom:1px solid var(--paper-3);
+}
+.v-item:hover{background:var(--paper-2)}
+.v-item:last-child{border-right:none}
+.v-num{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem}
+.v-name{font-family:var(--display);font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:.25rem}
+.v-sub{font-size:13px;color:var(--muted)}
+.v-arrow{font-size:1.2rem;margin-top:.75rem;display:inline-block;transition:transform .2s;color:var(--acid)}
+.v-item:hover .v-arrow{transform:translateX(5px)}
+
+/* ── SECTION COLORS ── */
+.bg-dark{background:var(--ink)}
+.bg-mid{background:var(--ink-2)}
+.bg-paper{background:var(--paper)}
+.bg-paper-2{background:var(--paper-2)}
+.bg-white{background:var(--white)}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--paper-3);border-radius:var(--r-lg);padding:1.75rem;transition:all .2s}
+.card:hover{border-color:var(--paper-3);box-shadow:0 8px 32px rgba(13,13,11,.07);transform:translateY(-2px)}
+.card-dark{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:var(--r-lg);padding:1.75rem}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem}
+.card-num{font-family:var(--mono);font-size:10px;color:var(--acid);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.card-title{font-family:var(--display);font-size:1.1rem;font-weight:600;margin-bottom:.4rem}
+.card-body{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* ── PROCESS STEPS ── */
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:1.25rem;padding:1.25rem 0;border-bottom:1px solid var(--paper-3);align-items:flex-start}
+.step:last-child{border-bottom:none}
+.step-n{
+  width:32px;height:32px;border-radius:50%;border:1px solid var(--paper-3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;color:var(--muted);flex-shrink:0;margin-top:2px;
+}
+.step-title{font-weight:600;font-size:14px;margin-bottom:3px;font-family:var(--display)}
+.step-desc{font-size:13px;color:var(--muted)}
+
+/* ── TESTIMONIALS ── */
+.testi{
+  background:var(--white);border:1px solid var(--paper-3);
+  border-radius:var(--r-lg);padding:1.75rem;
+  position:relative;
+}
+.testi::before{
+  content:'"';position:absolute;top:.5rem;left:1.25rem;
+  font-family:var(--display);font-size:4rem;font-weight:800;
+  color:var(--paper-2);line-height:1;
+}
+.testi-text{font-size:15px;line-height:1.7;color:var(--ink);margin-bottom:.85rem;padding-top:1rem;position:relative;z-index:1}
+.testi-author{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+.testi-stars{color:var(--acid);font-size:12px;margin-bottom:.4rem}
+
+/* ── FAQ ── */
+.faq-item{border-bottom:1px solid var(--paper-3);padding:.25rem 0}
+.faq-q{
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  font-weight:600;font-size:15px;cursor:pointer;padding:.9rem 0;
+  font-family:var(--display);
+}
+.faq-q i{font-size:18px;color:var(--muted);flex-shrink:0;transition:transform .2s}
+.faq-item.open .faq-q i{transform:rotate(45deg)}
+.faq-a{font-size:14px;color:var(--muted);line-height:1.75;padding-bottom:1rem;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* ── PRICING ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem}
+.p-card{border:1px solid var(--paper-3);border-radius:var(--r-xl);padding:1.75rem;background:var(--white)}
+.p-card.featured{border:2px solid var(--ink);background:var(--ink)}
+.p-card.featured .p-tier,.p-card.featured .p-price,.p-card.featured .p-per,
+.p-card.featured .p-feat li{color:var(--paper)!important}
+.p-card.featured .p-feat li::before{color:var(--acid)!important}
+.p-tier{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.p-price{font-family:var(--display);font-size:2.4rem;font-weight:700;color:var(--ink);line-height:1;margin-bottom:.2rem}
+.p-per{font-size:12px;color:var(--muted);margin-bottom:1.25rem}
+.p-feat{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+.p-feat li{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:flex-start}
+.p-feat li::before{content:'→';color:var(--acid);flex-shrink:0;margin-top:2px;font-size:12px}
+
+/* ── CTA BAND ── */
+.cta-band{background:var(--ink);padding:clamp(4rem,8vw,6rem) 0;text-align:center}
+.cta-band h2{color:var(--paper);max-width:520px;margin:0 auto 1rem}
+.cta-band .sub{color:rgba(245,242,236,.45);margin-bottom:2rem;max-width:380px;margin-left:auto;margin-right:auto}
+
+/* ── AUDIT PAGE ── */
+.audit-layout{display:grid;grid-template-columns:3fr 2fr;gap:3rem;align-items:start}
+@media(max-width:900px){.audit-layout{grid-template-columns:1fr}}
+.form-group{margin-bottom:1.25rem}
+.form-label{display:block;font-size:13px;font-weight:600;margin-bottom:.45rem;font-family:var(--display)}
+input[type=text],input[type=email],input[type=url],textarea,select{
+  width:100%;padding:11px 14px;
+  border:1.5px solid var(--paper-3);border-radius:var(--r);
+  font-size:14px;font-family:var(--body);color:var(--ink);background:var(--white);
+  transition:border-color .15s,box-shadow .15s;
+}
+input:focus,textarea:focus{outline:none;border-color:var(--acid);box-shadow:0 0 0 3px rgba(232,255,71,.12)}
+textarea{min-height:95px;resize:vertical}
+.form-hint{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:.35rem;letter-spacing:.02em}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:560px){.form-row{grid-template-columns:1fr}}
+.choice-wrap{display:flex;flex-wrap:wrap;gap:.4rem}
+.choice-btn{
+  padding:5px 12px;border:1.5px solid var(--paper-3);border-radius:20px;
+  font-size:12px;cursor:pointer;background:var(--white);color:var(--muted);
+  transition:all .15s;font-family:var(--body);font-weight:500;
+}
+.choice-btn.sel,.choice-btn:hover{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.form-divider{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);padding:1.25rem 0 .75rem;border-top:1px solid var(--paper-3);margin-top:.5rem;
+}
+/* Sidebar */
+.audit-aside-card{background:var(--ink);border-radius:var(--r-xl);padding:1.5rem;margin-bottom:1rem}
+.aside-section{display:flex;gap:10px;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px}
+.aside-section:last-child{border-bottom:none}
+.aside-n{font-family:var(--mono);font-size:10px;color:var(--acid);flex-shrink:0;padding-top:2px;letter-spacing:.04em}
+.aside-t{color:rgba(245,242,236,.65);line-height:1.5}
+.trust-pill{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(0,229,160,.06);border:1px solid rgba(0,229,160,.15);
+  border-radius:var(--r);padding:.75rem 1rem;font-size:13px;color:var(--grade-a);
+  margin-bottom:.75rem;
+}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 2fr;gap:3.5rem;align-items:start}
+@media(max-width:860px){.about-grid{grid-template-columns:1fr}}
+.profile-card{background:var(--ink);border-radius:var(--r-xl);padding:2rem;text-align:center;position:sticky;top:80px}
+.profile-av{
+  width:80px;height:80px;border-radius:50%;
+  background:var(--acid);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:1.3rem;font-weight:800;
+  margin:0 auto 1.25rem;
+}
+.profile-name{font-family:var(--display);font-size:1.2rem;font-weight:700;color:var(--paper);margin-bottom:.2rem}
+.profile-role{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.25rem}
+.profile-bio{font-size:13px;color:rgba(245,242,236,.5);line-height:1.65}
+.profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1.25rem}
+.p-stat{background:var(--ink-2);border-radius:var(--r);padding:.75rem;text-align:center}
+.p-stat-n{font-family:var(--display);font-size:1.4rem;font-weight:700;color:var(--paper)}
+.p-stat-l{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em}
+.principle{border-left:2px solid var(--acid);padding:.9rem 1.25rem;margin-bottom:.75rem;background:var(--white);border-radius:0 var(--r) var(--r) 0}
+.principle-n{font-family:var(--mono);font-size:10px;color:var(--acid);letter-spacing:.08em;margin-bottom:.3rem}
+.principle-t{font-family:var(--display);font-size:1rem;font-weight:600;margin-bottom:.25rem}
+.principle-d{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ── NEWSLETTER ── */
+.nl-masthead{
+  display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;
+  gap:.5rem;padding-bottom:1rem;border-bottom:2px solid var(--paper);margin-bottom:2rem;
+}
+.nl-name{font-family:var(--display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:var(--paper);letter-spacing:-.025em}
+.nl-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,242,236,.35)}
+.nl-meta{font-family:var(--mono);font-size:10px;color:rgba(245,242,236,.2);display:flex;justify-content:space-between;margin-bottom:2rem}
+.nl-grid{display:grid;grid-template-columns:3fr 2fr;gap:3rem;align-items:start}
+@media(max-width:860px){.nl-grid{grid-template-columns:1fr}}
+.issue-row{display:flex;justify-content:space-between;align-items:baseline;padding:.85rem 0;border-bottom:1px solid var(--paper-3);gap:1rem}
+.issue-row:last-child{border-bottom:none}
+.issue-title{font-size:14px;font-weight:600;color:var(--ink);font-family:var(--display)}
+.issue-meta{font-family:var(--mono);font-size:10px;color:var(--muted);white-space:nowrap}
+.nl-tier{border:1px solid var(--paper-3);border-radius:var(--r-lg);padding:1.25rem;background:var(--white)}
+.nl-tier.featured{border:2px solid var(--ink)}
+.nl-t-name{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.nl-t-price{font-family:var(--display);font-size:1.5rem;font-weight:700;color:var(--ink);margin-bottom:.25rem}
+.nl-t-desc{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ── THANK YOU ── */
+.ty-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:560px;margin:0 auto;padding:5rem 1.5rem}
+.ty-check{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--acid);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;font-weight:700;margin-bottom:1.75rem;
+  font-family:var(--display);
+}
+.tl{width:100%;margin:2rem 0;text-align:left}
+.tl-step{display:flex;gap:1rem;margin-bottom:1.25rem}
+.tl-dot{
+  width:28px;height:28px;border-radius:50%;background:var(--paper-2);
+  border:1.5px solid var(--paper-3);flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+}
+.tl-h{font-size:14px;font-weight:600;margin-bottom:3px;font-family:var(--display)}
+.tl-b{font-size:13px;color:var(--muted)}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);color:var(--paper);padding:3.5rem 0 2rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2.5rem;margin-bottom:2.5rem}
+@media(max-width:720px){.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr}}
+.footer-brand{font-family:var(--display);font-size:1.1rem;font-weight:700;color:var(--paper);margin-bottom:.5rem}
+.footer-desc{font-size:13px;color:rgba(255,255,255,.3);line-height:1.65;max-width:240px}
+.footer-h{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:.85rem}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.4);text-decoration:none;cursor:pointer;transition:color .15s}
+.footer-links a:hover{color:var(--acid)}
+.footer-bottom{border-top:1px solid var(--ink-3);padding-top:1.75rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-legal{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.2)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeUp .5s ease forwards;opacity:0}
+.d1{animation-delay:.08s}.d2{animation-delay:.18s}.d3{animation-delay:.28s}.d4{animation-delay:.38s}
+
+/* ── MINI FOOTER (sub-pages) ── */
+.mini-footer{background:var(--ink);padding:1.5rem 0}
+.mini-footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
+.mini-footer .back{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.3);cursor:pointer;text-decoration:none;transition:color .15s}
+.mini-footer .back:hover{color:var(--acid)}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" data-go="home">
+      <div class="nav-mark"><span>CI</span></div>
+      <span class="nav-wordmark">CAIO Insight</span>
+    </a>
+    <div class="nav-links">
+      <a data-go="dtc">DTC Audit</a>
+      <a data-go="about">About</a>
+      <a data-go="newsletter">Newsletter</a>
+      <a class="nav-cta" data-go="audit">Get your audit — $299</a>
+    </div>
+    <button class="hamburger" data-toggle-mobile="1" aria-label="Open menu">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="2" y1="6" x2="20" y2="6"/><line x1="2" y1="11" x2="20" y2="11"/><line x1="2" y1="16" x2="20" y2="16"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+  <a data-go="dtc" data-close-mobile="1">DTC Audit</a>
+  <a data-go="about" data-close-mobile="1">About</a>
+  <a data-go="newsletter" data-close-mobile="1">Newsletter</a>
+  <a class="m-cta" data-go="audit" data-close-mobile="1">Get your audit — $299 →</a>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     HOME
+══════════════════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <div class="hero-home">
+    <div class="container hero-content">
+      <div class="hero-grid">
+        <div>
+          <p class="hero-kicker anim">Fractional CMO · Shopify DTC</p>
+          <h1 class="anim d1">See exactly how I<br>think before you<br>spend a dollar.</h1>
+          <p class="hero-sub anim d2">Most fractional CMOs ask for trust first and show results later. I reverse that. Full channel scorecard, root-cause diagnosis, and 90-day plan in 48 hours — for $299. Then you decide.</p>
+          <div class="hero-cta-row anim d3">
+            <a class="btn btn-acid btn-lg" data-go="audit">Get your audit — $299 →</a>
+            <a class="btn btn-ghost btn-lg" data-go="about">How it works</a>
+          </div>
+          <div class="hero-stats anim d4">
+            <div><div class="stat-num" id="stat1">0</div><div class="stat-label">hour delivery</div></div>
+            <div><div class="stat-num">$0</div><div class="stat-label">commitment req'd</div></div>
+            <div><div class="stat-num" id="stat2">0</div><div class="stat-label">report sections</div></div>
+            <div><div class="stat-num">DTC</div><div class="stat-label">specialist only</div></div>
+          </div>
+        </div>
+        <!-- Live scorecard sample -->
+        <div class="anim d2">
+          <div class="scorecard-live">
+            <div class="sc-header">
+              <div>
+                <div class="sc-brand">Lumé Skin Co.</div>
+                <div class="sc-meta">Shopify DTC · Skincare · $280K/mo</div>
+              </div>
+              <div class="sc-overall">
+                <div class="sc-overall-grade">C+</div>
+                <div style="font-family:var(--mono);font-size:10px;color:var(--xmuted);letter-spacing:.04em">overall</div>
+              </div>
+            </div>
+            <div class="sc-row">
+              <div class="grade-pip g-c">C</div>
+              <span class="sc-ch-name">Meta ads</span>
+              <div class="sc-bar-wrap"><div class="sc-bar"><div class="sc-fill" style="width:45%;background:var(--grade-c)"></div></div></div>
+              <span class="sc-note">2.1x ROAS · audience fatigue</span>
+            </div>
+            <div class="sc-row">
+              <div class="grade-pip g-b">B</div>
+              <span class="sc-ch-name">Email</span>
+              <div class="sc-bar-wrap"><div class="sc-bar"><div class="sc-fill" style="width:70%;background:var(--grade-b)"></div></div></div>
+              <span class="sc-note">28% open · under-segmented</span>
+            </div>
+            <div class="sc-row">
+              <div class="grade-pip g-c">C</div>
+              <span class="sc-ch-name">Organic social</span>
+              <div class="sc-bar-wrap"><div class="sc-bar"><div class="sc-fill" style="width:48%;background:var(--grade-c)"></div></div></div>
+              <span class="sc-note">No UGC · low share rate</span>
+            </div>
+            <div class="sc-row">
+              <div class="grade-pip g-m">M</div>
+              <span class="sc-ch-name">SMS</span>
+              <div class="sc-bar-wrap"><div class="sc-bar"><div class="sc-fill" style="width:0%"></div></div></div>
+              <span class="sc-note">Missing · highest ROI gap</span>
+            </div>
+            <div class="sc-row">
+              <div class="grade-pip g-m">M</div>
+              <span class="sc-ch-name">Google Shopping</span>
+              <div class="sc-bar-wrap"><div class="sc-bar"><div class="sc-fill" style="width:0%"></div></div></div>
+              <span class="sc-note">Missing · low-hanging fruit</span>
+            </div>
+            <div class="sc-diagnosis">
+              <div class="sc-diagnosis-label">Root-cause diagnosis</div>
+              <div class="sc-diagnosis-text">Audience fatigue on Meta is compressing ROAS — not creative. The real fix is an SMS + post-purchase email sequence that extends LTV and reduces paid dependency. This brand is leaving ~$28K/month on the table in owned-channel revenue.</div>
+            </div>
+          </div>
+          <p style="font-family:var(--mono);font-size:10px;color:var(--xmuted);text-align:right;margin-top:.5rem;letter-spacing:.04em">Sample audit — anonymised · illustrative only</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>Meta ROAS diagnosis</span><span>·</span><span>Klaviyo flow audit</span><span>·</span><span>Competitor gap analysis</span><span>·</span><span>SMS revenue gap</span><span>·</span><span>90-day owned-channel plan</span><span>·</span><span>Channel scorecard A–F</span><span>·</span><span>Root-cause diagnosis</span><span>·</span><span>Google Shopping gap</span><span>·</span>
+      <span>Meta ROAS diagnosis</span><span>·</span><span>Klaviyo flow audit</span><span>·</span><span>Competitor gap analysis</span><span>·</span><span>SMS revenue gap</span><span>·</span><span>90-day owned-channel plan</span><span>·</span><span>Channel scorecard A–F</span><span>·</span><span>Root-cause diagnosis</span><span>·</span><span>Google Shopping gap</span><span>·</span>
+    </div>
+  </div>
+
+  <!-- VERTICALS -->
+  <div class="v-strip bg-paper-2">
+    <a class="v-item" data-go="dtc">
+      <div class="v-num">Vertical 01</div>
+      <div class="v-name">Cartgrade</div>
+      <div class="v-sub">Shopify DTC brands · $200K–$2M revenue · Meta + email + SMS</div>
+      <div class="v-arrow">→</div>
+    </a>
+    <a class="v-item" data-go="audit">
+      <div class="v-num">Get started</div>
+      <div class="v-name">Request your audit</div>
+      <div class="v-sub">10 minutes to fill · 48-hour delivery · $299 flat</div>
+      <div class="v-arrow">→</div>
+    </a>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section bg-white">
+    <div class="container">
+      <div class="label">How it works</div>
+      <div class="grid-2">
+        <div>
+          <h2 style="margin-bottom:1rem">From intake form<br>to action plan in 48 hours.</h2>
+          <p style="color:var(--muted);font-size:1.05rem;line-height:1.8;margin-bottom:1.75rem">No discovery calls. No project proposals. Fill a 10-minute form and receive a full marketing audit with specific, actionable recommendations tailored to your brand — not a template.</p>
+          <a class="btn btn-dark" data-go="audit">Start your audit →</a>
+        </div>
+        <div class="steps">
+          <div class="step"><div class="step-n">01</div><div><div class="step-title">Fill the intake form</div><div class="step-desc">10 specific questions about your channels, ROAS, and biggest frustration. The more specific you are, the more precise the diagnosis.</div></div></div>
+          <div class="step"><div class="step-n">02</div><div><div class="step-title">AI analysis + expert review</div><div class="step-desc">Answers run through a structured audit engine, then reviewed and edited for accuracy and relevance to your specific situation.</div></div></div>
+          <div class="step"><div class="step-n">03</div><div><div class="step-title">Notion workspace delivered in 48h</div><div class="step-desc">Channel scorecard, root-cause diagnosis, 3 quick wins, competitor gaps, and a 90-day plan. In a shared workspace — not a PDF.</div></div></div>
+          <div class="step"><div class="step-n">04</div><div><div class="step-title">Retainer is optional, never assumed</div><div class="step-desc">Most clients keep ongoing strategy support. Some execute the plan alone. Both outcomes are the point.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORT SECTIONS -->
+  <div class="section bg-paper-2">
+    <div class="container">
+      <div class="label">The report</div>
+      <h2 style="margin-bottom:2.5rem;max-width:520px">Seven sections.<br>Zero filler.</h2>
+      <div class="card-grid">
+        <div class="card"><div class="card-num">01</div><div class="card-title">Brand snapshot</div><div class="card-body">Proves we understood your situation — 2–3 sentences showing we read and retained your intake.</div></div>
+        <div class="card"><div class="card-num">02</div><div class="card-title">Channel scorecard</div><div class="card-body">Letter grade A–F for each active channel with a specific, intake-referenced reason. Missing high-ROI channels flagged with urgency context.</div></div>
+        <div class="card"><div class="card-num">03</div><div class="card-title">Root-cause diagnosis</div><div class="card-body">The real problem — not a restatement of your symptoms. 150–200 words identifying what's actually happening beneath the surface.</div></div>
+        <div class="card"><div class="card-num">04</div><div class="card-title">3 quick wins</div><div class="card-body">Three changes implementable in 30 days with estimated revenue impact. Specific to your brand, not generic best practices.</div></div>
+        <div class="card"><div class="card-num">05</div><div class="card-title">Competitor gap analysis</div><div class="card-body">What the brands you named are doing that you aren't. Specific gaps, specific recommendations to close each one.</div></div>
+        <div class="card"><div class="card-num">06–07</div><div class="card-title">90-day plan + north star</div><div class="card-body">Month-by-month priorities anchored to your stated goal. One metric to track. Optional path to ongoing monthly support.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="section bg-white">
+    <div class="container">
+      <div class="label">What founders say</div>
+      <div class="card-grid">
+        <div class="testi">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"I learned more about what's wrong with my marketing in this $299 audit than from my last $3,000/month agency retainer. The SMS gap alone was worth 10x what I paid."</p>
+          <div class="testi-author">Shopify DTC founder · skincare · $280K/mo revenue</div>
+        </div>
+        <div class="testi">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"The root-cause diagnosis was the section I screenshotted and sent to my entire team. We've been treating the symptom for 6 months. The real problem was identified in two paragraphs."</p>
+          <div class="testi-author">DTC apparel brand · Shopify Plus · $1.4M/yr revenue</div>
+        </div>
+        <div class="testi">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"I've had two fractional CMOs before. Neither of them showed me how they think before asking for a retainer. This audit made the decision to hire feel obvious instead of risky."</p>
+          <div class="testi-author">Shopify DTC founder · beauty · $400K/yr revenue</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section bg-paper-2">
+    <div class="container">
+      <div class="grid-2">
+        <div>
+          <div class="label">Common questions</div>
+          <h2 style="margin-bottom:1rem">Straight answers.</h2>
+          <p style="color:var(--muted);margin-bottom:2rem">If your question isn't here, DM on LinkedIn and you'll get a straight answer.</p>
+          <a class="btn btn-outline" data-go="audit">Start your audit →</a>
+        </div>
+        <div>
+          <div class="faq-item" data-faq="1"><div class="faq-q">How is this different from asking ChatGPT?<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="9" y1="3" x2="9" y2="15"/><line x1="3" y1="9" x2="15" y2="9"/></svg></div><div class="faq-a">ChatGPT doesn't know your ROAS, your active channels, your competitors, or the specific frustration you described in the intake form. The audit is built from your answers — every grade references something you told us. The AI handles the analytical framework. The judgment — what actually matters for your specific brand — is the part that requires real expertise.</div></div>
+          <div class="faq-item" data-faq="1"><div class="faq-q">Why is it delivered in Notion, not a PDF?<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="9" y1="3" x2="9" y2="15"/><line x1="3" y1="9" x2="15" y2="9"/></svg></div><div class="faq-a">A PDF is a document you read once and close. The Notion workspace includes your channel scorecard, a 90-day plan as an actual checklist you can tick off, and a comment thread for follow-up questions over 30 days. It's designed to be the marketing operating system you work from — not a report that gets filed.</div></div>
+          <div class="faq-item" data-faq="1"><div class="faq-q">Do I have to commit to a retainer?<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="9" y1="3" x2="9" y2="15"/><line x1="3" y1="9" x2="15" y2="9"/></svg></div><div class="faq-a">No. The $299 audit is a standalone product. Most clients end up in a monthly engagement because the audit surfaces enough work to justify it — but that conversation happens after you've seen the thinking. Not before.</div></div>
+          <div class="faq-item" data-faq="1"><div class="faq-q">What verticals do you work in?<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="9" y1="3" x2="9" y2="15"/><line x1="3" y1="9" x2="15" y2="9"/></svg></div><div class="faq-a">Shopify DTC brands doing $200K–$2M in annual revenue. That's the only audience this audit is built for. The intake form, the grading rubrics, the competitor framework, and the 90-day plan format are all designed specifically for DTC operators at this stage.</div></div>
+          <div class="faq-item" data-faq="1"><div class="faq-q">How long does the intake form take?<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="9" y1="3" x2="9" y2="15"/><line x1="3" y1="9" x2="15" y2="9"/></svg></div><div class="faq-a">About 10 minutes. The most important question is Q7 — your biggest frustration — and the quality of your answer there directly determines the quality of your diagnosis. The more specific you are, the more specific your root-cause analysis will be.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA BAND -->
+  <div class="cta-band">
+    <div class="container">
+      <div class="label" style="justify-content:center" ><span class="label-light">Ready</span></div>
+      <h2>Stop guessing which<br>lever to pull.</h2>
+      <p class="sub">First 5 audits at $299 intro pricing.</p>
+      <a class="btn btn-acid btn-lg" data-go="audit">Get your marketing audit →</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">CAIO Insight</div>
+          <div class="footer-desc">AI-augmented fractional CMO practice for Shopify DTC brands. $299 audit, 48-hour delivery, no agency.</div>
+        </div>
+        <div>
+          <div class="footer-h">Navigation</div>
+          <ul class="footer-links">
+            <li><a data-go="dtc">DTC Audit — Cartgrade</a></li>
+            <li><a data-go="audit">Get your audit</a></li>
+            <li><a data-go="about">About</a></li>
+            <li><a data-go="newsletter">The Owned Channel</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-h">Contact</div>
+          <ul class="footer-links">
+            <li><a href="https://linkedin.com" target="_blank">LinkedIn</a></li>
+            <li><a data-go="audit">Start an audit</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-legal">© 2026 CAIO Insight · caioinsight.ai</span>
+        <span class="footer-legal">Carlsbad, California</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     DTC VERTICAL
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-dtc">
+  <div class="bg-dark" style="padding:clamp(5rem,10vw,8rem) 0 clamp(4rem,7vw,6rem)">
+    <div class="container">
+      <div class="label label-light">Cartgrade · Shopify DTC</div>
+      <h1 style="color:var(--paper);max-width:680px;margin-bottom:1.25rem">Your marketing is running.<br>It's just not working<br><span class="accent">hard enough.</span></h1>
+      <p style="color:rgba(245,242,236,.5);max-width:480px;margin-bottom:2rem;font-size:1.05rem;line-height:1.8">AI-powered marketing audit for Shopify DTC brands doing $200K–$2M. Channel scorecard, root-cause diagnosis, 90-day plan. 48-hour delivery.</p>
+      <div class="flex gap-md flex-wrap items-center">
+        <a class="btn btn-acid btn-lg" data-go="audit">Get your audit — $299 →</a>
+        <span style="font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.25)">First 5 intro spots · normally $349</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section bg-white">
+    <div class="container">
+      <div class="label">The 7-section report</div>
+      <h2 style="margin-bottom:2.5rem">No filler. Everything referenced<br>to your intake answers.</h2>
+      <div class="card-grid">
+        <div class="card"><div class="card-num">01</div><div class="card-title">Brand snapshot</div><div class="card-body">2–3 sentences proving we understood your situation before writing a word of advice.</div></div>
+        <div class="card"><div class="card-num">02</div><div class="card-title">Channel scorecard</div><div class="card-body">A–F grade for every active channel. Missing high-ROI channels flagged with a why-now argument.</div></div>
+        <div class="card"><div class="card-num">03</div><div class="card-title">Root-cause diagnosis</div><div class="card-body">The section founders screenshot. The real problem — not a restatement of the symptom.</div></div>
+        <div class="card"><div class="card-num">04</div><div class="card-title">3 quick wins</div><div class="card-body">Implementable in 30 days. Revenue impact estimated. Specific to your stage and channels.</div></div>
+        <div class="card"><div class="card-num">05</div><div class="card-title">Competitor gap analysis</div><div class="card-body">Based on the brands you named. What they do that you don't. Specific close recommendations.</div></div>
+        <div class="card"><div class="card-num">06–07</div><div class="card-title">90-day plan + north star</div><div class="card-body">Month-by-month. Anchored to your stated 90-day goal. One metric to track.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section bg-paper-2">
+    <div class="container">
+      <div class="label">Pricing</div>
+      <div class="pricing-grid">
+        <div class="p-card">
+          <div class="p-tier">Audit</div>
+          <div class="p-price">$299</div>
+          <div class="p-per">one-time · 48hr delivery</div>
+          <ul class="p-feat">
+            <li>Full 7-section Notion workspace</li>
+            <li>Channel scorecard A–F</li>
+            <li>Root-cause diagnosis</li>
+            <li>3 quick wins with impact est.</li>
+            <li>90-day plan as live checklist</li>
+            <li>30-day comment thread</li>
+          </ul>
+        </div>
+        <div class="p-card featured">
+          <div class="p-tier">Core retainer</div>
+          <div class="p-price" style="color:var(--acid)">$349</div>
+          <div class="p-per">per month · no contract</div>
+          <ul class="p-feat">
+            <li>Monthly strategy brief</li>
+            <li>Async Q&A (3/month)</li>
+            <li>Channel performance tracking</li>
+            <li>Quarterly re-audit</li>
+            <li>Cancel anytime</li>
+          </ul>
+        </div>
+        <div class="p-card">
+          <div class="p-tier">Strategy call</div>
+          <div class="p-price">$99</div>
+          <div class="p-per">one-time add-on</div>
+          <ul class="p-feat">
+            <li>30-min audit walkthrough</li>
+            <li>Live Q&A on your report</li>
+            <li>Priority booking</li>
+          </ul>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:2rem">
+        <a class="btn btn-dark btn-lg" data-go="audit">Start with an audit — $299 →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-band"><div class="container">
+    <h2>Know which lever to pull<br>in 48 hours.</h2>
+    <p class="sub">No calls. No proposals. Just the audit.</p>
+    <a class="btn btn-acid btn-lg" style="margin-top:1.5rem" data-go="audit">Get your audit →</a>
+  </div></div>
+  <div class="mini-footer"><div class="container"><div class="mini-footer-inner">
+    <span class="footer-legal">© 2026 CAIO Insight</span>
+    <a class="back" data-go="home">← Back to home</a>
+  </div></div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     AUDIT
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-audit">
+  <div class="bg-paper-2" style="padding:3rem 0 2rem">
+    <div class="container">
+      <div class="label">Get your audit</div>
+      <h1 style="font-size:clamp(1.8rem,4vw,3rem);margin-bottom:.6rem">Find out what's holding<br>your marketing back.</h1>
+      <p style="color:var(--muted)">10 questions · 48-hour delivery · $299 DTC</p>
+    </div>
+  </div>
+  <div class="section-sm">
+    <div class="container">
+      <div class="audit-layout">
+        <!-- FORM -->
+        <div>
+          <div class="form-group">
+            <label class="form-label">Which best describes your business?</label>
+            <div class="choice-wrap" id="v-choice">
+              <button class="choice-btn sel" data-sel-group="v-choice">Shopify DTC brand</button>
+              <button class="choice-btn" data-sel-group="v-choice">Cannabis CPG brand</button>
+              <button class="choice-btn" data-sel-group="v-choice">B2B SaaS company</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Your name</label><input type="text" placeholder="First Last"></div>
+            <div class="form-group"><label class="form-label">Email address</label><input type="email" placeholder="you@brand.com"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Brand website URL</label>
+            <input type="url" placeholder="yourbrand.com">
+            <div class="form-hint">We'll review your store as part of the audit</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Monthly revenue range</label>
+            <div class="choice-wrap" id="rev-choice">
+              <button class="choice-btn" data-sel-group="rev-choice">Under $50K</button>
+              <button class="choice-btn sel" data-sel-group="rev-choice">$50K–$200K</button>
+              <button class="choice-btn" data-sel-group="rev-choice">$200K–$500K</button>
+              <button class="choice-btn" data-sel-group="rev-choice">$500K+</button>
+            </div>
+          </div>
+          <div class="form-divider">Channels</div>
+          <div class="form-group">
+            <label class="form-label">Active channels — select all that apply</label>
+            <div class="choice-wrap">
+              <button class="choice-btn sel" data-toggle-sel="1">Meta ads</button>
+              <button class="choice-btn sel" data-toggle-sel="1">Email / Klaviyo</button>
+              <button class="choice-btn" data-toggle-sel="1">SMS</button>
+              <button class="choice-btn" data-toggle-sel="1">Google / Shopping</button>
+              <button class="choice-btn" data-toggle-sel="1">TikTok ads</button>
+              <button class="choice-btn" data-toggle-sel="1">Organic social</button>
+              <button class="choice-btn" data-toggle-sel="1">SEO / content</button>
+              <button class="choice-btn" data-toggle-sel="1">Loyalty / referral</button>
+              <button class="choice-btn" data-toggle-sel="1">Influencer / UGC</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Monthly ad spend</label>
+              <div class="choice-wrap" id="spend-choice">
+                <button class="choice-btn" data-sel-group="spend-choice">$0</button>
+                <button class="choice-btn" data-sel-group="spend-choice">Under $2K</button>
+                <button class="choice-btn sel" data-sel-group="spend-choice">$2K–$10K</button>
+                <button class="choice-btn" data-sel-group="spend-choice">$10K–$30K</button>
+                <button class="choice-btn" data-sel-group="spend-choice">$30K+</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Blended ROAS</label>
+              <div class="choice-wrap" id="roas-choice">
+                <button class="choice-btn" data-sel-group="roas-choice">Not tracking</button>
+                <button class="choice-btn" data-sel-group="roas-choice">Under 1.5x</button>
+                <button class="choice-btn" data-sel-group="roas-choice">1.5–2.5x</button>
+                <button class="choice-btn sel" data-sel-group="roas-choice">2.5–4x</button>
+                <button class="choice-btn" data-sel-group="roas-choice">4x+</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-divider">Your challenge</div>
+          <div class="form-group">
+            <label class="form-label">Single biggest marketing frustration right now</label>
+            <textarea placeholder="Be specific — the more detail you give here, the more useful your diagnosis will be. For example: 'Our Meta ROAS has dropped from 3.2x to 2.1x over 4 months. We've tried new creatives but nothing sticks. We can't tell if it's audience fatigue, creative quality, or landing page issues...'"></textarea>
+            <div class="form-hint">This shapes your entire diagnosis. Most useful question in the form.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Success in 90 days looks like</label>
+            <div class="choice-wrap" id="goal-choice">
+              <button class="choice-btn" data-sel-group="goal-choice">Lower cost per acquisition</button>
+              <button class="choice-btn sel" data-sel-group="goal-choice">More consistent revenue</button>
+              <button class="choice-btn" data-sel-group="goal-choice">Less paid-ad dependency</button>
+              <button class="choice-btn" data-sel-group="goal-choice">Email list that converts</button>
+              <button class="choice-btn" data-sel-group="goal-choice">Clarity on priorities</button>
+            </div>
+          </div>
+          <div class="form-divider">Context</div>
+          <div class="form-group">
+            <label class="form-label">2–3 brands you admire or compete with</label>
+            <input type="text" placeholder="e.g. Beardbrand, Cuts Clothing, Jones Road Beauty">
+            <div class="form-hint">Used for competitor gap analysis in your report</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Anything else we should know?</label>
+            <textarea placeholder="Upcoming launches, things you've already tried, internal constraints..." style="min-height:70px"></textarea>
+          </div>
+          <div class="trust-pill">
+            <span style="font-size:1.1rem">→</span>
+            <span>Your audit ends with a 90-day plan. Most clients use it as their monthly strategy — no obligation, cancel anytime.</span>
+          </div>
+          <button class="btn btn-acid btn-lg btn-full" data-submit-audit="1" style="margin-top:.25rem">Submit intake + pay $299 →</button>
+          <p style="font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;margin-top:.75rem;letter-spacing:.02em">Payment via Stripe · Audit to your inbox within 48 hours</p>
+        </div>
+        <!-- SIDEBAR -->
+        <div>
+          <div class="audit-aside-card">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--acid);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem">What you'll receive</div>
+            <div class="aside-section"><div class="aside-n">01</div><div class="aside-t">Brand snapshot — proves we understood before writing</div></div>
+            <div class="aside-section"><div class="aside-n">02</div><div class="aside-t">Channel scorecard — A–F grade with specific reason</div></div>
+            <div class="aside-section"><div class="aside-n">03</div><div class="aside-t">Root-cause diagnosis — the real problem, not the symptom</div></div>
+            <div class="aside-section"><div class="aside-n">04</div><div class="aside-t">3 quick wins — 30-day implementable, impact estimated</div></div>
+            <div class="aside-section"><div class="aside-n">05</div><div class="aside-t">Competitor gap analysis — specific to brands you named</div></div>
+            <div class="aside-section"><div class="aside-n">06–07</div><div class="aside-t">90-day plan + north star metric — month-by-month priorities</div></div>
+          </div>
+          <div class="card" style="margin-bottom:1rem">
+            <div class="card-title" style="margin-bottom:.35rem;font-size:.95rem">Delivered in Notion — not a PDF</div>
+            <div class="card-body">Your scorecard, 90-day checklist, and a 30-day comment thread for follow-ups. Designed to work from, not read once and file.</div>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:.35rem;font-size:.95rem">Want a sample first?</div>
+            <div class="card-body">Reply to your confirmation email after purchase and we'll send a redacted sample audit before yours is delivered.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mini-footer"><div class="container"><div class="mini-footer-inner">
+    <span class="footer-legal">© 2026 CAIO Insight</span>
+    <a class="back" data-go="home">← Back to home</a>
+  </div></div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     ABOUT
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="bg-dark" style="padding:clamp(5rem,10vw,8rem) 0 clamp(4rem,7vw,6rem)">
+    <div class="container">
+      <div class="label label-light">About</div>
+      <h1 style="color:var(--paper);max-width:600px;margin-bottom:1.25rem">Built to reverse<br>the trust model.</h1>
+      <p style="color:rgba(245,242,236,.45);max-width:480px;font-size:1.05rem;line-height:1.8">CAIO Insight exists because great marketing strategy shouldn't cost $5,000/month and 8 weeks of discovery calls. It should cost $299 and take 48 hours.</p>
+    </div>
+  </div>
+  <div class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div>
+          <div class="profile-card">
+            <div class="profile-av">CI</div>
+            <div class="profile-name">CAIO Insight</div>
+            <div class="profile-role">Fractional CMO practice</div>
+            <div class="profile-bio">Shopify DTC specialist. AI-augmented strategy. Based in Carlsbad, CA.</div>
+            <div class="profile-stats">
+              <div class="p-stat"><div class="p-stat-n">3</div><div class="p-stat-l">verticals</div></div>
+              <div class="p-stat"><div class="p-stat-n">48h</div><div class="p-stat-l">delivery</div></div>
+              <div class="p-stat"><div class="p-stat-n">$299</div><div class="p-stat-l">entry audit</div></div>
+              <div class="p-stat"><div class="p-stat-n">7</div><div class="p-stat-l">sections</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="label">The approach</div>
+          <h2 style="margin-bottom:1.25rem">Why I show you how<br>I think first.</h2>
+          <p style="color:var(--muted);margin-bottom:1.25rem;line-height:1.8">Most founders I've worked with have the same problem: their marketing isn't broken, it's unfocused. They're running ads, sending emails, posting on Instagram — and getting flat results. They know something is wrong. They just don't know what.</p>
+          <p style="color:var(--muted);margin-bottom:1.25rem;line-height:1.8">Most fractional CMOs ask for a 3-month retainer based on a free discovery call. You buy the outcome you can't yet see. CAIO Insight reverses that. You see exactly how I diagnose your brand's marketing — for $299, before committing to anything. Then you decide whether you want me thinking about your marketing every month.</p>
+          <p style="color:var(--muted);margin-bottom:2.5rem;line-height:1.8">The AI handles the analytical framework. I handle the judgment layer — the part that requires genuine DTC marketing expertise to get right. You get $500-quality thinking for $299.</p>
+          <div class="principle">
+            <div class="principle-n">01</div>
+            <div class="principle-t">Specific over generic</div>
+            <div class="principle-d">Every recommendation references something you told us in the intake form. No advice that could apply to any brand.</div>
+          </div>
+          <div class="principle">
+            <div class="principle-n">02</div>
+            <div class="principle-t">Diagnosis before prescription</div>
+            <div class="principle-d">Root cause first, solutions second. That's what separates a useful audit from a PDF full of obvious advice.</div>
+          </div>
+          <div class="principle">
+            <div class="principle-n">03</div>
+            <div class="principle-t">Async by design</div>
+            <div class="principle-d">No discovery calls. No kickoff meetings. Fill the form, get the report, execute the plan. Your time is the constraint.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cta-band"><div class="container">
+    <h2>Ready to find out<br>what's holding you back?</h2>
+    <p class="sub">$299. 48 hours. No commitment.</p>
+    <a class="btn btn-acid btn-lg" style="margin-top:1.5rem" data-go="audit">Get your audit →</a>
+  </div></div>
+  <div class="mini-footer"><div class="container"><div class="mini-footer-inner">
+    <span class="footer-legal">© 2026 CAIO Insight · Carlsbad, CA</span>
+    <a class="back" data-go="home">← Back to home</a>
+  </div></div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     NEWSLETTER
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-newsletter">
+  <div class="bg-dark" style="padding:3rem 0 0">
+    <div class="container">
+      <div class="nl-masthead">
+        <div class="nl-name">The Owned Channel</div>
+        <div class="nl-tag">Weekly · Owned-channel strategy</div>
+      </div>
+      <div class="nl-meta">
+        <span>For DTC, cannabis, and SaaS founders</span>
+        <span>caioinsight.ai/newsletter</span>
+      </div>
+      <div class="nl-grid" style="padding-bottom:3rem">
+        <div>
+          <div style="font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem">This week</div>
+          <h2 style="color:var(--paper);font-size:clamp(1.3rem,3vw,1.9rem);margin-bottom:.75rem;letter-spacing:-.02em">The three Klaviyo flows every Shopify brand should have running before spending another dollar on Meta</h2>
+          <p style="color:rgba(245,242,236,.35);font-size:13px;margin-bottom:1rem">6 min read</p>
+          <p style="color:rgba(245,242,236,.4);font-size:14px;line-height:1.8;border-left:2px solid var(--acid);padding-left:1rem">Most DTC brands spend $10,000/month acquiring customers and $0 on the flows that turn them into repeat buyers. Here's the exact Klaviyo setup — flows, segments, subject lines, send cadence.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.75rem">
+          <div style="background:var(--ink-2);border:1px solid var(--ink-3);border-radius:var(--r-xl);padding:1.5rem">
+            <p style="font-size:14px;font-weight:600;color:var(--paper);margin-bottom:.3rem;font-family:var(--display)">Subscribe — free</p>
+            <p style="font-size:12px;color:rgba(255,255,255,.3);margin-bottom:1rem">Weekly owned-channel tactics for DTC founders. No paid-ad strategies. No agency fluff.</p>
+            <input type="email" placeholder="your@email.com" style="background:var(--ink);border-color:var(--ink-3);color:var(--paper);margin-bottom:.5rem">
+            <button class="btn btn-acid btn-full">Subscribe →</button>
+            <p style="font-family:var(--mono);font-size:10px;color:var(--xmuted);text-align:center;margin-top:.5rem;letter-spacing:.04em">No spam · unsubscribe anytime</p>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+            <div class="nl-tier"><div class="nl-t-name">Free</div><div class="nl-t-price">$0/mo</div><div class="nl-t-desc">Weekly essay · case studies · tactics</div></div>
+            <div class="nl-tier featured"><div class="nl-t-name">Member</div><div class="nl-t-price">$9/mo</div><div class="nl-t-desc">Prompt library · templates · Auditkit 30% off · Q&A</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-sm bg-white">
+    <div class="container">
+      <div class="label">Recent issues</div>
+      <div style="border-top:1px solid var(--paper-3)">
+        <div class="issue-row"><div><div class="issue-title">Why your blended ROAS is lying to you</div><div style="font-size:12px;color:var(--muted)">DTC · 5 min</div></div><span class="issue-meta">Issue 003</span></div>
+        <div class="issue-row"><div><div class="issue-title">The SMS stack that doubles repeat purchase rate</div><div style="font-size:12px;color:var(--muted)">DTC · 6 min</div></div><span class="issue-meta">Issue 002</span></div>
+        <div class="issue-row"><div><div class="issue-title">ICP clarity: the audit most DTC founders skip</div><div style="font-size:12px;color:var(--muted)">Strategy · 7 min</div></div><span class="issue-meta">Issue 001</span></div>
+        <div class="issue-row"><div><div class="issue-title">How to build a loyalty program in 30 days, no dev</div><div style="font-size:12px;color:var(--muted)">Retention · 8 min</div></div><span class="issue-meta">Issue 000</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="mini-footer"><div class="container"><div class="mini-footer-inner">
+    <span class="footer-legal">© 2026 CAIO Insight · The Owned Channel</span>
+    <a class="back" data-go="home">← Back to home</a>
+  </div></div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     THANK YOU
+══════════════════════════════════════════════════════ -->
+<div class="page" id="page-thankyou">
+  <div style="background:var(--white);min-height:calc(100vh - 64px);display:flex;align-items:center">
+    <div class="container">
+      <div class="ty-wrap">
+        <div class="ty-check">✓</div>
+        <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:.75rem">Your audit is queued.</h1>
+        <p style="color:var(--muted);font-size:15px;margin-bottom:2rem;line-height:1.8">Full channel scorecard, root-cause diagnosis, and 90-day plan arriving within 48 hours. Check your email for confirmation and next steps.</p>
+        <div class="tl">
+          <div class="tl-step"><div class="tl-dot">1</div><div><div class="tl-h">Confirmation email sent</div><div class="tl-b">Includes your Notion workspace link and what to expect.</div></div></div>
+          <div class="tl-step"><div class="tl-dot">2</div><div><div class="tl-h">Intake reviewed within 24 hours</div><div class="tl-b">Your answers are run through the audit engine and reviewed for accuracy.</div></div></div>
+          <div class="tl-step"><div class="tl-dot">3</div><div><div class="tl-h">Report delivered within 48 hours</div><div class="tl-b">All 7 sections live in your Notion workspace with a comment thread.</div></div></div>
+          <div class="tl-step"><div class="tl-dot">4</div><div><div class="tl-h">Optional: 30-min call add-on</div><div class="tl-b">Book a live walkthrough for $99. Link below.</div></div></div>
+        </div>
+        <div class="flex gap-md flex-wrap" style="justify-content:center">
+          <a class="btn btn-dark" href="https://calendly.com" target="_blank">Book optional call — $99 →</a>
+          <a class="btn btn-outline" data-go="newsletter">Subscribe to newsletter</a>
+        </div>
+        <p style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:2rem;letter-spacing:.02em">Questions? Reply to your confirmation email.</p>
+      </div>
+    </div>
+  </div>
+  <div class="mini-footer"><div class="container"><div class="mini-footer-inner">
+    <span class="footer-legal">© 2026 CAIO Insight</span>
+    <a class="back" data-go="home">← Back to home</a>
+  </div></div></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     JAVASCRIPT — EDITABLE SECTION
+     All site logic lives here. Easy to modify.
+══════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  function go(id) {
+    document.querySelectorAll('.page').forEach(function(p) {
+      p.classList.remove('active');
+    });
+    var target = document.getElementById('page-' + id);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  function openMobile() {
+    document.getElementById('mobileNav').classList.toggle('open');
+  }
+
+  function closeMobile() {
+    document.getElementById('mobileNav').classList.remove('open');
+  }
+
+  function toggleFaq(el) {
+    var isOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(f) {
+      f.classList.remove('open');
+    });
+    if (!isOpen) el.classList.add('open');
+  }
+
+  function selGroup(btn, groupId) {
+    var group = document.getElementById(groupId);
+    if (group) {
+      group.querySelectorAll('.choice-btn').forEach(function(b) {
+        b.classList.remove('sel');
+      });
+    }
+    btn.classList.add('sel');
+  }
+
+  function animateCounter(id, target, duration) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var start = 0;
+    var step = target / (duration / 16);
+    var timer = setInterval(function() {
+      start = Math.min(start + step, target);
+      el.textContent = Math.round(start);
+      if (start >= target) clearInterval(timer);
+    }, 16);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // Wire all navigation links
+    document.querySelectorAll('[data-go]').forEach(function(el) {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        var id = el.getAttribute('data-go');
+        if (el.hasAttribute('data-close-mobile')) closeMobile();
+        go(id);
+      });
+    });
+
+    // Mobile nav toggle
+    document.querySelectorAll('[data-toggle-mobile]').forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        openMobile();
+      });
+    });
+
+    // Close mobile on outside click
+    document.addEventListener('click', function(e) {
+      var m = document.getElementById('mobileNav');
+      if (m && m.classList.contains('open')) {
+        if (!m.contains(e.target) && !e.target.closest('[data-toggle-mobile]')) {
+          closeMobile();
+        }
+      }
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('[data-faq]').forEach(function(el) {
+      el.style.cursor = 'pointer';
+      el.addEventListener('click', function() {
+        toggleFaq(el);
+      });
+    });
+
+    // Single-select choice buttons
+    document.querySelectorAll('[data-sel-group]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        selGroup(btn, btn.getAttribute('data-sel-group'));
+      });
+    });
+
+    // Multi-select toggle buttons
+    document.querySelectorAll('[data-toggle-sel]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        btn.classList.toggle('sel');
+      });
+    });
+
+    // Audit submit
+    document.querySelectorAll('[data-submit-audit]').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        // REPLACE THIS URL with your live Tally form or Stripe Payment Link
+        // Example: window.location.href = 'https://tally.so/r/YOUR_FORM_ID';
+        alert('Connect your Tally form or Stripe Payment Link here. Find data-submit-audit in the HTML to locate this button.');
+      });
+    });
+
+    // Animated counters on home page load
+    setTimeout(function() { animateCounter('stat1', 48, 800); }, 400);
+    setTimeout(function() { animateCounter('stat2', 7, 600); }, 600);
+
+  });
+
+})();
+</script>
+
+</body>
+</html>
