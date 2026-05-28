@@ -255,3 +255,111 @@ When starting any new Claude session for CAIO Insight work:
 4. Identify which agent role applies to the current task
 5. Apply all brand voice rules to every output
 6. Never ask for context that exists in this file
+
+
+---
+
+## Quick Start Prompts
+
+Copy and paste these at the start of any new Claude session.
+No context-setting required — the file does it automatically.
+
+---
+
+### 1. Session startup (use this every time)
+
+```
+Read the CLAUDE.md file at github.com/caioinsight/caioinsight then confirm you have full context and tell me what's in the pending actions list.
+```
+
+---
+
+### 2. Update the live website
+
+```
+Read CLAUDE.md at github.com/caioinsight/caioinsight. Then [describe the change you want]. Apply all brand voice rules, use the Navy+Orange design system, and push the update to GitHub so Netlify deploys it automatically.
+```
+
+---
+
+### 3. Write a LinkedIn post
+
+```
+Read CLAUDE.md at github.com/caioinsight/caioinsight. Write a LinkedIn post about [topic]. Apply all brand voice rules and AI-tell removal checks. Format for 1,200-1,500 characters. No links in the post body — first comment only. Use the problem-led format unless specified otherwise.
+```
+
+---
+
+### 4. Evaluate a business pivot or idea
+
+```
+Read CLAUDE.md at github.com/caioinsight/caioinsight. Evaluate this idea: [describe idea]. Stress-test it against the existing business model, competitive landscape, and acquisition thesis. Score it on market size, defensibility, time to revenue, and fit with the behind-the-scenes operator constraint. Recommend yes, no, or modify.
+```
+
+---
+
+### 5. Run a competitive scan
+
+```
+Read CLAUDE.md at github.com/caioinsight/caioinsight. Run a current competitive scan for CAIO Insight. Check whether Semrush, Ahrefs, Shopify, Klaviyo, or Metricus have launched new GEO or AI visibility products since the last scan. Check for any new direct competitors in the $200K-$2M DTC audit space. Include publication dates on all findings. Flag anything that changes the moat or acquisition thesis.
+```
+
+---
+
+### 6. Generate a marketing audit (for a real client intake)
+
+```
+Read CLAUDE.md at github.com/caioinsight/caioinsight. Run the AI-Ready Marketing Audit for the following intake answers: [paste intake form responses]. Follow the 7-section format. Apply all brand voice rules. Use [Brand Name] if referencing competitor examples. Deliver as a structured Notion-ready document.
+```
+
+---
+
+### 7. Update CLAUDE.md itself
+
+```
+Read CLAUDE.md at github.com/caioinsight/caioinsight. Add or update the following information: [describe the change]. Preserve all existing sections. Commit the updated file to GitHub.
+```
+
+---
+
+### 8. Research a specific topic for CAIO Insight
+
+```
+Read CLAUDE.md at github.com/caioinsight/caioinsight. Research [topic] specifically for CAIO Insight's context — ICP is Shopify DTC brands $200K-$2M, positioning is GEO + channel audit, acquisition target is Shopify/Klaviyo/Semrush. Include dates on all sources. Flag anything that changes strategy or creates urgency.
+```
+
+---
+
+### 9. Create a design asset in Canva
+
+```
+Read CLAUDE.md at github.com/caioinsight/caioinsight. Create a [asset type] in Canva for CAIO Insight. Use the Navy+Orange design system: deep navy #070D1A background, orange #FF6B2B accent, Space Grotesk typography. Purpose: [describe purpose and where it will be used].
+```
+
+---
+
+### 10. Full business strategy session
+
+```
+Read CLAUDE.md at github.com/caioinsight/caioinsight. I want to work through [strategic question or decision]. Load full business context including the competitive landscape, acquisition thesis, revenue model, and pending actions. Think as the strategy agent. Stress-test before recommending.
+```
+
+---
+
+## Prompt Writing Guide
+
+When writing new prompts for this system, always include:
+1. "Read CLAUDE.md at github.com/caioinsight/caioinsight" as the first line
+2. The specific task clearly stated
+3. Any constraints not already in CLAUDE.md
+4. The desired output format
+
+What NOT to include in prompts (already in CLAUDE.md):
+- Brand voice rules
+- ICP description
+- Pricing details
+- Competitor list
+- Design system values
+- Writing style rules
+- Cannabis language rules
+- Real brand name prohibition
