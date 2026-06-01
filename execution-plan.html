@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CAIO Insight — 2026 Execution Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+:root{
+  --ink:#070D1A;--ink2:#0C1526;--ink3:#132038;--ink4:#1A2C4A;
+  --muted:#5E7399;--xmuted:#344B6E;
+  --paper:#F0F4FA;--paper2:#E4EBF5;--paper3:#D4DCEA;
+  --white:#fff;--acid:#FF6B2B;--teal:#00C8A0;--red:#FF4D6D;--amber:#FFB830;
+  --logo:"Barlow Condensed",sans-serif;
+  --body:"Space Grotesk",sans-serif;
+  --mono:"IBM Plex Mono",monospace;
+  --r:8px;--rl:16px;
+}
+body{font-family:var(--body);background:var(--ink);color:var(--paper);line-height:1.6;min-height:100vh}
+
+/* ── TOPBAR ── */
+.topbar{background:#000;border-bottom:2px solid var(--acid);padding:.7rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.tb-logo{font-family:var(--logo);font-size:20px;font-weight:700;color:var(--paper);letter-spacing:2px;display:flex;align-items:center;gap:10px}
+.tb-dots{display:grid;grid-template-columns:repeat(3,5px);gap:3px}
+.tb-dots span{width:5px;height:5px;border-radius:50%;background:var(--acid)}
+.tb-dots span:nth-child(1),.tb-dots span:nth-child(2),.tb-dots span:nth-child(4),.tb-dots span:nth-child(6),.tb-dots span:nth-child(8),.tb-dots span:nth-child(9){opacity:.18}
+.tb-dots span:nth-child(3){opacity:.95}
+.tb-dots span:nth-child(5){opacity:.55}
+.tb-dots span:nth-child(7){opacity:.22}
+.tb-title{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+.tb-right{display:flex;align-items:center;gap:1rem}
+.tb-progress{font-family:var(--mono);font-size:11px;color:var(--acid)}
+.tb-reset{font-family:var(--mono);font-size:10px;color:var(--xmuted);cursor:pointer;padding:4px 8px;border:1px solid var(--ink3);border-radius:4px;background:none;transition:all .15s}
+.tb-reset:hover{border-color:var(--red);color:var(--red)}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 52px)}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--ink2);border-right:1px solid var(--ink3);padding:1.25rem 0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:var(--ink3);border-radius:2px}
+.sb-section{margin-bottom:.25rem}
+.sb-label{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--xmuted);padding:.5rem 1.25rem .25rem;display:block}
+.sb-item{display:flex;align-items:center;justify-content:space-between;padding:.5rem 1.25rem;cursor:pointer;transition:background .12s;gap:.5rem;border-left:2px solid transparent}
+.sb-item:hover{background:var(--ink3)}
+.sb-item.active{background:var(--ink3);border-left-color:var(--acid)}
+.sb-item-name{font-size:12px;color:var(--paper);font-weight:500;line-height:1.35}
+.sb-item-sub{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:1px}
+.sb-badge{font-family:var(--mono);font-size:9px;padding:1px 5px;border-radius:8px;flex-shrink:0;white-space:nowrap}
+.badge-done{background:rgba(0,200,160,.15);color:var(--teal)}
+.badge-partial{background:rgba(255,184,48,.12);color:var(--amber)}
+.badge-todo{background:rgba(94,115,153,.1);color:var(--muted)}
+
+/* ── MAIN ── */
+.main{padding:2rem 2rem 4rem;max-width:820px}
+.section-hero{margin-bottom:2rem}
+.section-hero h1{font-family:var(--logo);font-size:2rem;font-weight:700;letter-spacing:1px;color:var(--paper);margin-bottom:.3rem}
+.section-hero .meta{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;gap:1.5rem;flex-wrap:wrap}
+.section-hero .meta span strong{color:var(--acid)}
+
+/* ── PHASE HEADER ── */
+.phase-header{background:var(--ink2);border:1px solid var(--ink3);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between}
+.phase-header h2{font-family:var(--logo);font-size:1.3rem;font-weight:700;letter-spacing:1px;color:var(--paper)}
+.phase-theme{font-family:var(--mono);font-size:11px;color:var(--muted);font-style:italic;margin-top:.15rem}
+.phase-prog{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem}
+.phase-prog-bar{width:120px;height:6px;background:var(--ink3);border-radius:3px;overflow:hidden}
+.phase-prog-fill{height:100%;background:var(--acid);border-radius:3px;transition:width .3s}
+.phase-prog-label{font-family:var(--mono);font-size:10px;color:var(--muted)}
+
+/* ── WEEK BLOCK ── */
+.week-block{background:var(--ink2);border:1px solid var(--ink3);border-radius:var(--rl);margin-bottom:1rem;overflow:hidden}
+.week-header{padding:.85rem 1.25rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:background .12s}
+.week-header:hover{background:var(--ink3)}
+.week-header-left{display:flex;align-items:center;gap:.75rem}
+.week-title{font-size:.95rem;font-weight:600;color:var(--paper)}
+.week-meta{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.week-chev{color:var(--muted);transition:transform .2s;flex-shrink:0}
+.week-chev.open{transform:rotate(180deg)}
+.week-body{display:none;border-top:1px solid var(--ink3)}
+.week-body.open{display:block}
+.week-output{padding:.75rem 1.25rem;background:rgba(255,107,43,.04);border-top:1px solid rgba(255,107,43,.12);font-size:12px;color:var(--muted);font-style:italic;line-height:1.6}
+.week-output strong{color:var(--acid);font-style:normal}
+
+/* ── TASK GROUP ── */
+.task-group{padding:.75rem 1.25rem}
+.tg-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.tg-label.must{color:var(--red)}
+.tg-label.should{color:var(--amber)}
+.tg-label.batch{color:var(--teal)}
+.tg-label.milestone{color:var(--acid)}
+.tg-label.daily{color:#A78BFA}
+.tg-label::before{content:"";display:block;width:10px;height:1.5px}
+.tg-label.must::before{background:var(--red)}
+.tg-label.should::before{background:var(--amber)}
+.tg-label.batch::before{background:var(--teal)}
+.tg-label.milestone::before{background:var(--acid)}
+.tg-label.daily::before{background:#A78BFA}
+
+/* ── TASK ITEM ── */
+.task-item{display:flex;align-items:flex-start;gap:.75rem;padding:.45rem .5rem;border-radius:var(--r);margin-bottom:.15rem;cursor:pointer;transition:background .12s}
+.task-item:hover{background:var(--ink3)}
+.task-item.done{opacity:.5}
+.task-item.done .task-text{text-decoration:line-through;color:var(--muted)}
+.task-cb{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--ink4);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .15s}
+.task-item.done .task-cb{background:var(--teal);border-color:var(--teal)}
+.task-cb svg{display:none}
+.task-item.done .task-cb svg{display:block}
+.task-text{font-size:13px;color:var(--paper);line-height:1.55}
+.task-sub{font-size:11px;color:var(--muted);line-height:1.5;margin-top:.2rem;padding-left:.1rem}
+
+/* ── INFO BLOCK ── */
+.info-block{background:var(--ink3);border-radius:var(--r);padding:.85rem 1rem;margin:.5rem 0;font-size:12px;color:var(--muted);line-height:1.7}
+.info-block strong{color:var(--paper)}
+.info-block.warn{border-left:3px solid var(--red)}
+.info-block.tip{border-left:3px solid var(--acid)}
+.info-block.note{border-left:3px solid var(--teal)}
+
+/* ── DAILY SECTION ── */
+.daily-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
+.daily-card{background:var(--ink2);border:1px solid var(--ink3);border-radius:var(--rl);padding:1rem 1.1rem}
+.daily-card h3{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
+.daily-card h3::before{content:"";display:block;width:8px;height:8px;border-radius:50%}
+.daily-card.morning h3::before{background:#A78BFA}
+.daily-card.ongoing h3::before{background:var(--teal)}
+.daily-step{display:flex;align-items:flex-start;gap:.6rem;padding:.3rem 0}
+.daily-step-num{font-family:var(--mono);font-size:10px;color:var(--acid);font-weight:600;flex-shrink:0;min-width:14px}
+.daily-step-text{font-size:12px;color:var(--paper);line-height:1.55}
+
+/* ── TABLE ── */
+.data-table{width:100%;border-collapse:collapse;font-size:12px;margin:.5rem 0 1rem}
+.data-table th{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:5px 10px;border-bottom:1px solid var(--ink3);text-align:left}
+.data-table td{padding:7px 10px;border-bottom:1px solid var(--ink3);color:var(--muted);line-height:1.5}
+.data-table tr:last-child td{border-bottom:none}
+.data-table td:first-child{color:var(--paper);font-weight:500}
+.data-table .highlight{color:var(--acid);font-weight:600}
+
+/* ── MILESTONE TABLE ── */
+.milestone-table{width:100%;border-collapse:collapse;font-size:12px;margin:.5rem 0}
+.milestone-table th{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:5px 10px;border-bottom:1px solid var(--ink3);text-align:left}
+.milestone-table td{padding:8px 10px;border-bottom:1px solid var(--ink3);vertical-align:top}
+.milestone-table tr:last-child td{border-bottom:none}
+.month-badge{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--ink3);color:var(--acid);min-width:60px;text-align:center}
+.milestone-text{font-size:12px;color:var(--paper);line-height:1.5}
+.rev-target{font-family:var(--mono);font-size:11px;color:var(--teal)}
+
+/* ── AFFILIATE TABLE ── */
+.affiliate-row{display:flex;align-items:center;justify-content:space-between;padding:.6rem .85rem;background:var(--ink2);border:1px solid var(--ink3);border-radius:var(--r);margin-bottom:.4rem}
+.affiliate-row.enrolled{border-color:rgba(0,200,160,.25)}
+.aff-name{font-size:13px;font-weight:500;color:var(--paper)}
+.aff-comm{font-family:var(--mono);font-size:10px;color:var(--acid)}
+.aff-when{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.aff-est{font-family:var(--mono);font-size:10px;color:var(--teal)}
+.aff-cb-wrap{display:flex;align-items:center;gap:.4rem;cursor:pointer}
+.aff-cb{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--ink4);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.aff-cb.checked{background:var(--teal);border-color:var(--teal)}
+.aff-cb-label{font-family:var(--mono);font-size:9px;color:var(--muted)}
+.aff-cb.checked + .aff-cb-label{color:var(--teal)}
+
+/* ── STACK TABLE ── */
+.stack-item{display:grid;grid-template-columns:140px 1fr auto;gap:.5rem;padding:.6rem .85rem;background:var(--ink2);border:1px solid var(--ink3);border-radius:var(--r);margin-bottom:.35rem;align-items:center}
+.stack-tool{font-size:12px;font-weight:500;color:var(--paper)}
+.stack-purpose{font-size:12px;color:var(--muted)}
+.stack-cost{font-family:var(--mono);font-size:11px;color:var(--teal)}
+
+/* ── SIGNAL 0 ── */
+.signal0-steps{display:grid;gap:.5rem}
+.s0-step{display:flex;align-items:flex-start;gap:.75rem;padding:.75rem 1rem;background:var(--ink2);border:1px solid var(--ink3);border-radius:var(--r);cursor:pointer;transition:border-color .15s}
+.s0-step:hover{border-color:var(--ink4)}
+.s0-step.done{border-color:rgba(0,200,160,.25)}
+.s0-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--acid);flex-shrink:0;min-width:18px}
+.s0-text{font-size:12px;color:var(--paper);line-height:1.55}
+.s0-check{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--ink4);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .15s;margin-left:auto}
+.s0-step.done .s0-check{background:var(--teal);border-color:var(--teal)}
+
+/* ── CONTENT CALENDAR ── */
+.cal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:.5rem}
+.cal-cell{background:var(--ink2);border:1px solid var(--ink3);border-radius:var(--r);padding:.65rem .75rem}
+.cal-week{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+.cal-item{font-size:11px;color:var(--paper);line-height:1.5;margin-bottom:.25rem}
+.cal-item.empty{color:var(--xmuted)}
+.cal-tag{display:inline-block;font-family:var(--mono);font-size:8px;padding:1px 5px;border-radius:3px;margin-bottom:.2rem}
+.cal-tag.data{background:rgba(255,107,43,.12);color:var(--acid)}
+.cal-tag.narrative{background:rgba(0,200,160,.1);color:var(--teal)}
+.cal-tag.newsletter{background:rgba(167,139,250,.1);color:#A78BFA}
+
+/* ── FORECAST BAR ── */
+.forecast-bars{display:flex;flex-direction:column;gap:.4rem;margin:.75rem 0}
+.fbar-row{display:flex;align-items:center;gap:.75rem}
+.fbar-label{font-family:var(--mono);font-size:10px;color:var(--muted);min-width:55px;text-align:right}
+.fbar-track{flex:1;height:16px;background:var(--ink3);border-radius:3px;overflow:hidden}
+.fbar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px;transition:width .5s}
+.fbar-value{font-family:var(--mono);font-size:9px;color:#fff;font-weight:600;white-space:nowrap}
+
+/* ── SCROLLBAR ── */
+.main::-webkit-scrollbar{width:6px}
+.main::-webkit-scrollbar-track{background:transparent}
+.main::-webkit-scrollbar-thumb{background:var(--ink3);border-radius:3px}
+
+@media(max-width:700px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static;height:auto}
+  .daily-grid{grid-template-columns:1fr}
+  .cal-grid{grid-template-columns:1fr 1fr}
+  .stack-item{grid-template-columns:1fr;gap:.2rem}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-logo">
+    <div class="tb-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    CAIO
+  </div>
+  <div class="tb-title">2026 Execution Plan</div>
+  <div class="tb-right">
+    <div class="tb-progress" id="progress-label">Loading...</div>
+    <button class="tb-reset" onclick="confirmReset()">Reset all</button>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="main" id="main"></main>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// PLAN DATA
+// ══════════════════════════════════════════════════════
+const PLAN = {
+  sections: [
+    {
+      id: 'daily',
+      label: 'Daily Protocol',
+      icon: '↺',
+      subsections: [{ id: 'daily-morning', title: 'Morning (15 min)', type: 'daily' }]
+    },
+    {
+      id: 'phase1',
+      label: 'Phase 1 — Foundation',
+      sub: 'Weeks 1–4',
+      theme: 'Build every system before talking to a single prospect',
+      subsections: [
+        { id: 'w1', title: 'Week 1 — Systems Sprint', hours: 12, revenue: '$0',
+          output: 'Site live and deploying automatically. Tally form live. Stripe payment links live. 3+ affiliates enrolled. Notion template built. Self-audit complete.' },
+        { id: 'w2', title: 'Week 2 — Prospect Research', hours: 8, revenue: '$0',
+          output: '50-name prospect list with observations. 2 calibration audits completed. 3 posts drafted. Stripe tested.' },
+        { id: 'w3', title: 'Week 3 — First Outreach', hours: 12, revenue: 'First replies',
+          output: '20 DMs sent. 1 post published. First replies expected.' },
+        { id: 'w4', title: 'Week 4 — First Conversions', hours: 10, revenue: 'First audit',
+          output: 'First audit booked or delivered. LinkedIn post cadence established.' }
+      ]
+    },
+    {
+      id: 'phase2',
+      label: 'Phase 2 — First Clients',
+      sub: 'Weeks 5–12',
+      theme: 'Deliver exceptional first audits. Build social proof.',
+      subsections: [
+        { id: 'w5to8', title: 'Weeks 5–8 — Audit Production', hours: 15, revenue: '$2K+',
+          output: '5+ audits delivered. 1 testimonial collected. LinkedIn follower count growing +100/month.' },
+        { id: 'w9to12', title: 'Weeks 9–12 — First Retainer', hours: 18, revenue: 'MRR $2K',
+          output: 'First retainer active. Index v0.1 running. n8n automation configured. 10+ audits delivered total.' }
+      ]
+    },
+    {
+      id: 'phase3',
+      label: 'Phase 3 — Scale',
+      sub: 'Months 4–6',
+      theme: 'Systems over hustle. Automate the repeatable.',
+      subsections: [
+        { id: 'monthly46', title: 'Monthly Cadence', hours: 20, revenue: 'MRR $6K+' },
+        { id: 'quarterly', title: 'Quarterly Reviews', hours: 4, revenue: 'Track variance' }
+      ]
+    },
+    {
+      id: 'phase4',
+      label: 'Phase 4 — Growth Engine',
+      sub: 'Months 7–12',
+      theme: 'Index data compounds. Retainer base locks in MRR.',
+      subsections: [
+        { id: 'w7to12', title: 'Weekly Rhythm', hours: 20, revenue: 'MRR $10K+' }
+      ]
+    },
+    {
+      id: 'milestones',
+      label: 'Year 1 Milestones',
+      icon: '◆',
+      subsections: [{ id: 'ms-table', title: 'Month-by-month', type: 'milestones' }]
+    },
+    {
+      id: 'affiliates',
+      label: 'Affiliate Tracker',
+      icon: '$',
+      subsections: [{ id: 'aff-table', title: '8 Programs', type: 'affiliates' }]
+    },
+    {
+      id: 'stack',
+      label: 'Tech Stack',
+      icon: '⚙',
+      subsections: [{ id: 'stack-table', title: 'Tools + Costs', type: 'stack' }]
+    },
+    {
+      id: 'signal0',
+      label: 'Signal 0 Checklist',
+      icon: '⚡',
+      subsections: [{ id: 'signal0-check', title: 'Weekly Verification', type: 'signal0' }]
+    },
+    {
+      id: 'content',
+      label: 'Content Calendar',
+      icon: '✦',
+      subsections: [{ id: 'content-cal', title: 'Monthly Template', type: 'content' }]
+    },
+    {
+      id: 'forecast',
+      label: 'Revenue Forecast',
+      icon: '↑',
+      subsections: [{ id: 'forecast-bars', title: 'Y1–Y10', type: 'forecast' }]
+    }
+  ],
+  tasks: {
+    'w1': {
+      must: [
+        { id:'w1-m1', text:'Verify caioinsight.ai is live at Cloudflare Workers', sub:'Check DNS propagation — should resolve within 24–48 hours of nameserver update' },
+        { id:'w1-m2', text:'Run Signal 0 on caioinsight.ai itself', sub:'Cloudflare Dashboard → Security → Bots → confirm OAI-SearchBot/PerplexityBot/Claude-SearchBot allowed' },
+        { id:'w1-m3', text:'Set up Tally intake form — 10 questions', sub:'URL · revenue range · platform · top 3 competitors · channels · frustration · category keywords · product · vertical · budget' },
+        { id:'w1-m4', text:'Create Stripe account — $449 Payment Link + $2,000/month subscription link' },
+        { id:'w1-m5', text:'Register Shopify Partners', sub:'partners.shopify.com — 20% recurring commissions on referred merchants' },
+        { id:'w1-m6', text:'Register Klaviyo Partner Program', sub:'klaviyo.com/partners — 20% recurring affiliate commissions' }
+      ],
+      should: [
+        { id:'w1-s1', text:'Build Notion audit workspace template', sub:'Brand Snapshot → Channel Scorecard (A–F) → VAS → CPI → Schema Remediation Log → Competitor Gap → 90-Day Plan' },
+        { id:'w1-s2', text:'Run first internal test audit on caioinsight.ai itself using the four-layer methodology' },
+        { id:'w1-s3', text:'Set up beehiiv free plan for The Owned Channel newsletter — configure publication page' },
+        { id:'w1-s4', text:'Register HubSpot affiliate program + Semrush affiliate program' }
+      ],
+      batch: [
+        { id:'w1-b1', text:'Set up GitHub Actions → Cloudflare Workers auto-deploy pipeline (see SETUP_GUIDE.md in repo)' },
+        { id:'w1-b2', text:'Add CF_API_TOKEN and CF_ACCOUNT_ID to GitHub repo secrets' },
+        { id:'w1-b3', text:'Test deploy by pushing a minor site change and confirming it appears live' }
+      ]
+    },
+    'w2': {
+      must: [
+        { id:'w2-m1', text:'Build prospect list: 30 Shopify DTC founders', sub:'LinkedIn filters: "founder" + "Shopify" + 500–5,000 followers. For each: brand URL + one specific store observation' },
+        { id:'w2-m2', text:'Build second list: 10 compliance-constrained brand founders', sub:'LinkedIn + industry directories. Same format.' },
+        { id:'w2-m3', text:'Identify 10 warmest contacts — people you actually know at DTC/relevant brands' }
+      ],
+      should: [
+        { id:'w2-s1', text:'Run second test audit on a real Shopify brand (do not send — internal quality calibration only)' },
+        { id:'w2-s2', text:'Write 3 LinkedIn post drafts for weeks 3–5', sub:'Problem line 1 → data line 2 → structural cause lines 3–5 → diagnostic reference lines 6–7 → intake link in first comment' },
+        { id:'w2-s3', text:'Register Postscript affiliate', sub:'postscript.io/partners — SMS platform, 20% recurring, relevant for compliance-constrained clients' }
+      ]
+    },
+    'w3': {
+      must: [
+        { id:'w3-m1', text:'Send 10 warm DMs — people you actually know', sub:'Template: "[Name], noticed your store is running [X] — Meta ROAS on [category] has dropped ~30% industry-wide. 85% of Shopify stores in your segment are invisible to AI shopping agents routing purchase decisions. We map that gap in 48 hours for $449, no discovery call. Worth a look?"' },
+        { id:'w3-m2', text:'Send 10 cold DMs — include your specific store observation as the opener' },
+        { id:'w3-m3', text:'Publish first LinkedIn post (Tuesday 8–10am)', sub:'Respond to every comment within 90 minutes. No external link in post body — intake link goes in first comment.' }
+      ],
+      should: [
+        { id:'w3-s1', text:'Connect with 20 DTC founders on LinkedIn with personalized 2–3 sentence notes' },
+        { id:'w3-s2', text:'Engage 5 posts/day from target founders', sub:'Substantive 2–4 sentence comments only. Comments are 15× more algorithmically valuable than likes.' }
+      ]
+    },
+    'w4': {
+      must: [
+        { id:'w4-m1', text:'Send 15 more DMs (warm follow-ups + new cold)' },
+        { id:'w4-m2', text:'Publish second LinkedIn post (Wednesday 8–10am)', sub:'Data lead: "Shopify reported 11× increase in AI-attributed orders in 2025. 83% of ChatGPT carousel products source from Google Shopping organic. Most Shopify brands don\'t know where they stand."' },
+        { id:'w4-m3', text:'If no paid conversions yet: offer first audit at $299 intro pricing to single warmest contact', sub:'One time, one person only. Getting the first audit completed matters more than the $150 difference.' },
+        { id:'w4-m4', text:'Deliver first real client brief as soon as first intake arrives — treat it like a flagship deliverable' }
+      ]
+    },
+    'w5to8': {
+      must: [
+        { id:'w58-m1', text:'Send 15 DMs per week — rotate warm follow-ups and new cold prospects' },
+        { id:'w58-m2', text:'Publish 1 LinkedIn post per week' },
+        { id:'w58-m3', text:'Deliver all audits within 48 hours of intake submission, no exceptions' }
+      ],
+      should: [
+        { id:'w58-s1', text:'Month 2: Request testimonial from first 2 audit clients', sub:'Specific ask: "Could you describe what you learned that surprised you most?" — generates quote-ready content' },
+        { id:'w58-s2', text:'Month 2: Run Carousel Readiness Check on every current client\'s store — add Signal 6 finding as bonus update' },
+        { id:'w58-s3', text:'Month 2: Build outbound email sequence (3-email, 10-day cadence)' }
+      ],
+      batch: [
+        { id:'w58-b1', text:'Update the CAIO Intelligence Dashboard with new intelligence findings (monthly)' },
+        { id:'w58-b2', text:'Review which LinkedIn posts got highest engagement — replicate the format' },
+        { id:'w58-b3', text:'Register for 1 DTC-relevant event or community (Shopify Unite, Klaviyo Connect, MDS)' }
+      ],
+      milestone: [
+        { id:'w58-ms1', text:'5+ audits delivered ✓' },
+        { id:'w58-ms2', text:'1 testimonial collected ✓' },
+        { id:'w58-ms3', text:'LinkedIn follower count growing +100/month ✓' },
+        { id:'w58-ms4', text:'First retainer conversation initiated (target: by Week 10) ✓' }
+      ]
+    },
+    'w9to12': {
+      must: [
+        { id:'w912-m1', text:'Convert first audit client to retainer', sub:'Offer during brief delivery walkthrough call. Pitch: "The Schema Remediation Log is a 90-day project. Monthly re-run tracks whether fixes are moving your VAS. No contract, cancel any month, $2,000."' },
+        { id:'w912-m2', text:'Begin building AI Visibility Index dataset', sub:'Run 50 brands × 10 queries via Batch API for first vertical. Cost: ~$5.50 in API tokens.' },
+        { id:'w912-m3', text:'Set up n8n workflow for daily intelligence automation' }
+      ],
+      should: [
+        { id:'w912-s1', text:'Publish long-form LinkedIn article: "Why 85% of Shopify stores are invisible to ChatGPT"' },
+        { id:'w912-s2', text:'Reach out to 5 marketing agencies about white-label licensing — use the data translation layer framing' },
+        { id:'w912-s3', text:'Register caioinsight.ai in Bing Webmaster Tools and submit sitemap', sub:'ChatGPT search is powered by Bing — this is a direct ChatGPT visibility action' }
+      ]
+    },
+    'monthly46': {
+      must: [
+        { id:'m46-w1-1', text:'[Week 1] Run AI Visibility Index batch', sub:'500 queries via Batch API — ~1 hour, costs ~$11' },
+        { id:'m46-w1-2', text:'[Week 1] Update public leaderboard on caioinsight.ai' },
+        { id:'m46-w1-3', text:'[Week 1] Email index data CSV to all $147/month subscribers' },
+        { id:'m46-w1-4', text:'[Week 1] Review retainer client VAS scores — flag any that have drifted' },
+        { id:'m46-w2-1', text:'[Week 2] Outbound wave: 50 new DMs (LinkedIn + email mix)' },
+        { id:'m46-w2-2', text:'[Week 2] Publish 2 LinkedIn posts (data-led from index findings perform best)' },
+        { id:'m46-w2-3', text:'[Week 2] Reconcile affiliate commissions: Shopify, Klaviyo, HubSpot, Semrush' },
+        { id:'m46-w3-1', text:'[Week 3] Deliver all retainer monthly briefs', sub:'Should be <2 hours with n8n automating data collection' },
+        { id:'m46-w3-2', text:'[Week 3] Review Carousel Check conversion data — how many email captures → paid audits?' },
+        { id:'m46-w3-3', text:'[Week 3] Update caioinsight.ai with new intelligence or findings' },
+        { id:'m46-w4-1', text:'[Week 4] Revenue reconciliation: audits + retainer MRR + affiliate + index' },
+        { id:'m46-w4-2', text:'[Week 4] Compare to forecast — note variance (±20% = plan adjustment needed)' },
+        { id:'m46-w4-3', text:'[Week 4] Set next month\'s audit volume target' },
+        { id:'m46-w4-4', text:'[Week 4] Review TABLED_ITEMS.md — any items ready to execute?' }
+      ]
+    },
+    'quarterly': {
+      must: [
+        { id:'q-1', text:'Full self-audit of caioinsight.ai using the four-layer methodology', sub:'Signal 0 check · VAS on caioinsight.ai · llms.txt completeness · schema markup currency' },
+        { id:'q-2', text:'Review business plan — is forecast on track? What needs adjusting?' },
+        { id:'q-3', text:'Pitch 3 agencies on white-label licensing' },
+        { id:'q-4', text:'LinkedIn profile audit — headline, about section, and featured links current?' },
+        { id:'q-5', text:'Competitive landscape review — any new GEO tools targeting the $200K–$2M segment?' },
+        { id:'q-6', text:'Revenue forecast variance review — update projections based on actual data' }
+      ]
+    },
+    'w7to12': {
+      must: [
+        { id:'g-m1', text:'5 audits/week minimum — maintain 48-hour delivery SLA' },
+        { id:'g-m2', text:'Automate intake → brief pipeline as far as possible with n8n + Claude batch' },
+        { id:'g-m3', text:'Any audit scoring VAS < 20: run Signal 0 check first — often the fix takes 10 minutes' },
+        { id:'g-m4', text:'2 LinkedIn posts/week — alternate data post (index findings) and case study (anonymized)' },
+        { id:'g-m5', text:'Monthly newsletter issue — minimum 1 data insight, 1 client story, 1 tool recommendation with affiliate link' },
+        { id:'g-m6', text:'2 agency white-label conversations per month' },
+        { id:'g-m7', text:'1 conference or community appearance per quarter (Klaviyo Connect, Shopify Unite)' },
+        { id:'g-m8', text:'First PR pitch to DTC publication (Modern Retail, 2PM, Retail Brew)', sub:'Use index data as the news hook — "The AI Visibility Index for DTC" is a story.' }
+      ]
+    }
+  }
+};
+
+const MILESTONES = [
+  { month:1, milestone:'Site live + first 3 DMs sent', rev:'$0' },
+  { month:2, milestone:'First paid audit delivered', rev:'$449' },
+  { month:3, milestone:'First testimonial collected', rev:'$2K+ cumulative' },
+  { month:4, milestone:'Retainer conversation initiated', rev:'$4K+ cumulative' },
+  { month:5, milestone:'First retainer signed', rev:'MRR $2,000' },
+  { month:6, milestone:'Index v1 published publicly', rev:'MRR $2,000+' },
+  { month:7, milestone:'3 retainers active', rev:'MRR $6,000' },
+  { month:8, milestone:'Index has 50 paying brands', rev:'MRR $8,000+' },
+  { month:9, milestone:'First agency white-label inquiry', rev:'MRR $9,000+' },
+  { month:10, milestone:'$100K cumulative revenue', rev:'MRR $10,000+' },
+  { month:11, milestone:'LinkedIn 2,500+ followers', rev:'MRR $12,000+' },
+  { month:12, milestone:'Year end review + plan Y2', rev:'$185K+ annual' }
+];
+
+const AFFILIATES = [
+  { id:'aff-shopify', name:'Shopify Partners', comm:'20% recurring', when:'Enroll Week 1', est:'$50–$300/mo', url:'partners.shopify.com' },
+  { id:'aff-klaviyo', name:'Klaviyo', comm:'20% recurring', when:'Enroll Week 1', est:'$50–$300/mo', url:'klaviyo.com/partners' },
+  { id:'aff-hubspot', name:'HubSpot', comm:'30% recurring', when:'Enroll Week 2', est:'$50–$200/mo', url:'hubspot.com/partners' },
+  { id:'aff-semrush', name:'Semrush', comm:'$200/sale', when:'Enroll Week 2', est:'$50–$200/mo', url:'semrush.com/affiliates' },
+  { id:'aff-triplewhale', name:'Triple Whale', comm:'20% recurring', when:'Enroll Month 2', est:'$25–$100/mo', url:'triplewhale.com/affiliates' },
+  { id:'aff-postscript', name:'Postscript', comm:'20% recurring', when:'Enroll Month 2', est:'$25–$100/mo', url:'postscript.io/partners' },
+  { id:'aff-beehiiv', name:'beehiiv', comm:'50% first year', when:'Enroll Month 3', est:'$25–$100/mo', url:'beehiiv.com/affiliates' },
+  { id:'aff-ahrefs', name:'Ahrefs', comm:'20% recurring', when:'Enroll Month 3', est:'$25–$100/mo', url:'ahrefs.com/affiliates' }
+];
+
+const STACK = [
+  { tool:'Cloudflare Workers', purpose:'Hosting caioinsight.ai', cost:'Free' },
+  { tool:'GitHub', purpose:'Code + reference library', cost:'Free' },
+  { tool:'GitHub Actions', purpose:'Auto-deploy pipeline', cost:'Free' },
+  { tool:'Claude Sonnet 4.6', purpose:'Audit diagnostics', cost:'~$0.09/audit' },
+  { tool:'Claude Haiku 4.5', purpose:'Carousel Check free tool', cost:'~$0.003/check' },
+  { tool:'Anthropic Batch API', purpose:'AI Visibility Index queries', cost:'~$11/500-brand run' },
+  { tool:'n8n (self-hosted)', purpose:'Daily intelligence automation', cost:'~$8/mo VPS' },
+  { tool:'Notion', purpose:'Audit deliverables + CRM', cost:'Free–$16/mo' },
+  { tool:'Tally', purpose:'Intake forms', cost:'Free' },
+  { tool:'Stripe', purpose:'Payments', cost:'2.9% + $0.30' },
+  { tool:'beehiiv', purpose:'The Owned Channel newsletter', cost:'Free–$39/mo' },
+  { tool:'Perplexity API', purpose:'Daily intelligence queries', cost:'~$5–10/mo' },
+  { tool:'Porkbun', purpose:'Domain registrar', cost:'$11/year' }
+];
+
+const SIGNAL0 = [
+  { id:'s0-1', text:'Open Cloudflare Dashboard → your caioinsight.ai zone → Security → Bots', sub:'dash.cloudflare.com/98331ae69132239389aeb9a3b7248b94/caioinsight.ai' },
+  { id:'s0-2', text:'Confirm Bot Fight Mode is OFF or has explicit Allow rules for OAI-SearchBot, PerplexityBot, Claude-SearchBot' },
+  { id:'s0-3', text:'Check robots.txt at caioinsight.ai/robots.txt — no Disallow for the three AI search bots above' },
+  { id:'s0-4', text:'Check llms.txt at caioinsight.ai/llms.txt — file exists and is complete (not an empty stub)' },
+  { id:'s0-5', text:'Run Carousel Readiness Check on caioinsight.ai itself (monthly)', sub:'caioinsight.ai/carousel-check — use your own domain as the test case' }
+];
+
+const FORECAST = [
+  { period:'Q1 Y1', arr:10800, color:'#344B6E' },
+  { period:'Q2 Y1', arr:28949, color:'#344B6E' },
+  { period:'Q3 Y1', arr:60337, color:'#344B6E' },
+  { period:'Q4 Y1', arr:85811, color:'#344B6E' },
+  { period:'Y2', arr:685804, color:'#FF6B2B' },
+  { period:'Y3', arr:1398780, color:'#FF6B2B' },
+  { period:'Y5', arr:4270024, color:'#E55A1A' },
+  { period:'Y10', arr:10352820, color:'#C44A10' }
+];
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let checked = {};
+let activeSection = 'daily';
+
+function loadState() {
+  try { checked = JSON.parse(localStorage.getItem('caio_exec_plan') || '{}'); } catch(e) { checked = {}; }
+}
+function saveState() {
+  localStorage.setItem('caio_exec_plan', JSON.stringify(checked));
+}
+function toggle(id) {
+  checked[id] = !checked[id];
+  saveState();
+  document.querySelectorAll(`[data-task-id="${id}"]`).forEach(el => {
+    el.classList.toggle('done', !!checked[id]);
+  });
+  updateProgress();
+  updateSidebarBadges();
+}
+function confirmReset() {
+  if(confirm('Reset ALL checkboxes? This cannot be undone.')) {
+    checked = {};
+    saveState();
+    renderAll();
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════
+const CHECK_SVG = `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function taskItem(task, typeClass) {
+  const done = !!checked[task.id];
+  const sub = task.sub ? `<div class="task-sub">${task.sub.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>` : '';
+  return `<div class="task-item${done?' done':''}" data-task-id="${task.id}" onclick="toggle('${task.id}')">
+    <div class="task-cb">${done?CHECK_SVG:''}</div>
+    <div><div class="task-text">${task.text}</div>${sub}</div>
+  </div>`;
+}
+
+function taskGroup(tasks, label, typeClass, tasks_key) {
+  if(!tasks || !tasks.length) return '';
+  const items = tasks.map(t => taskItem(t, typeClass)).join('');
+  return `<div class="task-group"><div class="tg-label ${typeClass}"><span>${label}</span></div>${items}</div>`;
+}
+
+function sectionTaskCount(sectionTasks) {
+  let total=0, done=0;
+  const allTypes = ['must','should','batch','milestone'];
+  allTypes.forEach(t => { if(sectionTasks[t]) sectionTasks[t].forEach(task => { total++; if(checked[task.id]) done++; }); });
+  return {total, done};
+}
+
+function allTaskCount() {
+  let total=0, done=0;
+  Object.values(PLAN.tasks).forEach(sec => {
+    ['must','should','batch','milestone'].forEach(t => {
+      if(sec[t]) sec[t].forEach(task => { total++; if(checked[task.id]) done++; });
+    });
+  });
+  // Also count affiliates, signal0
+  AFFILIATES.forEach(a => { total++; if(checked[a.id]) done++; });
+  SIGNAL0.forEach(s => { total++; if(checked[s.id]) done++; });
+  MILESTONES.forEach(m => { total++; if(checked['ms-'+m.month]) done++; });
+  return {total, done};
+}
+
+function badgeFor(ids) {
+  let total=0, done=0;
+  ids.forEach(id => {
+    const sec = PLAN.tasks[id];
+    if(sec) { ['must','should','batch','milestone'].forEach(t => { if(sec[t]) sec[t].forEach(task => { total++; if(checked[task.id]) done++; }); }); }
+  });
+  if(total===0) return '';
+  if(done===0) return `<span class="sb-badge badge-todo">0/${total}</span>`;
+  if(done===total) return `<span class="sb-badge badge-done">✓ ${total}</span>`;
+  return `<span class="sb-badge badge-partial">${done}/${total}</span>`;
+}
+
+function updateProgress() {
+  const {total, done} = allTaskCount();
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('progress-label').textContent = `${done}/${total} · ${pct}%`;
+}
+
+function updateSidebarBadges() {
+  PLAN.sections.forEach(sec => {
+    const badgeEl = document.getElementById('sb-badge-'+sec.id);
+    if(!badgeEl) return;
+    const ids = sec.subsections.map(s=>s.id);
+    badgeEl.outerHTML = `<span id="sb-badge-${sec.id}">${badgeFor(ids)}</span>`;
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// WEEKLY BLOCK RENDER
+// ══════════════════════════════════════════════════════
+function renderWeekBlock(sub) {
+  const t = PLAN.tasks[sub.id] || {};
+  const mustHtml = taskGroup(t.must, 'MUST DO', 'must');
+  const shouldHtml = taskGroup(t.should, 'SHOULD DO', 'should');
+  const batchHtml = taskGroup(t.batch, 'BATCH', 'batch');
+  const msHtml = taskGroup(t.milestone, 'MILESTONE CHECK', 'milestone');
+  const outputHtml = sub.output ? `<div class="week-output"><strong>Week output:</strong> ${sub.output}</div>` : '';
+  const metaStr = [sub.hours?`~${sub.hours} hrs/week`:'', sub.revenue?`Target: ${sub.revenue}`:''].filter(Boolean).join(' · ');
+  return `<div class="week-block" id="wb-${sub.id}">
+    <div class="week-header" onclick="toggleWeek('${sub.id}')">
+      <div class="week-header-left">
+        <span class="week-title">${sub.title}</span>
+        ${metaStr?`<span class="week-meta">${metaStr}</span>`:''}
+      </div>
+      <svg class="week-chev" id="wc-${sub.id}" width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+    </div>
+    <div class="week-body" id="wbody-${sub.id}">
+      ${mustHtml}${shouldHtml}${batchHtml}${msHtml}${outputHtml}
+    </div>
+  </div>`;
+}
+
+function toggleWeek(id) {
+  const body = document.getElementById('wbody-'+id);
+  const chev = document.getElementById('wc-'+id);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open',!isOpen);
+  chev.classList.toggle('open',!isOpen);
+}
+
+// ══════════════════════════════════════════════════════
+// SECTION RENDERS
+// ══════════════════════════════════════════════════════
+function renderDaily() {
+  return `
+    <div class="section-hero">
+      <h1>Daily Protocol</h1>
+      <div class="meta"><span><strong>15 min</strong> every morning</span><span><strong>Non-negotiable</strong> at every stage of scale</span></div>
+    </div>
+    <div class="daily-grid">
+      <div class="daily-card morning">
+        <h3>Morning Protocol</h3>
+        ${[
+          'Open the CAIO Intelligence Dashboard (caioinsight.ai → intel login)',
+          'Read today\'s priority item — act on it if it is a system check',
+          'Check Cloudflare → Security → Bots → verify OAI-SearchBot NOT blocked',
+          'Check Tally for new intake form submissions',
+          'Check Carousel Check for new email captures'
+        ].map((t,i)=>`<div class="daily-step"><div class="daily-step-num">${i+1}</div><div class="daily-step-text">${t}</div></div>`).join('')}
+      </div>
+      <div class="daily-card ongoing">
+        <h3>Ongoing Daily</h3>
+        ${[
+          'Leave 5 substantive comments on DTC founder posts (20 min)',
+          'Comments = 15× more algorithmic value than likes',
+          'Never comment "great post" — always a specific observation',
+          'Follow up unanswered DMs at 5-day mark (once only)',
+          'Log all DM activity in Notion CRM'
+        ].map((t,i)=>`<div class="daily-step"><div class="daily-step-num">→</div><div class="daily-step-text">${t}</div></div>`).join('')}
+      </div>
+    </div>
+    <div class="info-block tip"><strong>The morning check takes 15 minutes.</strong> It will flag Signal 0 violations, new audit opportunities, and breaking intelligence before the workday begins. Build the habit before you have clients so it is automatic when you need it.</div>`;
+}
+
+function renderPhase(sec) {
+  const phaseHtml = sec.subsections.map(sub => renderWeekBlock(sub)).join('');
+  const allIds = sec.subsections.map(s=>s.id);
+  const {total, done} = (() => {
+    let t=0,d=0;
+    allIds.forEach(id => {
+      const tasks = PLAN.tasks[id]||{};
+      ['must','should','batch','milestone'].forEach(type => {
+        if(tasks[type]) tasks[type].forEach(task => { t++; if(checked[task.id]) d++; });
+      });
+    });
+    return {total:t, done:d};
+  })();
+  const pct = total ? Math.round(done/total*100) : 0;
+  return `
+    <div class="section-hero">
+      <h1>${sec.label}</h1>
+      <div class="meta"><span><strong>${sec.sub}</strong></span><span>${sec.theme}</span></div>
+    </div>
+    <div class="phase-header">
+      <div><div style="font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem">${sec.label}</div>
+      <div class="phase-theme">${sec.theme}</div></div>
+      <div class="phase-prog">
+        <div class="phase-prog-bar"><div class="phase-prog-fill" style="width:${pct}%"></div></div>
+        <div class="phase-prog-label">${done}/${total} tasks · ${pct}%</div>
+      </div>
+    </div>
+    ${phaseHtml}`;
+}
+
+function renderMilestones() {
+  const rows = MILESTONES.map(m => {
+    const done = !!checked['ms-'+m.month];
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:.6rem">
+        <div class="task-cb" style="width:16px;height:16px;border-radius:4px;border:1.5px solid var(--ink4);background:${done?'var(--teal)':'transparent'};display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s" onclick="toggle('ms-${m.month}')">${done?CHECK_SVG:''}</div>
+        <span class="month-badge">Month ${m.month}</span>
+      </div></td>
+      <td><span class="milestone-text" style="${done?'text-decoration:line-through;opacity:.5':''}">${m.milestone}</span></td>
+      <td><span class="rev-target">${m.rev}</span></td>
+    </tr>`;
+  }).join('');
+  return `
+    <div class="section-hero"><h1>Year 1 Milestones</h1>
+      <div class="meta"><span>Month-by-month checkpoints</span><span>Click to mark achieved</span></div>
+    </div>
+    <table class="milestone-table">
+      <thead><tr><th style="width:120px">Period</th><th>Milestone</th><th>Revenue</th></tr></thead>
+      <tbody id="ms-tbody">${rows}</tbody>
+    </table>`;
+}
+
+function renderAffiliates() {
+  const rows = AFFILIATES.map(a => {
+    const done = !!checked[a.id];
+    return `<div class="affiliate-row${done?' enrolled':''}" id="ar-${a.id}">
+      <div>
+        <div class="aff-name">${a.name}</div>
+        <div style="display:flex;gap:.75rem;margin-top:.2rem;flex-wrap:wrap">
+          <span class="aff-comm">${a.comm}</span>
+          <span class="aff-when">${a.when}</span>
+          <span class="aff-est">${a.est}</span>
+        </div>
+      </div>
+      <div class="aff-cb-wrap" onclick="toggle('${a.id}');document.getElementById('ar-${a.id}').classList.toggle('enrolled',!!checked['${a.id}']);document.getElementById('acb-${a.id}').className='aff-cb'+(checked['${a.id}']?' checked':'');document.getElementById('acblabel-${a.id}').textContent=checked['${a.id}']?'Enrolled':'Enroll';updateProgress();updateSidebarBadges();">
+        <div class="aff-cb${done?' checked':''}" id="acb-${a.id}">${done?CHECK_SVG:''}</div>
+        <span class="aff-cb-label" id="acblabel-${a.id}">${done?'Enrolled':'Enroll'}</span>
+      </div>
+    </div>`;
+  }).join('');
+  return `
+    <div class="section-hero"><h1>Affiliate Revenue Tracker</h1>
+      <div class="meta"><span><strong>8 programs</strong> — enroll in order</span><span>Target MRR by Month 6: <strong>$300–$500</strong></span></div>
+    </div>
+    ${rows}
+    <div class="info-block note" style="margin-top:1rem">Enroll Week 1–2 programs immediately. They require no ongoing work once enrolled. Affiliate commissions compound automatically as clients use your referred tools. Target MRR by Month 12: $500–$1,500.</div>`;
+}
+
+function renderStack() {
+  const rows = STACK.map(s => `<div class="stack-item">
+    <span class="stack-tool">${s.tool}</span>
+    <span class="stack-purpose">${s.purpose}</span>
+    <span class="stack-cost">${s.cost}</span>
+  </div>`).join('');
+  return `
+    <div class="section-hero"><h1>Technology Stack</h1>
+      <div class="meta"><span>Total monthly overhead at launch: <strong>~$25–75</strong></span><span>At 20 audits/week: <strong>~$150–300</strong></span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:140px 1fr auto;gap:.3rem .5rem;margin-bottom:.4rem;padding:0 .85rem">
+      <span style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Tool</span>
+      <span style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Purpose</span>
+      <span style="font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Cost</span>
+    </div>
+    ${rows}`;
+}
+
+function renderSignal0() {
+  const items = SIGNAL0.map(s => {
+    const done = !!checked[s.id];
+    const sub = s.sub ? `<div style="font-size:11px;color:var(--muted);margin-top:.2rem">${s.sub}</div>` : '';
+    return `<div class="s0-step${done?' done':''}" data-task-id="${s.id}" onclick="toggle('${s.id}')">
+      <div class="s0-num">⚡</div>
+      <div style="flex:1"><div class="s0-text">${s.text}</div>${sub}</div>
+      <div class="s0-check">${done?CHECK_SVG:''}</div>
+    </div>`;
+  }).join('');
+  return `
+    <div class="section-hero"><h1>Signal 0 Weekly Checklist</h1>
+      <div class="meta"><span>Run every week before any client work</span><span>If any check fails: fix before running a single audit</span></div>
+    </div>
+    <div class="info-block warn"><strong>This is the pre-flight check.</strong> If Cloudflare is blocking OAI-SearchBot, all other GEO work is irrelevant until it is fixed. Your credibility as a GEO diagnostic service depends on your own site passing Signal 0.</div>
+    <div class="signal0-steps" style="margin-top:1rem">${items}</div>`;
+}
+
+function renderContent() {
+  const weeks = [
+    { week:'Week 1', p1:'Index finding: [category] VAS scores', p1type:'data', p2:null, nl:'Issue goes out' },
+    { week:'Week 2', p1:'Signal 0 stat (22% of web blocked)', p1type:'data', p2:null, nl:null },
+    { week:'Week 3', p1:'AI conversion stat (5× higher rate)', p1type:'data', p2:'Case study (anonymized)', p2type:'narrative', nl:null },
+    { week:'Week 4', p1:'Competitor gap finding from index', p1type:'data', p2:null, nl:null }
+  ];
+  const cells = weeks.map(w => `<div class="cal-cell">
+    <div class="cal-week">${w.week}</div>
+    ${w.p1?`<span class="cal-tag ${w.p1type}">${w.p1type.toUpperCase()}</span><div class="cal-item">${w.p1}</div>`:''}
+    ${w.p2?`<span class="cal-tag ${w.p2type}">${w.p2type.toUpperCase()}</span><div class="cal-item">${w.p2}</div>`:''}
+    ${w.nl?`<span class="cal-tag newsletter">NEWSLETTER</span><div class="cal-item">${w.nl}</div>`:'<div class="cal-item empty">—</div>'}
+  </div>`).join('');
+  return `
+    <div class="section-hero"><h1>Content Calendar Template</h1>
+      <div class="meta"><span>Monthly repeating structure</span><span>Post format: problem → data → cause → diagnostic → intake link in <strong>first comment</strong></span></div>
+    </div>
+    <div class="cal-grid">${cells}</div>
+    <div class="info-block tip" style="margin-top:.75rem"><strong>Post format rule:</strong> Problem in line 1. Data in line 2. Structural cause in lines 3–5. Diagnostic reference in lines 6–7. <strong>Intake link goes in the first comment only</strong> — LinkedIn deprioritizes posts with external links in the body.</div>`;
+}
+
+function renderForecast() {
+  const maxVal = FORECAST[FORECAST.length-1].arr;
+  const bars = FORECAST.map(f => {
+    const pct = Math.max(2, (f.arr/maxVal*100));
+    const label = f.arr >= 1000000 ? '$'+Math.round(f.arr/100000)/10+'M' : '$'+Math.round(f.arr/1000)+'K';
+    return `<div class="fbar-row">
+      <div class="fbar-label">${f.period}</div>
+      <div class="fbar-track"><div class="fbar-fill" style="width:${pct}%;background:${f.color}"><span class="fbar-value">${label}</span></div></div>
+    </div>`;
+  }).join('');
+  const tableRows = [
+    ['Q1 Y1','$10,800','—'],['Q2 Y1','$28,949','$2,000'],['Q3 Y1','$60,337','$6,000'],['Q4 Y1','$85,811','$10,000'],
+    ['Y1 Total','$185,897','—'],['Y2','$685,804','$57,150'],['Y3','$1,398,780 ✦','$116,565'],
+    ['Y5','$4,270,024 ◆','$355,835'],['Y10','$10,352,820','$862,735']
+  ].map((r,i) => `<tr style="${[4,7,8].includes(i)?'background:var(--ink2)':''}"><td style="${i===4||i===7||i===8?'color:var(--acid);font-weight:700':''}">${r[0]}</td><td class="highlight" style="text-align:right">${r[1]}</td><td style="text-align:right;color:var(--teal);font-family:var(--mono);font-size:11px">${r[2]}</td></tr>`).join('');
+  return `
+    <div class="section-hero"><h1>Revenue Forecast</h1>
+      <div class="meta"><span>Y1 quarterly → Y2–Y10 annual</span><span>✦ Exit window opens Y3 &nbsp; ◆ Exit range $8M–$60M at Y5</span></div>
+    </div>
+    <div class="forecast-bars">${bars}</div>
+    <table class="data-table" style="margin-top:1.25rem">
+      <thead><tr><th>Period</th><th style="text-align:right">Revenue</th><th style="text-align:right">MRR</th></tr></thead>
+      <tbody>${tableRows}</tbody>
+    </table>
+    <div class="info-block note" style="margin-top:.75rem">Assumptions: 5 audits/week by Q3 · 3 retainers by Q4 · Index at 50 brands by Q4 · AI token cost $0.09/audit (negligible). Variance tolerance: ±20% before adjusting the plan.</div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// SIDEBAR + NAVIGATION
+// ══════════════════════════════════════════════════════
+function renderSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  let html = '';
+  PLAN.sections.forEach(sec => {
+    html += `<div class="sb-section">`;
+    if(sec.sub || sec.label) {
+      html += `<span class="sb-label">${sec.label}${sec.sub?` · ${sec.sub}`:''}</span>`;
+    }
+    sec.subsections.forEach(sub => {
+      const allIds = [sub.id];
+      html += `<div class="sb-item${activeSection===sub.id?' active':''}" id="sb-${sub.id}" onclick="navigate('${sub.id}')">
+        <div><div class="sb-item-name">${sub.title||sec.label}</div>${sub.hours||sub.revenue?`<div class="sb-item-sub">${sub.hours?`~${sub.hours}h`:''}${sub.hours&&sub.revenue?' · ':''}${sub.revenue||''}</div>`:''}
+        </div>
+        <span id="sb-badge-${sub.id}">${badgeFor(allIds)}</span>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  // Special sections
+  ['ms-table','aff-table','stack-table','signal0-check','content-cal','forecast-bars'].forEach(id => {
+    const badges = document.getElementById('sb-badge-'+id);
+    if(badges) badges.outerHTML = `<span id="sb-badge-${id}">${badgeFor([id])}</span>`;
+  });
+  sidebar.innerHTML = html;
+}
+
+function navigate(id) {
+  activeSection = id;
+  // Update sidebar active state
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.remove('active'));
+  const sbEl = document.getElementById('sb-'+id);
+  if(sbEl) sbEl.classList.add('active');
+  renderMain(id);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function renderMain(id) {
+  const main = document.getElementById('main');
+  // Find what this id belongs to
+  if(id === 'daily-morning') { main.innerHTML = renderDaily(); return; }
+  if(id === 'ms-table') { main.innerHTML = renderMilestones(); return; }
+  if(id === 'aff-table') { main.innerHTML = renderAffiliates(); return; }
+  if(id === 'stack-table') { main.innerHTML = renderStack(); return; }
+  if(id === 'signal0-check') { main.innerHTML = renderSignal0(); return; }
+  if(id === 'content-cal') { main.innerHTML = renderContent(); return; }
+  if(id === 'forecast-bars') { main.innerHTML = renderForecast(); return; }
+  // Phase sections
+  for(const sec of PLAN.sections) {
+    if(sec.subsections.some(s=>s.id===id)) {
+      if(sec.subsections.length > 1 || PLAN.tasks[id]) {
+        // Single week or group — check if parent phase
+        const isSingleWeek = PLAN.tasks[id] !== undefined;
+        if(isSingleWeek) {
+          // Find parent and render the sub only
+          const sub = sec.subsections.find(s=>s.id===id);
+          main.innerHTML = `<div class="section-hero"><h1>${sub.title}</h1><div class="meta">${sub.hours?`<span><strong>~${sub.hours} hrs</strong></span>`:''} ${sub.revenue?`<span>Target: <strong>${sub.revenue}</strong></span>`:''}</div></div>${renderWeekBlock(sub)}`;
+        } else {
+          main.innerHTML = renderPhase(sec);
+        }
+        return;
+      }
+      main.innerHTML = renderPhase(sec);
+      return;
+    }
+  }
+}
+
+function renderAll() {
+  loadState();
+  renderSidebar();
+  renderMain(activeSection);
+  updateProgress();
+}
+
+// Boot
+renderAll();
+// Auto-open first week
+setTimeout(() => { const wb = document.getElementById('wbody-w1'); const wc = document.getElementById('wc-w1'); if(wb && wc){ wb.classList.add('open'); wc.classList.add('open'); } }, 100);
+</script>
+</body>
+</html>
