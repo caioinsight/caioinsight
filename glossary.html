@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CAIO Insight — AI Visibility Glossary · Plain English</title>
+<meta name="description" content="Every AI visibility and GEO term used by CAIO Insight, explained plainly. No PhD required. Search 65 terms across 5 categories.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+::selection{background:#FF6B2B;color:#fff}
+:root{
+  --ink:#070D1A;--ink2:#0C1526;--ink3:#132038;
+  --muted:#5E7399;--xmuted:#344B6E;
+  --paper:#F0F4FA;--paper2:#E4EBF5;--paper3:#D4DCEA;
+  --white:#fff;--acid:#FF6B2B;--teal:#00C8A0;
+  --logo:"Barlow Condensed",sans-serif;
+  --body:"Space Grotesk",sans-serif;
+  --mono:"IBM Plex Mono",monospace;
+  --r:8px;--rl:16px;
+}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);line-height:1.65}
+.container{max-width:900px;margin:0 auto;padding:0 1.5rem}
+.gnav{background:var(--ink);padding:.8rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--acid);position:sticky;top:0;z-index:100}
+.gnav-logo{font-family:var(--logo);font-size:22px;font-weight:700;color:var(--paper);letter-spacing:2px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo-dots{display:grid;grid-template-columns:repeat(3,6px);grid-template-rows:repeat(3,6px);gap:3px}
+.logo-dots span{width:6px;height:6px;border-radius:50%;background:var(--acid)}
+.logo-dots span:nth-child(1),.logo-dots span:nth-child(2),.logo-dots span:nth-child(4),.logo-dots span:nth-child(6),.logo-dots span:nth-child(8),.logo-dots span:nth-child(9){opacity:.18}
+.logo-dots span:nth-child(3){opacity:.95}
+.logo-dots span:nth-child(5){opacity:.55}
+.logo-dots span:nth-child(7){opacity:.22}
+.gnav-back{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;cursor:pointer;transition:color .15s}
+.gnav-back:hover{color:var(--acid)}
+.hero{background:var(--ink);padding:3.5rem 0 2.5rem;overflow:hidden;position:relative}
+.hero::after{content:"";position:absolute;right:-80px;top:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,43,.07) 0%,transparent 65%);pointer-events:none}
+.hero-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--acid);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.hero-kicker::before{content:"";display:block;width:18px;height:1.5px;background:var(--acid)}
+.hero h1{font-size:clamp(2rem,4.5vw,3rem);font-weight:700;color:var(--paper);line-height:1.05;letter-spacing:-.025em;margin-bottom:.85rem}
+.hero h1 em{color:var(--acid);font-style:normal}
+.hero-sub{color:rgba(240,244,250,.5);font-size:.95rem;max-width:560px;line-height:1.8;margin-bottom:1.5rem}
+.hero-stats{display:flex;gap:2rem;flex-wrap:wrap}
+.hero-stat{font-family:var(--mono);font-size:11px;color:var(--xmuted);letter-spacing:.04em}
+.hero-stat strong{color:var(--acid);font-weight:500}
+.searchbar{background:var(--white);border-bottom:1px solid var(--paper3);padding:.85rem 0;position:sticky;top:56px;z-index:90;box-shadow:0 2px 12px rgba(7,13,26,.04)}
+.searchbar-inner{display:flex;gap:.75rem;align-items:center}
+.searchbar input{flex:1;padding:9px 14px 9px 38px;border:1.5px solid var(--paper3);border-radius:var(--r);font-family:var(--body);font-size:14px;color:var(--ink);background:var(--paper);outline:none;transition:border-color .15s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235E7399' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center}
+.searchbar input:focus{border-color:var(--acid);background-color:var(--white)}
+.searchbar input::placeholder{color:var(--muted)}
+.searchbar-count{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;min-width:60px;text-align:right}
+.filters-row{padding:1.1rem 0 .5rem;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.filter-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;margin-right:.25rem}
+.fb{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;padding:4px 11px;border-radius:20px;border:1px solid var(--paper3);background:var(--white);color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap}
+.fb:hover{border-color:var(--acid);color:var(--acid)}
+.fb.on{background:var(--acid);border-color:var(--acid);color:#fff}
+.fb.on-geo{background:#27500A;border-color:#27500A;color:#fff}
+.fb.on-ai{background:#633806;border-color:#633806;color:#fff}
+.fb.on-tech{background:#185FA5;border-color:#185FA5;color:#fff}
+.fb.on-seo{background:#5F5E5A;border-color:#5F5E5A;color:#fff}
+.fb.on-caio{background:#085041;border-color:#085041;color:#fff}
+.glossary{padding:1rem 0 5rem}
+.no-results{padding:4rem 0;text-align:center;color:var(--muted);display:none}
+.term-card{background:var(--white);border:1px solid var(--paper3);border-radius:var(--rl);margin-bottom:.6rem;overflow:hidden;transition:border-color .15s}
+.term-card:hover{border-color:var(--paper2)}
+.term-card.gone{display:none}
+.term-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.1rem 1.4rem;cursor:pointer;user-select:none}
+.term-left{flex:1;min-width:0}
+.term-name{font-size:.98rem;font-weight:600;color:var(--ink);line-height:1.35;margin-bottom:.25rem}
+.term-preview{font-size:.85rem;color:var(--muted);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:560px}
+.term-right{display:flex;align-items:center;gap:.5rem;flex-shrink:0;margin-top:2px}
+.tag{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:10px;white-space:nowrap}
+.tag-geo{background:#EAF3DE;color:#27500A}
+.tag-ai{background:#FAEEDA;color:#633806}
+.tag-tech{background:#E6F1FB;color:#185FA5}
+.tag-seo{background:#F1EFE8;color:#5F5E5A}
+.tag-caio{background:#E1F5EE;color:#085041}
+.chev{width:18px;height:18px;color:var(--muted);flex-shrink:0;transition:transform .2s}
+.chev.open{transform:rotate(180deg)}
+.term-body{display:none;padding:0 1.4rem 1.4rem;border-top:1px solid var(--paper2)}
+.term-body.open{display:block}
+.explain-block{margin-top:.9rem}
+.explain-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.35rem}
+.label-simple{color:var(--acid)}
+.label-full{color:var(--muted)}
+.label-caio{color:var(--teal)}
+.simple-box{background:var(--paper);border-left:3px solid var(--acid);border-radius:0 var(--r) var(--r) 0;padding:.85rem 1rem;font-size:.95rem;line-height:1.75;color:var(--ink)}
+.full-text{font-size:.88rem;line-height:1.72;color:var(--muted)}
+.caio-box{background:rgba(0,200,160,.04);border:1px solid rgba(0,200,160,.15);border-radius:var(--r);padding:.7rem .9rem;font-size:.85rem;line-height:1.65;color:var(--muted)}
+.caio-box strong{color:var(--teal)}
+.cat-divider{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.85rem 0 .5rem;border-bottom:1px solid var(--paper3);margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
+.cat-divider::before{content:"";display:block;width:14px;height:1.5px;background:var(--acid)}
+.gfooter{background:var(--ink);padding:1.5rem 0;border-top:1px solid var(--ink3)}
+.gfooter-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.gfooter-logo{font-family:var(--logo);font-size:18px;font-weight:700;color:var(--paper);letter-spacing:2px}
+.gfooter-note{font-family:var(--mono);font-size:10px;color:var(--xmuted)}
+.gfooter-link{font-family:var(--mono);font-size:11px;color:var(--acid);cursor:pointer}
+</style>
+</head>
+<body>
+<nav class="gnav">
+  <div class="gnav-logo" onclick="window.location.href='/'">
+    <div class="logo-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    CAIO
+  </div>
+  <span class="gnav-back" onclick="window.location.href='/'">← caioinsight.ai</span>
+</nav>
+<div class="hero">
+  <div class="container">
+    <div class="hero-kicker">Reference · Plain English</div>
+    <h1>The AI Visibility<br><em>Glossary.</em></h1>
+    <p class="hero-sub">Every term used on this site — explained so clearly a 5th grader could understand it. Click any term to expand. Search to find anything instantly.</p>
+    <div class="hero-stats">
+      <span class="hero-stat"><strong>65</strong> terms defined</span>
+      <span class="hero-stat"><strong>5</strong> categories</span>
+      <span class="hero-stat">Updated <strong>May 2026</strong></span>
+    </div>
+  </div>
+</div>
+<div class="searchbar">
+  <div class="container searchbar-inner">
+    <input type="text" id="search-input" placeholder="Search any term… try vector, schema, Cloudflare, RAG" oninput="doSearch(this.value)">
+    <span class="searchbar-count" id="count-badge">65 terms</span>
+  </div>
+</div>
+<div class="container">
+  <div class="filters-row">
+    <span class="filter-label">Filter:</span>
+    <button class="fb on" data-cat="all" onclick="doFilter('all',this)">All 65</button>
+    <button class="fb" data-cat="geo" onclick="doFilter('geo',this)">GEO &amp; Visibility</button>
+    <button class="fb" data-cat="ai" onclick="doFilter('ai',this)">AI &amp; LLMs</button>
+    <button class="fb" data-cat="tech" onclick="doFilter('tech',this)">Technical</button>
+    <button class="fb" data-cat="seo" onclick="doFilter('seo',this)">SEO &amp; Search</button>
+    <button class="fb" data-cat="caio" onclick="doFilter('caio',this)">CAIO Terms</button>
+  </div>
+  <div class="glossary" id="glossary">
+    <div class="no-results" id="no-results"><p>No terms match that search.</p><small>Try a different word or clear the search to browse all terms.</small></div>
+
+<div class="cat-divider" data-cat-head="geo">geo GEO &amp; Visibility · 13 terms</div>
+
+
+<div class="term-card" data-cat="geo" data-search="geo generative engine optimization ai search visibility">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">GEO — Generative Engine Optimization</div><div class="term-preview">Getting AI to recommend your brand — like SEO but for ChatGPT</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">GEO is the work of getting AI assistants like ChatGPT to mention and recommend your brand. Think of it like regular SEO — except instead of trying to show up on Google's list of blue links, you are trying to get included in the AI's actual answer when someone asks a question like 'what's the best protein powder?'</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Generative Engine Optimization is the practice of structuring and distributing brand content so that AI search engines — ChatGPT, Perplexity, Google AI Overviews, Gemini, Claude — retrieve and cite it when answering user queries. Unlike traditional SEO which targets keyword ranking algorithms, GEO targets the retrieval and synthesis layer of AI systems. Over 60% of all search interactions now involve an AI-generated component.</div></div>
+  <div class="explain-block"><div class="explain-label label-caio">Why it matters for your brand</div><div class="caio-box">This is the entire reason CAIO Insight exists. Brands that are invisible in AI-generated answers are losing purchase decisions they never even know are happening.</div></div>
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="vector coordinate space map alignment proximity node">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Vector / Coordinate Space</div><div class="term-preview">The invisible map where AI places every brand — yours needs to be in the right spot</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Imagine AI has a giant invisible map. Every brand, product, and idea has a spot on that map. When someone asks 'what's the best moisturizer?' — the AI looks at where that question falls on the map, then picks brands whose spots are closest to it. If your brand is on the wrong part of the map, or not on the map at all, the AI skips you completely.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">AI language models represent every word, concept, and brand as a mathematical vector — a set of numbers defining its position in a high-dimensional space. When a user submits a query, the model maps it to a coordinate and retrieves content whose vector position is most proximate. Brands whose data falls outside the relevant coordinate clusters are systematically omitted from synthesized answers, regardless of ad spend or Google rank.</div></div>
+  <div class="explain-block"><div class="explain-label label-caio">Why it matters for your brand</div><div class="caio-box">The <strong>Vector Alignment Score</strong> in your CAIO brief measures exactly how close your brand's position is to the questions your customers are asking AI. A low score means you are in the wrong neighborhood on the map.</div></div>
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="synthesis zero-click ai answer direct">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Synthesis / Zero-Click</div><div class="term-preview">AI reads 10 sources and writes one answer — if your brand is not in it, the shopper never finds you</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Old Google showed you a list of links. You picked one and clicked. Now AI reads a bunch of sources and writes one combined answer — no clicking needed. That is zero-click. Synthesis is the AI's process of combining multiple sources into that single answer. Traditional search ran on discovery. Agentic search runs on verification.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Synthesis is the process by which a generative AI model combines retrieved information from multiple sources into a single coherent response. Zero-click describes the user experience of receiving a complete answer without visiting any external website. As synthesis replaces traditional search, brand visibility no longer requires a click — it requires being included in the generated output.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="hallucination ai made up wrong liability regulated">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">AI Hallucination / Hallucination Liability</div><div class="term-preview">When AI confidently makes up facts about your brand — a legal risk for regulated businesses</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Sometimes AI confidently states things that are not true. If AI tells a customer your product ships to all 50 states when it only ships to 12, that is a hallucination. For brands in regulated industries, this is dangerous — AI could recommend your product in a state where you are not legally allowed to sell it. That is hallucination liability.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">An AI hallucination occurs when a language model generates factually incorrect output with high confidence. Hallucination liability is the legal and reputational risk arising when an AI model incorrectly cites a brand in markets or geographies where it has no license or product availability. A unique and unaddressed risk for compliance-constrained verticals.</div></div>
+  <div class="explain-block"><div class="explain-label label-caio">Why it matters for your brand</div><div class="caio-box">CAIO is the only diagnostic that checks for hallucination liability — auditing whether AI models are incorrectly recommending your brand in markets where you are not licensed or available. No other audit tool in this segment does this.</div></div>
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="compliance friction safety guardrails suppression regulated restricted">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Compliance Friction</div><div class="term-preview">AI safety rules quietly pushing your brand out of results without telling you</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">AI has safety rules built in. If your brand uses certain words or operates in certain industries, those safety rules might quietly decide to stop recommending you — even when everything you sell is perfectly legal. Compliance friction is how much those invisible safety filters are working against your brand. The scary part is it happens silently.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Compliance friction measures the degree to which a model's safety and alignment guardrails suppress a brand's data during synthesis. Brands in regulated categories face systematic suppression when their content contains unstructured compliance signals — unqualified health claims, age-restricted language, or legally ambiguous copy — that trigger conservative retrieval filters.</div></div>
+  <div class="explain-block"><div class="explain-label label-caio">Why it matters for your brand</div><div class="caio-box">Signal 3 in the CAIO four-layer diagnostic. High friction means your brand can have perfect schema, strong reviews, and an llms.txt file — and still be suppressed. Mapping the friction load shows exactly which content is triggering safety filters and how to restructure it.</div></div>
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="compliance constrained regulated industry restricted advertising cannabis">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Compliance-Constrained Vertical</div><div class="term-preview">Industries where most advertising is blocked — making AI visibility even more critical</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Some industries — like cannabis, hemp, certain supplements, and some financial products — are not allowed to advertise on Meta, Google, or TikTok. That means they cannot reach customers the normal way. For these brands, AI visibility is not just helpful — it is one of the only growth levers available. Getting recommended by ChatGPT is the equivalent of a TV ad they cannot run.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Compliance-constrained verticals are industry categories operating under regulatory restrictions that limit access to major paid advertising platforms. Brands in these categories must rely heavily on owned channels (email, SMS, loyalty) and organic discovery — including AI citations. CAIO uses this term publicly rather than naming specific restricted categories.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="review velocity trust signal reviews recency cadence">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Review Velocity / Trust Signal</div><div class="term-preview">How fast you are getting new reviews — and why AI uses it as a credibility check</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">AI uses reviews like proof that a brand is real and trustworthy. Review velocity is how fast and often you are getting new reviews. A brand with 500 reviews all posted four years ago looks outdated to AI. A brand with 25 new reviews this month looks active and credible. More recent reviews = higher credibility in AI's eyes.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Review velocity measures the recency and frequency of new customer reviews across trusted platforms — Google, Amazon, Trustpilot, platform-specific sites. Trust signals are data points AI models use to assess entity credibility during retrieval, including review volume, recency, star distribution, and cross-platform consistency.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="agentic commerce agentic storefront ai shopping checkout buy">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Agentic Commerce / Agentic Storefront</div><div class="term-preview">AI that shops for you — and the store setup required to let it</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Imagine telling ChatGPT 'order me the best running shoes under $100' and it finds the shoes, adds them to a cart, and checks out for you — without you touching a website. That is agentic commerce. As of May 2026, fewer than 30 Shopify merchants have activated this. The window to build it first is wide open.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Agentic commerce refers to AI agents autonomously performing shopping tasks — browsing, evaluating, selecting, and completing purchases — on behalf of users without manual human interaction. Agentic storefronts are e-commerce implementations with structured product data, accessible checkout flows, and API-compatible product feeds that allow AI agents to navigate and transact.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="agentic search non-branded query intent discovery verification">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Agentic Search / Non-Branded Query</div><div class="term-preview">When someone asks AI 'what is the best X' without already knowing your brand</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Agentic search is when AI does the searching on your behalf instead of you typing into Google. A non-branded query is a search that does not use a brand name — like 'best shampoo for curly hair' instead of 'Brand X shampoo.' These are the most important queries for discovery. If AI recommends you in response to a non-branded query, you just reached someone who never knew you existed.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Agentic search describes AI-driven information retrieval where an agent proactively searches on behalf of a user goal. Non-branded queries are intent-driven queries that do not contain a specific brand name. These queries represent the highest-value GEO opportunity because they reach customers at the discovery stage with no prior brand preference.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="citation velocity frequency mentioned ai how often">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Citation Velocity</div><div class="term-preview">How often and how recently AI has been mentioning your brand</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Citation velocity tracks how frequently and recently AI platforms have been mentioning your brand in their answers. A brand with high citation velocity is being recommended often and recently. A brand with low velocity is rarely mentioned — or was mentioned a lot once but has faded. Velocity matters because AI systems weight recent mentions more heavily.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Citation velocity is a GEO metric measuring the frequency and recency of brand mentions across AI platform responses over a rolling time window. Tracked through multi-run query sampling across platforms. Brands with rising citation velocity are gaining coordinate alignment. Brands with declining velocity are drifting outside relevant training clusters or being displaced by competitors.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="multi-dimensional space dimensions layers depth many ways">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Multi-Dimensional</div><div class="term-preview">Why AI understands brands in many ways at once — not just one simple score</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">When you describe a friend to someone, you do not use just one word — you say they are funny, tall, from Chicago, and loves cooking. AI does the same with brands, understanding them across hundreds of qualities at once. That is multi-dimensional. A brand positioned well on many dimensions is far more likely to be cited than a brand that only stands out on one thing.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Multi-dimensional refers to the nature of vector space representations in LLMs, where each entity is encoded across thousands of dimensions simultaneously — price range, category, use case, tone, audience, geography, and hundreds more. Comprehensive, consistent brand content across all touchpoints outperforms narrow single-channel optimization because it builds position across more dimensions.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="geo" data-search="signal 0 signal 6 cloudflare carousel chatgpt pre-flight check">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Signal 0 &amp; Signal 6</div><div class="term-preview">The pre-flight Cloudflare check and the ChatGPT carousel inclusion test</div></div>
+  <div class="term-right"><span class="tag tag-geo">GEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Signal 0 is the very first check in every CAIO audit — before anything else. It checks whether Cloudflare security is accidentally blocking AI search robots from even reaching your website. If they are blocked, nothing else matters. Signal 6 tests whether your brand appears in ChatGPT's product carousel, which gives 3× the visibility of a regular text mention. Signal 6 is what the free Carousel Readiness Check tool tests for.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">The CAIO diagnostic runs seven signals. Signal 0 (pre-flight) verifies that AI search crawlers — OAI-SearchBot, PerplexityBot, Claude-SearchBot — are not blocked at the infrastructure layer by Cloudflare Bot Fight Mode or robots.txt. Signal 6 (carousel inclusion) tests whether a brand's structured data and Google Shopping feed meet requirements for ChatGPT product carousel inclusion. 83% of carousel products source from Google Shopping organic.</div></div>
+  
+</div>
+</div>
+
+<div class="cat-divider" data-cat-head="ai">ai AI &amp; LLMs · 9 terms</div>
+
+
+<div class="term-card" data-cat="ai" data-search="llm large language model chatgpt claude gemini brain">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">LLM — Large Language Model</div><div class="term-preview">The brain behind ChatGPT, Claude, and Gemini — learned from reading the internet</div></div>
+  <div class="term-right"><span class="tag tag-ai">AI</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">An LLM is the AI brain behind assistants like ChatGPT and Claude. It learned how to understand and write language by reading a truly enormous amount of text — basically most of the internet, millions of books, and countless articles. Now it can understand questions and write answers that sound like a human wrote them. When someone asks 'what moisturizer should I buy?' — an LLM generates the recommendation.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">A Large Language Model is a deep learning system trained on massive text corpora to perform natural language understanding and generation. LLMs use transformer architecture with billions of parameters to predict probable token sequences given an input context. Major commercial LLMs: OpenAI GPT (ChatGPT), Anthropic Claude, Google Gemini, Meta LLaMA, Microsoft Copilot.</div></div>
+  <div class="explain-block"><div class="explain-label label-caio">Why it matters for your brand</div><div class="caio-box">These are the systems routing purchase decisions in your category right now. If they cannot find your brand, your brand does not exist in the AI-mediated shopping experience.</div></div>
+</div>
+</div>
+
+<div class="term-card" data-cat="ai" data-search="rag retrieval augmented generation search retrieve write">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">RAG — Retrieval-Augmented Generation</div><div class="term-preview">AI searches the web first, then writes the answer — you need to be found in the search step</div></div>
+  <div class="term-right"><span class="tag tag-ai">AI</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">When you ask AI a question, it does two things. First it searches for relevant web pages (retrieval). Then it reads those pages and writes an answer using them (generation). RAG is the name for that two-step process. If your brand is not found in the first step, it cannot be included in the answer written in the second step.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Retrieval-Augmented Generation is a technique where an AI system queries an external knowledge base or live web index to retrieve relevant context before generating a response. Retrieved documents are injected into the model's context window. RAG retrieval probability — Signal 2 in the CAIO diagnostic — measures the likelihood that a brand's pages will be retrieved, which is a prerequisite for appearing in the generated answer.</div></div>
+  <div class="explain-block"><div class="explain-label label-caio">Why it matters for your brand</div><div class="caio-box">Signal 2 in the four-layer diagnostic. A score of zero means you are never retrieved, regardless of what the AI knows about you from its training data.</div></div>
+</div>
+</div>
+
+<div class="term-card" data-cat="ai" data-search="token tokenization context window words cost billing">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Token / Context Window</div><div class="term-preview">How AI measures and bills for text — roughly three-quarters of a word per token</div></div>
+  <div class="term-right"><span class="tag tag-ai">AI</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">AI reads and counts text in small chunks called tokens. One token is roughly three-quarters of a word. So 'hello world' is about 3 tokens. The context window is how much text AI can hold in its working memory at one time. AI API pricing is based on how many tokens are sent and received.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">A token is the base unit of text processed by an LLM. API pricing is split between input tokens (text sent to the model) and output tokens (text the model generates), with output costing 5× more than input. A full CAIO diagnostic audit costs approximately $0.09 in tokens at Sonnet 4.6 pricing — making token cost negligible relative to the $449 price.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="ai" data-search="training data training cluster corpus learned read neighborhood">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Training Data / Training Cluster</div><div class="term-preview">Everything AI read to learn — if your brand was not there, AI barely knows you</div></div>
+  <div class="term-right"><span class="tag tag-ai">AI</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">AI learned everything it knows by reading text — webpages, books, articles, and forum posts. All that reading material is called training data. A training cluster is a neighborhood on AI's invisible map where related brands and ideas live because they were often mentioned together. If your brand was barely mentioned, AI does not really know who you are.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Training data is the text corpus used to train an LLM's base model. Training clusters are emergent groupings of semantically related entities within the model's parameter space. Brands that co-occur frequently in training data end up positioned near each other in vector space. Wikipedia is the single strongest predictor of LLM entity recognition across all major platforms.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="ai" data-search="semantic meaning intent understanding concept search words">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Semantic / Semantic Search</div><div class="term-preview">AI understands what you mean, not just the exact words you typed</div></div>
+  <div class="term-right"><span class="tag tag-ai">AI</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Old-style search matched exact words. If you typed 'good face wash,' it only found pages with those exact words. Semantic search understands meaning. Type 'something gentle for dry irritated skin' and AI understands you probably want a mild moisturizing cleanser — even though you never used those words. This is why keyword stuffing does not work for GEO.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Semantic search retrieves results based on meaning and intent rather than keyword pattern matching. AI models encode queries and content as vectors in a shared embedding space, retrieving content with high cosine similarity to the query vector — surfacing conceptually related content regardless of exact wording.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="ai" data-search="entity entity recognition brand identity known wikipedia sameAs">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Entity / Entity Recognition</div><div class="term-preview">Whether AI recognizes your brand as a real known thing — not just words on a page</div></div>
+  <div class="term-right"><span class="tag tag-ai">AI</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">An entity is anything AI recognizes as a real, distinct thing — a brand, person, place, or product. Entity recognition is AI confirming 'yes, I know what this is.' If AI does not recognize your brand as a known entity, it treats you like a stranger — and tends not to recommend strangers. Strong entity recognition comes from consistent branding, Wikipedia presence, and cross-platform mentions.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">In AI systems, an entity is a discrete named object with a stable identity. Entity recognition is a model's ability to resolve a mention to a known entity in its knowledge base. Strong entity signals include Wikipedia presence, Schema.org Organization markup with sameAs properties, cross-platform mentions in credible sources, and consistent brand name usage. Wikipedia has a 0.810 correlation with LLM visibility — the single strongest predictor found in published GEO research.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="ai" data-search="prompt system prompt instruction input question ask developer">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Prompt / System Prompt</div><div class="term-preview">The question you type to AI, and the hidden instructions a developer sets in advance</div></div>
+  <div class="term-right"><span class="tag tag-ai">AI</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">A prompt is the question or instruction you type to AI — like 'what is the best protein powder?' A system prompt is a set of hidden instructions a developer writes before you ever start the conversation — like briefing a customer service rep on how to behave before their first call. In the CAIO audit, the system prompt contains the four-layer methodology and scoring rubric.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">A prompt is any text input submitted to an LLM to generate a response. A system prompt is a developer-defined instruction set injected at conversation start that shapes model behavior, output format, and constraints throughout the session. It is not visible to end users.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="ai" data-search="query fan-out sub-queries search breakdown decompose multiple searches">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Query Fan-Out</div><div class="term-preview">AI breaks your one question into several smaller searches before writing the answer</div></div>
+  <div class="term-right"><span class="tag tag-ai">AI</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">When you ask AI 'what is the best VPN for streaming Netflix in Europe?' it does not just search that exact phrase. It breaks it into smaller pieces and searches each one separately — like 'best VPN 2026,' 'VPN Netflix streaming,' and 'VPN servers Europe.' Your brand needs to be findable from all of those angles, not just the main combined question.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Query fan-out is the AI retrieval process of decomposing a complex user query into multiple simpler sub-queries, each searched independently to retrieve relevant context. The retrieved results are then synthesized into a single response. Brand GEO coverage must span multiple semantic angles — category, use case, audience, comparison, problem-solution — rather than optimizing for a single primary query.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="ai" data-search="knowledge graph wikipedia signal reddit cross-platform mentions facts">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Knowledge Graph / Wikipedia Signal</div><div class="term-preview">The web of facts AI trusts most — Wikipedia is the single most powerful signal in it</div></div>
+  <div class="term-right"><span class="tag tag-ai">AI</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">A knowledge graph is AI's version of an encyclopedia — a structured map of known facts about the world. Wikipedia is the most trusted source feeding into that map. Research of 231,347 AI responses found Wikipedia is the single strongest predictor of whether AI knows who you are. If a brand has a Wikipedia page, AI is dramatically more likely to cite it accurately and confidently.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">A knowledge graph is a structured database of entities and their relationships used by AI systems to ground factual claims. Wikipedia has a correlation coefficient of 0.810 with LLM visibility — the single strongest predictor in published GEO research. Reddit and G2 are the next most-cited domains. Building a knowledge graph presence means ensuring your brand is described accurately across Wikipedia, Reddit, review platforms, industry publications, and analyst reports.</div></div>
+  
+</div>
+</div>
+
+<div class="cat-divider" data-cat-head="tech">tech Technical · 12 terms</div>
+
+
+<div class="term-card" data-cat="tech" data-search="schema markup structured data json-ld labels machine readable product">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Schema Markup / Structured Data</div><div class="term-preview">Hidden labels in your website code that tell AI exactly what everything means</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Your website has lots of text and numbers — but without labels, AI has to guess what everything means. Is '$49.99' a price or a ZIP code? Schema markup is hidden code that adds labels: 'this is the price,' 'this is the product name,' 'this is a customer review rating.' It is a standardized labeling language that both Google and AI understand instantly.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Schema markup is structured data added to web pages using the Schema.org vocabulary to communicate page content in machine-readable format. JSON-LD is the recommended implementation — a script block embedded in page HTML defining entities, properties, and relationships. Product, Organization, Review, FAQPage, and BreadcrumbList schema types are highest-impact for GEO. Sites with complete schema markup are cited 30% more often in AI results.</div></div>
+  <div class="explain-block"><div class="explain-label label-caio">Why it matters for your brand</div><div class="caio-box">Signal 4 in the CAIO diagnostic. The Schema Remediation Log in your brief itemizes every specific schema gap with prioritized fix instructions. Most Shopify stores have schema — but it is incomplete. The quality gap is the billable work.</div></div>
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="JSON-LD javascript object notation linked data script code structured">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">JSON-LD</div><div class="term-preview">The specific code format used to write schema markup — the preferred method for AI</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">JSON-LD is the specific format used to write schema markup. It is a block of code added to a web page that looks like a neat list of labeled facts: your brand name, what you sell, your rating, your address. Google recommends it, and AI crawlers love it because it is clean and unambiguous. Think of it as the official filing format for telling the internet exactly who you are.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">JSON-LD (JavaScript Object Notation for Linked Data) is a W3C standard method for encoding structured data as a script tag in HTML. It is separate from visible page content, easy to validate, and unambiguous for machine parsing. A JSON-LD block for a product page includes @type, name, description, price, brand, aggregateRating, and other Schema.org properties.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="schema drift schema remediation log SRL degradation outdated fix">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Schema Drift / Schema Remediation Log</div><div class="term-preview">When your schema becomes outdated as AI updates — and the prioritized list of fixes</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">When AI models are updated, they sometimes change what labels they look for. If your schema does not keep up, it slowly becomes less useful — that slow decay is called schema drift. The Schema Remediation Log is the specific fix list your CAIO diagnostic produces — exactly which schema properties are missing, wrong, or outdated, in priority order.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Schema drift is the degradation in schema effectiveness caused by model updates or evolving AI crawler specifications. The Schema Remediation Log (SRL) is a CAIO deliverable itemizing every specific schema gap with prioritized remediation instructions. One of the three primary outputs of the CAIO brief alongside the VAS and CPI.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="llms.txt ai file instructions summary brand overview welcome">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">llms.txt</div><div class="term-preview">A welcome note for AI crawlers — tells them exactly who you are and what you sell</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Imagine leaving a clear note on your front door that says: 'Hello AI, here is who we are, what we sell, and why customers love us.' That is what an llms.txt file does. It is a simple text file on your website written in plain language that gives AI crawlers a clean organized introduction to your brand. Shopify now auto-creates a basic version — but most auto-generated files are incomplete stubs.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">llms.txt is an emerging standard file placed at the website root (domain.com/llms.txt) providing AI crawlers with a structured brand summary — purpose, key pages, product categories, and important context. Shopify natively generates llms.txt for merchant stores, but quality audits consistently find auto-generated files are incomplete — missing brand context, product taxonomy, and positioning language.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="robots.txt crawl access block allow disallow bot visit">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">robots.txt</div><div class="term-preview">The 'who can enter' sign on your website — accidentally blocking AI is the number 1 GEO mistake</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">robots.txt is like a sign on your shop's entrance telling automated visitors which areas they are allowed in. For AI visibility, the critical question is whether your robots.txt is accidentally telling ChatGPT's search robot, or Perplexity's robot, to stay out — because that makes your site completely invisible to that AI platform.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">robots.txt is a plain text file at the website root specifying which automated crawlers are permitted or denied access. AI search bots (OAI-SearchBot, PerplexityBot, Claude-SearchBot) are completely distinct from AI training bots (GPTBot, CCBot) — blocking search bots destroys AI visibility while blocking training bots prevents content from entering model training datasets. The most common GEO mistake in 2026 is Cloudflare's Bot Fight Mode blocking all AI bots simultaneously.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="agents.md ai agent shopping instructions commerce manual buy">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">agents.md</div><div class="term-preview">An instruction manual for AI shopping agents — how to navigate and buy on your store</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Similar to llms.txt, but specifically written for AI shopping agents. It tells them how to actually shop on your store — where to find products, how checkout works, what your return policy is. Think of it as an employee manual for AI robots that want to buy things on behalf of customers. Most stores do not have one yet.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">agents.md is an emerging convention for a machine-readable file providing structured operational guidance to autonomous AI shopping agents — product discovery pathways, checkout flow descriptions, policy information, and API endpoints for agentic interaction. Still in early adoption as of May 2026.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="prompt caching cache save reuse cost savings 90% repeated">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Prompt Caching</div><div class="term-preview">Saving AI's reading notes so it does not re-read the same instructions every time — saves 90%</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Every time you send instructions to AI, it re-reads them from scratch and you pay per word read. Prompt caching is like giving AI a bookmark. The first time it reads the instructions, it saves its notes. Next time, it just uses the notes instead of re-reading everything. This cuts costs by up to 90% on the repeated parts.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Prompt caching is a Claude API feature that stores processed input tokens server-side for reuse. Cached tokens are billed at 10% of the standard input price on reads (90% savings) after a one-time write at 125% of normal cost. Cache duration is 5 minutes (ephemeral) or 1 hour. Highest-value for large static content reused across many API calls — like the CAIO system prompt which is identical across every audit.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="batch api batch processing async asynchronous 50% off non-urgent">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Batch API / Batch Processing</div><div class="term-preview">Drop off a pile of work, come back later, pay half price — 50% off all AI processing</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Normally AI answers right away — real-time, like a phone call. Batch processing is like dropping off a pile of work overnight. You submit everything, walk away, and pick up the finished results later — usually within an hour, guaranteed within 24. The trade-off for waiting: exactly 50% off. No minimum size. The CAIO AI Visibility Index runs entirely on batch processing.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">The Batch API processes requests asynchronously at a flat 50% discount on all token prices — input and output — with no minimum volume threshold. Results available within 24 hours (typically under 1 hour). Stacked with prompt caching, total costs can drop to approximately one-tenth of the non-optimized baseline.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="input tokens output tokens max_tokens billing cost ratio 5x">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Input Tokens / Output Tokens / max_tokens</div><div class="term-preview">What you send to AI vs what it sends back — and why output costs 5× more</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">When you use AI, you send it text (input tokens) and it sends text back (output tokens). They are billed separately — and output costs five times more than input. So keeping AI's answers focused and the right length matters a lot for cost control at scale. max_tokens is a setting that limits how long AI's response can be.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Input tokens are the text tokens sent to the model. Output tokens are generated by the model and cost 5× the input rate across all Claude models — making output length the largest single cost lever. max_tokens is an API parameter capping the maximum output length per request. Setting max_tokens: 4096 on CAIO audit calls prevents runaway output generation while preserving full brief quality.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="TTL time to live cache duration expiry 5 minute 1 hour">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">TTL — Time to Live</div><div class="term-preview">How long a cached item stays saved before the system forgets it and starts fresh</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">TTL is how long something stays saved in a cache before it expires. If a cached prompt has a 5-minute TTL, the AI keeps those reading notes for 5 minutes. After that, the notes disappear and it has to re-read everything. For prompt caching to save money, you need to use the same cached content multiple times within the TTL window.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">TTL (Time to Live) is the duration a cached item remains valid before expiring. Claude's prompt cache offers two TTL options: 5-minute ephemeral cache (write at 1.25× input price, read at 0.10×) and 1-hour cache (write at 2.0× input price, read at 0.10×). Break-even requires enough cache reads within the TTL to offset the higher write cost.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="CDN content delivery network cloudflare workers hosting fast global">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">CDN — Content Delivery Network</div><div class="term-preview">A global network that makes your website load fast everywhere in the world</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">A CDN is a network of servers spread around the world. Instead of all visitors loading your website from a single computer in one location, a CDN serves your website from the server closest to each visitor. A visitor in Tokyo gets the site from a server in Tokyo. A visitor in London gets it from London. Cloudflare is the most widely used CDN — and the one caioinsight.ai uses.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">A Content Delivery Network is a distributed infrastructure of edge servers that cache and serve website content from locations proximate to end users, reducing latency. Cloudflare is the dominant CDN protecting 22% of all websites. Cloudflare Workers is Cloudflare's serverless compute layer — the hosting platform for caioinsight.ai.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="tech" data-search="client side server side rendering SSR CSR javascript AI can't see">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Client-Side vs Server-Side Rendering</div><div class="term-preview">Whether your page content is built in the browser or on the server — AI can only see the server version</div></div>
+  <div class="term-right"><span class="tag tag-tech">Technical</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Some websites are like a pre-built sandwich — the whole thing arrives fully assembled. That is server-side rendering. Other websites send a bag of ingredients that your browser assembles after it arrives. That is client-side rendering. AI crawlers do not have a browser to assemble ingredients — they only see what arrives pre-built. If your product content is assembled in the browser, AI sees an empty page.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Server-side rendering (SSR) generates complete HTML on the server before sending to the browser — AI crawlers receive fully populated content. Client-side rendering (CSR) uses JavaScript to populate content in the browser — AI crawlers receive a nearly empty page. React, Vue, and headless CMS implementations commonly use CSR. Verifying SSR for product-critical pages is a standard CAIO diagnostic check.</div></div>
+  
+</div>
+</div>
+
+<div class="cat-divider" data-cat-head="seo">seo SEO &amp; Search · 9 terms</div>
+
+
+<div class="term-card" data-cat="seo" data-search="SERP search engine results page google blue links organic">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">SERP — Search Engine Results Page</div><div class="term-preview">The Google list of blue links — increasingly being replaced by AI answers</div></div>
+  <div class="term-right"><span class="tag tag-seo">SEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">The SERP is the results page you see when you type something into Google — the list of blue links. Getting to page one of Google used to be the whole game. Now AI summaries appear above those links and answer the question directly. The overlap between brands ranking in Google's SERP and brands cited in AI answers has dropped from 70% to below 20% — they are becoming two completely separate visibility systems.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">A Search Engine Results Page is the page displayed in response to a search query. Gartner predicts a 25% drop in traditional search volume by 2026 as AI-generated answers displace SERP clicks. GEO and SEO are increasingly independent disciplines requiring separate optimization strategies and separate performance measurement.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="seo" data-search="domain authority backlink link equity SEO credibility reputation">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Domain Authority / Backlink</div><div class="term-preview">Your website's reputation score — built by other trusted sites linking to you</div></div>
+  <div class="term-right"><span class="tag tag-seo">SEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Domain authority is like a reputation score for your website. The more other trusted websites link to you, the higher your score. Those links are called backlinks. Getting the New York Times to link to you is like a celebrity endorsement — it tells both Google and AI that you are trustworthy and credible. Building domain authority takes time but creates a lasting advantage.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Domain authority (DA) is a third-party metric predicting search ranking performance, based primarily on backlink quantity and quality from authoritative sources. High-quality backlinks signal topical expertise and entity credibility to both traditional search engines and AI citation systems. Brands with strong cross-domain mention profiles are more stably represented in LLM training data.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="seo" data-search="topical authority E-E-A-T expertise trustworthiness google quality">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Topical Authority / E-E-A-T</div><div class="term-preview">Being the recognized expert on a subject — Google and AI both reward this heavily</div></div>
+  <div class="term-right"><span class="tag tag-seo">SEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Topical authority means being the recognized expert on a topic. If your whole website is about one specific thing — like trail running gear — search engines and AI start to think of you as the go-to source for that topic. E-E-A-T stands for Experience, Expertise, Authoritativeness, and Trustworthiness — Google's four-part test for whether a source deserves to be recommended.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Topical authority is a domain's perceived expertise in a subject area, developed through comprehensive consistent content on a narrow topic cluster. E-E-A-T is Google's quality evaluation framework used to assess content quality for both traditional search ranking and AI Overview inclusion eligibility.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="seo" data-search="subdomain subdirectory URL structure SEO authority fragmentation">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Subdomain vs Subdirectory</div><div class="term-preview">A separate house vs a room in your house — subdirectories are almost always better for GEO</div></div>
+  <div class="term-right"><span class="tag tag-seo">SEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">A subdomain is like a separate house on the same street — different address, different reputation (blog.yoursite.com). A subdirectory is like a room in the same house — same address, just a different door (yoursite.com/blog). For both SEO and AI visibility, keeping everything inside the same house is almost always better — authority from every room strengthens the whole house together.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Subdomains are treated as separate entities by both search engines and AI systems — they do not automatically inherit parent domain authority, backlink equity, or entity recognition signals. Subdirectories inherit all root domain authority. For GEO specifically, subdomains fragment LLM entity recognition, split citation history, and reset AI coordinate presence to zero.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="seo" data-search="sitemap crawl budget indexing pages found visit read">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Sitemap / Crawl Budget</div><div class="term-preview">A directory of all your pages, and how many a crawler will visit per day</div></div>
+  <div class="term-right"><span class="tag tag-seo">SEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">A sitemap is a list of every page on your website, submitted to search engines so they know what to visit. Crawl budget is how many pages a crawler will read per day. For GEO, submitting your sitemap to Bing Webmaster Tools is a direct ChatGPT visibility action, since Bing powers ChatGPT's web search.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">An XML sitemap lists all indexable URLs on a site, submitted to search engines via Google Search Console and Bing Webmaster Tools. Crawl budget is the number of pages a given crawler will fetch within a timeframe. AI crawlers maintain their own separate crawl budgets distinct from Googlebot.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="seo" data-search="canonical canonical tag duplicate content preferred URL real version">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Canonical Tag</div><div class="term-preview">Telling search engines which version of a page is the real one when duplicates exist</div></div>
+  <div class="term-right"><span class="tag tag-seo">SEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Sometimes the same page on your website can be reached at multiple different web addresses. The canonical tag is a label that says 'this is the official version, ignore the others.' Without it, search engines and AI crawlers may split their attention between duplicates instead of focusing on the real page.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">A canonical tag (rel='canonical') is an HTML link element specifying the preferred URL for content when multiple URLs serve identical content. It consolidates link equity to the designated canonical URL and prevents duplicate content penalties.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="seo" data-search="Google Shopping product feed catalog Merchant Center carousel 83%">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Google Shopping / Product Feed</div><div class="term-preview">The database of your products that feeds both Google Shopping and ChatGPT carousels</div></div>
+  <div class="term-right"><span class="tag tag-seo">SEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">A product feed is a structured file listing all your products with their names, prices, images, descriptions, and categories. Google Shopping is the product listing service powered by these feeds. Research of 43,000 ChatGPT carousel products found that 83% pull directly from Google Shopping's organic product index — making a well-optimized product feed the most direct path to ChatGPT carousel inclusion.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">A product feed is a structured data file submitted to Google Merchant Center containing complete product attributes. Google Shopping's organic product index is the primary source for ChatGPT's product carousel — 83% of carousel-featured products in a 2026 study of 43,000 products sourced from this index. Top-40 Google Shopping organic rank correlates strongly with carousel eligibility.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="seo" data-search="Bing Webmaster Tools chatgpt search microsoft index submit sitemap">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Bing Webmaster Tools</div><div class="term-preview">Submitting your sitemap here is a direct action to improve ChatGPT search visibility</div></div>
+  <div class="term-right"><span class="tag tag-seo">SEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Bing Webmaster Tools is Microsoft's version of Google Search Console. Most brands only submit to Google and ignore Bing. But here is the key: ChatGPT's web search is powered by Bing. Submitting your sitemap to Bing Webmaster Tools is one of the most direct actions available to improve your ChatGPT search visibility, and most brands have never done it.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Bing Webmaster Tools is Microsoft's search console for website owners — used to submit sitemaps and monitor Bing indexing status. Because ChatGPT's search functionality uses Bing's web index for live retrieval, verifying Bing indexing and submitting a complete sitemap is a direct ChatGPT visibility improvement action.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="seo" data-search="DTC direct to consumer brand online ecommerce shopify founder">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">DTC — Direct-to-Consumer</div><div class="term-preview">Brands that sell directly to customers instead of through retailers like Target or Amazon</div></div>
+  <div class="term-right"><span class="tag tag-seo">SEO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">DTC stands for direct-to-consumer. Instead of selling your products through a store like Target or Amazon, you sell straight to the customer through your own website. Most Shopify brands are DTC. The advantage is you own the customer relationship. The challenge is you also own all the marketing — including AI visibility, which no retailer handles for you.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Direct-to-consumer brands sell products directly to end customers through owned channels, bypassing traditional wholesale and retail distribution. CAIO's primary ICP is Shopify DTC brands in the $200K–$2M annual revenue range. DTC brands bear full responsibility for customer acquisition, retention, and visibility — including emerging AI channels.</div></div>
+  
+</div>
+</div>
+
+<div class="cat-divider" data-cat-head="caio">caio CAIO Insight Terms · 22 terms</div>
+
+
+<div class="term-card" data-cat="caio" data-search="vector alignment score VAS 0 100 score map position diagnostic">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Vector Alignment Score (VAS)</div><div class="term-preview">0–100 score measuring how well your brand is positioned on AI's coordinate map</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">The VAS is like a GPS accuracy score for your brand on AI's invisible map. A score of 0 means AI has no idea who you are. A score of 100 means AI knows exactly what you sell and recommends you consistently. Most brands score between 15 and 45. Your CAIO brief tells you your exact score and the specific fixes to raise it.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">The Vector Alignment Score is a proprietary 0–100 metric measuring the combined strength of a brand's coordinate position across relevant LLM semantic spaces. Calculated from multi-run query sampling across ChatGPT, Perplexity, Google AI Overviews, and Gemini — weighted by query intent relevance, citation consistency, and entity stability. The primary headline metric in every CAIO diagnostic brief.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="citation probability index CPI how often mentioned chance percentage">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Citation Probability Index (CPI)</div><div class="term-preview">The percentage chance AI mentions your brand when someone asks a relevant question</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">The CPI is like a batting average for AI mentions. If AI gets asked 'what is the best moisturizer' 100 times, how many times does your brand get recommended? A CPI of 0.35 means 35 times out of 100. The CPI is calculated specifically for non-branded queries — searches where the customer is not already looking for you by name.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">The Citation Probability Index is a calculated score measuring the statistical likelihood that a brand will be cited in a generative AI response to a non-branded, intent-driven query in its category. Derived from multi-run sampling using standardized query sets across platforms, accounting for retrieval consistency, source overlap, and entity stability. One of the three primary outputs in the CAIO brief.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="schema remediation log SRL fix list action items specific prioritized">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Schema Remediation Log (SRL)</div><div class="term-preview">The specific prioritized fix list for every schema problem found in your audit</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">The SRL is the action list from your CAIO diagnostic. It tells you exactly which schema labels on your website are missing, wrong, or outdated — in priority order, with specific instructions to fix each one. It is a precise technical list a developer can work through item by item to close the schema gaps.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">The Schema Remediation Log is the third primary output of the CAIO diagnostic brief alongside VAS and CPI. It itemizes every specific structured data issue found during the four-layer scan — missing schema types, incorrect property values, outdated implementations — each with a priority rating and implementation instructions. Designed as a developer handoff document requiring no interpretation.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="four layer diagnostic layers signals validation scan methodology">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Four-Layer Diagnostic</div><div class="term-preview">The four structural checks every CAIO audit runs — the methodology that defines the product</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Every CAIO audit checks four things: (1) Is your brand in the right location on AI's map? (2) Are your pages actually being retrieved when AI searches for your category? (3) Are AI safety filters quietly suppressing your brand? (4) Is your schema markup up to date? These four checks run for every brand. No competitor checks all four.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">The four validation layers in the CAIO diagnostic: (1) Multi-dimensional vector proximity — mapping brand coordinates against current LLM training clusters; (2) RAG retrieval and citation probability — calculating mathematical probability of non-branded query retrieval; (3) Compliance-constrained friction mapping — auditing safety guardrail suppression load; (4) Schema and API drift resilience — evaluating structured data stability. Produces the VAS, CPI, and SRL.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="AI visibility index benchmark weekly data competitive ranking brands">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">AI Visibility Index</div><div class="term-preview">CAIO's weekly public benchmark ranking brands by AI citation share in their category</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">The AI Visibility Index is a weekly scorecard showing which brands in each product category are getting recommended by AI, and how often. Think of it like a sports league table — but instead of wins and losses, it tracks how often each brand gets cited by ChatGPT, Perplexity, and Google AI Overviews when shoppers ask relevant questions.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">The CAIO AI Visibility Index is a proprietary weekly benchmark tracking AI citation share across DTC brands by product category. Built by running standardized query sets across AI platforms on a scheduled basis using the Batch API, then scoring citation frequency and source quality. Public free tier provides category-level rankings. $147/month subscription provides private brand-specific citation data. The cumulative dataset is the acquisition asset underlying the CAIO business.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="fractional CMO chief marketing officer part-time strategy trust reversal">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Fractional CMO</div><div class="term-preview">A senior marketing strategist hired part-time — CAIO is not this model</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">A fractional CMO is a senior marketing executive you hire part-time instead of full-time. They usually ask for a monthly retainer before showing you anything. CAIO deliberately reverses this model: you see the diagnostic brief first, then decide whether to engage. The trust-reversal model is what makes CAIO different from a typical fractional CMO engagement.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">A fractional CMO provides executive-level marketing strategy on a part-time basis, typically at $3,000–$15,000/month. Most begin with a discovery call and proposal before delivering any diagnostic work. CAIO's model inverts this: $449 produces a complete diagnostic brief before any retainer commitment. The brief demonstrates the methodology before the client commits to ongoing work.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="retainer monthly recurring subscription ongoing strategy 2000 cancel">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Retainer</div><div class="term-preview">The optional $2,000/month ongoing relationship after the initial diagnostic — never assumed</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">A retainer is a monthly ongoing engagement where a client pays a fixed fee for continued strategy and execution work. The CAIO retainer is $2,000 per month with no contract and no required commitment — cancel any month. It includes a monthly diagnostic re-run, schema drift monitoring, one GEO infrastructure initiative per month, and unlimited async questions. The brief stands alone.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">The CAIO retainer at $2,000/month includes: monthly diagnostic re-run and benchmark comparison, schema drift monitoring, one GEO infrastructure initiative per month, unlimited asynchronous Q&A, and a quarterly full re-audit. No contract, no minimum term. AI infrastructure cost per retainer client is approximately $0.04–$0.10/month.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="white-label white label agency licensing resell brandable 297 50">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">White-Label License</div><div class="term-preview">Agencies buy the CAIO methodology and deliver it under their own brand name</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">White-labeling means taking a product and putting your own brand name on it to resell. A marketing agency can license the CAIO diagnostic methodology and deliver audits to their own clients under their agency's name. The agency gets a professional GEO diagnostic product without building the methodology. CAIO handles the framework. The agency handles client delivery. Priced at $2,000–$5,000 setup plus $297/month for up to 50 audits.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">White-label licensing allows agencies to rebrand and resell a product under their own identity. The CAIO white-label license provides the four-layer diagnostic framework, VAS rubric, Schema Remediation Log templates, and Notion workspace architecture — fully brandable. $297/month includes 50 audits. Overage: $4.49/audit beyond the 50-audit cap. AI cost per audit is $0.09, maintaining strong margins at any realistic volume.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="acquisition thesis exit data asset purchase acquirer shopify klaviyo">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Acquisition Thesis</div><div class="term-preview">Why a larger company would eventually want to buy CAIO — and what makes the data valuable</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">An acquisition thesis is the reason a bigger company would want to buy a smaller one. For CAIO, the thesis is the proprietary dataset — a growing collection of AI visibility scores for hundreds of DTC brands across dozens of categories. Shopify, Klaviyo, or Semrush could use that data to understand which brands are winning in AI and why. The dataset becomes more valuable every time a new audit is run.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">CAIO's acquisition thesis centers on the proprietary AI visibility benchmark dataset — Vector Alignment Scores across DTC brands by category, accumulated through every diagnostic run. Acquisition targets: Shopify (merchant intelligence), Klaviyo (DTC retention data), Semrush/Adobe (downmarket GEO data), Ahrefs (e-commerce GEO). Target timeline: 3–4 years. Estimated range: $8M–$60M.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="Shopify Catalog shopify automatic product data GEO service floor">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Shopify Catalog</div><div class="term-preview">Shopify's built-in GEO service that automatically feeds product data to AI platforms</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Shopify Catalog is Shopify's behind-the-scenes system that automatically formats and submits your product data to AI shopping platforms like ChatGPT. Shopify calls this 'GEO as a service.' The catch: it handles the basics automatically, but the quality and completeness of what it submits still requires a human audit — incomplete data produces incomplete visibility.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Shopify Catalog is Shopify's merchant data infrastructure layer that automatically formats and distributes product catalog data to AI shopping platforms and search engines. It provides llms.txt, agents.md, and product schema generation for all Shopify merchants. However, auto-generated data is typically incomplete — missing brand context and category taxonomy gaps that require manual audit to identify. This is the 'commodity floor' that CAIO's four-layer diagnostic measures above.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="Notion workspace deliverable output document product brief live">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Notion Workspace</div><div class="term-preview">The format the CAIO diagnostic brief is delivered in — a live interactive document</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Notion is a document and workspace tool — like a smarter, more interactive version of a Word document. The CAIO diagnostic brief is delivered as a Notion workspace rather than a PDF or slide deck. It is live, interactive, linkable, and can be updated over time. Clients can share it with their team, comment on sections, and track progress against the Schema Remediation Log items directly inside the document.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Notion is a productivity platform used for collaborative documents and knowledge management. CAIO uses Notion as the primary deliverable format — structured as a multi-section workspace containing the brand snapshot, channel scorecard, VAS, CPI, SRL, competitor gap analysis, and 90-day infrastructure plan. The workspace format allows live updates during retainer engagements, unlike static PDF deliverables.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="Tally intake form submission 10 questions brand 449 start">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Tally (Intake Form)</div><div class="term-preview">The 10-question form clients fill out to start their CAIO diagnostic</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Tally is a free form-builder tool used to collect information from clients. The CAIO intake form — 10 questions about your store, channels, competitors, and key marketing challenges — is built in Tally. No discovery call required. You fill out the form, pay $449, and the diagnostic process starts. The more specific your answers, the sharper the output.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Tally is a form and survey tool favored for its clean design and free tier. The CAIO intake form captures: store URL, annual revenue range, primary platform, top 3 competitors, current channel spend breakdown, primary traffic source, biggest marketing frustration, category keywords, product description, and vertical category. These 10 inputs power the brand-specific sections of the diagnostic brief.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="n8n automation workflow daily intelligence brief morning automatic">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">n8n / Daily Intelligence Workflow</div><div class="term-preview">The automation system that runs CAIO's daily research brief every morning</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">n8n is an automation tool that connects apps together. CAIO uses it to run a daily intelligence workflow automatically: every morning it searches news about GEO, DTC, and AI commerce, passes the results through Claude to summarize what matters, updates the Notion dashboard with today's insights, and emails the brief. This entire process runs automatically at zero incremental labor cost.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">n8n is an open-source workflow automation platform for connecting APIs and building automated pipelines. The CAIO daily intelligence workflow: Perplexity API queries 6 research topics → Claude Sonnet synthesizes findings → Notion API updates dashboard → Gmail delivers the morning brief. Total monthly API cost: approximately $8–18. Runs automatically with no manual effort required.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="Cloudflare Workers hosting deployment site live edge serverless">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Cloudflare Workers</div><div class="term-preview">The hosting platform running caioinsight.ai — serverless, fast, global</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Cloudflare Workers is Cloudflare's hosting platform. Instead of running on a single server in one location, Workers runs your website simultaneously at 300+ data center locations around the world. When someone in Sydney visits caioinsight.ai, they get the site from Sydney. When someone in New York visits, they get it from New York. The result: extremely fast load times everywhere.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Cloudflare Workers is a serverless compute platform running JavaScript at Cloudflare's global edge network. caioinsight.ai is deployed as a Cloudflare Worker, serving the site from the edge node closest to each visitor. Deployments are triggered by pushing to the main GitHub branch, with the Workers deployment pipeline running automatically via GitHub Actions.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="carousel readiness check free tool lead magnet email capture signal 6">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Carousel Readiness Check</div><div class="term-preview">The free CAIO tool that tests whether your brand qualifies for ChatGPT product carousels</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">The Carousel Readiness Check is a free single-purpose tool at caioinsight.ai/carousel-check. Enter your store URL and it runs a pass/fail test on the specific requirements for inclusion in ChatGPT's product carousel — structured data completeness, Cloudflare bot access, Google Shopping feed submission, and OAI-SearchBot access. You get the pass/fail result immediately. The full remediation checklist is gated behind your email address.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">The Carousel Readiness Check tests Signal 6 specifically — ChatGPT carousel coordinate inclusion eligibility. It checks: OAI-SearchBot access in robots.txt and Cloudflare, Product schema completeness and JSON-LD validity, Google Shopping feed submission status. Pass/fail results shown immediately. Full remediation checklist PDF gated behind email capture. Estimated conversion: 5% of checks → $449 audit.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="data translation layer enterprise data automated economy positioning bridge">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Data Translation Layer</div><div class="term-preview">CAIO's role — bridging how brands structure their data and how AI systems understand it</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Brands structure their data the way humans understand it. AI processes data in a completely different way — vectors, coordinates, retrieval chains. The data translation layer is what sits in the middle and makes sure the brand's information is formatted, labeled, and positioned so that AI can ingest, understand, and cite it correctly. CAIO's positioning is that it provides this translation layer.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">The data translation layer is CAIO's core positioning concept — the infrastructure converting brand data from human-readable formats into AI-optimized formats. It encompasses schema markup, llms.txt, vector coordinate alignment, RAG retrieval optimization, and compliance friction management. Positioning statement: 'CAIO Insight provides the underlying data translation layer between enterprise data structures and the automated economy, specializing in compliance-constrained verticals and premium DTC/Shopify margin preservation.'</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="OAI-SearchBot GPTBot PerplexityBot Claude-SearchBot AI crawlers bots search training">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">OAI-SearchBot / PerplexityBot / Claude-SearchBot</div><div class="term-preview">The specific robot names of AI search crawlers — blocking these makes you invisible to those AI platforms</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">These are the names of the robots that AI companies send to read your website. OAI-SearchBot belongs to OpenAI (ChatGPT). PerplexityBot belongs to Perplexity. Claude-SearchBot belongs to Anthropic (Claude). If your website blocks any of these, that AI system cannot see your content and cannot recommend you. They are separate from GPTBot — which is used for training data collection, not search.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">AI search crawlers are the retrieval bots sent by AI platforms to index live web content for real-time search responses. They are distinct from training crawlers (GPTBot, CCBot) — blocking search crawlers destroys AI search visibility while blocking training crawlers only prevents content from entering future model training datasets. Both can be controlled independently via robots.txt.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="API application programming interface communicate two programs">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">API — Application Programming Interface</div><div class="term-preview">A way for two computer programs to talk to each other — what CAIO uses to run AI diagnostics</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">An API is a way for two computer programs to talk to each other. Think of it like a waiter at a restaurant — you tell the waiter what you want (your request), the waiter goes to the kitchen (the other program), and brings back what you asked for (the response). The CAIO audit system uses Claude's API to run the four-layer diagnostic on each brand.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">An API is a defined interface allowing software applications to communicate programmatically. REST APIs use HTTP requests to exchange data. AI APIs (like Anthropic's Messages API) accept structured input — system prompts, user messages, parameters — and return model-generated responses. API pricing for LLM APIs is consumption-based, charged per token processed.</div></div>
+  
+</div>
+</div>
+
+<div class="term-card" data-cat="caio" data-search="claude haiku sonnet opus model tiers anthropic three sizes">
+<div class="term-head" onclick="expand(this)">
+  <div class="term-left"><div class="term-name">Claude — Haiku / Sonnet / Opus</div><div class="term-preview">Anthropic's three AI model tiers — CAIO uses Haiku for free tools and Sonnet for audits</div></div>
+  <div class="term-right"><span class="tag tag-caio">CAIO</span><svg class="chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg></div>
+</div>
+<div class="term-body">
+  <div class="explain-block"><div class="explain-label label-simple">Simple version</div><div class="simple-box">Claude is the AI assistant made by Anthropic. It comes in three sizes. Haiku is the small fast cheap one — great for simple pass/fail checks. Sonnet is the middle one — smart enough for most work, reasonably priced. Opus is the biggest most powerful one — used only for the hardest reasoning tasks. CAIO uses Haiku for the Carousel Readiness Check and Sonnet for audit diagnostics.</div></div>
+  <div class="explain-block"><div class="explain-label label-full">Full definition</div><div class="full-text">Anthropic's Claude model tiers in 2026: Haiku 4.5 ($1/$5 per million input/output tokens) — optimized for speed and cost on simple classification tasks. Sonnet 4.6 ($3/$15) — production default balancing capability and cost, suitable for complex reasoning and structured output. Opus 4.7 ($5/$25) — frontier reasoning for maximum analytical depth. Full CAIO diagnostic audit costs approximately $0.09 in Sonnet tokens.</div></div>
+  
+</div>
+</div>
+    </div><!-- /glossary -->
+  </div><!-- /container -->
+
+<footer class="gfooter">
+  <div class="container gfooter-inner">
+    <div class="gfooter-logo">CAIO</div>
+    <div class="gfooter-note">65 terms · 5 categories · Updated May 2026</div>
+    <span class="gfooter-link" onclick="window.location.href='/audit'">Start the diagnostic — $449 →</span>
+  </div>
+</footer>
+
+<script>
+var currentCat="all";
+function expand(head){
+  var body=head.nextElementSibling;
+  var chev=head.querySelector(".chev");
+  var isOpen=body.classList.contains("open");
+  document.querySelectorAll(".term-body.open").forEach(function(b){
+    b.classList.remove("open");
+    var c=b.previousElementSibling.querySelector(".chev");
+    if(c)c.classList.remove("open");
+  });
+  if(!isOpen){body.classList.add("open");chev.classList.add("open");}
+}
+function doSearch(q){
+  q=q.toLowerCase().trim();
+  var cards=document.querySelectorAll(".term-card");
+  var dividers=document.querySelectorAll(".cat-divider");
+  var visible=0;
+  cards.forEach(function(c){
+    var catMatch=(currentCat==="all"||c.dataset.cat===currentCat);
+    var searchStr=(c.dataset.search||"")+" "+(c.querySelector(".term-name").textContent||"")+" "+(c.querySelector(".term-preview").textContent||"");
+    var show=catMatch&&(!q||searchStr.toLowerCase().includes(q));
+    c.classList.toggle("gone",!show);
+    if(show)visible++;
+  });
+  dividers.forEach(function(d){
+    var cat=d.dataset.catHead;
+    var any=false;
+    if(currentCat==="all"||currentCat===cat){
+      document.querySelectorAll(".term-card[data-cat='"+cat+"']").forEach(function(c){if(!c.classList.contains("gone"))any=true;});
+    }
+    d.style.display=any?"":"none";
+  });
+  var b=document.getElementById("count-badge");
+  if(b)b.textContent=visible+" term"+(visible===1?"":"s");
+  var nr=document.getElementById("no-results");
+  if(nr)nr.style.display=visible===0?"block":"none";
+}
+function doFilter(cat,btn){
+  currentCat=cat;
+  document.querySelectorAll(".fb").forEach(function(b){b.classList.remove("on","on-geo","on-ai","on-tech","on-seo","on-caio")});
+  var cls="on";
+  if(cat==="geo")cls="on-geo";else if(cat==="ai")cls="on-ai";
+  else if(cat==="tech")cls="on-tech";else if(cat==="seo")cls="on-seo";
+  else if(cat==="caio")cls="on-caio";
+  btn.classList.add(cls);
+  document.getElementById("search-input").value="";
+  doSearch("");
+}
+</script>
+</body>
+</html>
