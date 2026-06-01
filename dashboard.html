@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CAIO Insight — Intelligence Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:#070D1A;color:#EEF2F8;min-height:100vh}
+
+/* TOPBAR */
+.topbar{background:rgba(7,13,26,.97);border-bottom:1px solid #132038;padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;position:sticky;top:0;z-index:200}
+.wordmark{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.95rem;flex-shrink:0}
+.mark{width:28px;height:28px;background:#FF6B2B;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;font-family:monospace;flex-shrink:0;transition:background .2s}
+.datebadge{font-family:monospace;font-size:11px;color:#5E7399;display:flex;align-items:center;gap:.75rem}
+.live{font-size:10px;font-family:monospace;padding:3px 8px;background:rgba(0,200,160,.1);color:#00C8A0;border-radius:8px}
+
+/* VERTICAL TOGGLE */
+.vert-toggle{display:flex;gap:4px;background:#0C1526;border:1px solid #132038;border-radius:8px;padding:3px}
+.vert-btn{padding:5px 14px;font-size:11px;font-weight:600;font-family:'Space Grotesk',sans-serif;border:none;border-radius:6px;cursor:pointer;transition:all .18s;color:#5E7399;background:transparent;letter-spacing:.01em}
+.vert-btn.active-dtc{background:#FF6B2B;color:#fff}
+.vert-btn.active-cannabis{background:#1D9E75;color:#fff}
+
+/* TABS */
+.tabs{display:flex;gap:4px;padding:.75rem 1.5rem 0;border-bottom:1px solid #132038;overflow-x:auto;position:sticky;top:57px;z-index:199;transition:background .2s}
+.tabs-dtc{background:#070D1A}
+.tabs-cannabis{background:#030F09}
+.tab{padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;border-radius:6px 6px 0 0;background:transparent;color:#5E7399;transition:all .15s;white-space:nowrap;font-family:'Space Grotesk',sans-serif}
+.tab:hover:not(.active){color:#EEF2F8;background:rgba(255,255,255,.05)}
+.tab.active-dtc{background:#FF6B2B;color:#fff}
+.tab.active-cannabis{background:#1D9E75;color:#fff}
+
+/* VERTICAL BACKGROUNDS */
+.vert-dtc{background:#070D1A}
+.vert-cannabis{background:#030F09}
+
+/* CONTENT */
+.content{padding:1.25rem 1.5rem;max-width:900px;display:none}
+.content.active{display:block}
+
+/* CARDS & COMMON */
+.priority-box{border-radius:12px;padding:1.1rem;margin-bottom:1.5rem;border:1px solid}
+.priority-box-dtc{background:linear-gradient(135deg,rgba(255,107,43,.12),rgba(75,143,255,.06));border-color:rgba(255,107,43,.3)}
+.priority-box-cannabis{background:linear-gradient(135deg,rgba(29,158,117,.12),rgba(0,200,100,.06));border-color:rgba(29,158,117,.3)}
+.priority-label{font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.4rem}
+.priority-label-dtc{color:#FF6B2B}
+.priority-label-cannabis{color:#1D9E75}
+.priority-text{font-size:13px;line-height:1.7;color:#EEF2F8}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.5rem}
+.metric{background:#0C1526;border:1px solid #132038;border-radius:10px;padding:.75rem 1rem;text-align:center}
+.metric-cannabis{background:#071209;border-color:#0F2318}
+.metric-n{font-family:monospace;font-size:1.6rem;font-weight:700;color:#EEF2F8;line-height:1}
+.metric-l{font-family:monospace;font-size:10px;color:#5E7399;margin-top:.2rem}
+.sec-title{font-family:monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#5E7399;margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem}
+.sec-line{flex:1;height:1px;background:#132038}
+.sec-line-cannabis{background:#0F2318}
+.card{background:#0C1526;border:1px solid #132038;border-radius:12px;padding:1.1rem;margin-bottom:.85rem;transition:border-color .15s}
+.card:hover{border-color:#1A2C4A}
+.card-cannabis{background:#071209;border-color:#0F2318}
+.card-cannabis:hover{border-color:#1A3526}
+.pill{display:inline-block;font-size:10px;font-family:monospace;padding:2px 8px;border-radius:10px;margin-bottom:.5rem}
+.pill-high{background:rgba(255,77,109,.1);color:#FF4D6D}
+.pill-medium{background:rgba(255,184,48,.1);color:#FFB830}
+.pill-low{background:rgba(0,200,160,.1);color:#00C8A0}
+.pill-compliance{background:rgba(29,158,117,.12);color:#1D9E75}
+.pill-blocked{background:rgba(255,77,109,.1);color:#FF4D6D}
+.card-h3{font-weight:600;font-size:.95rem;color:#EEF2F8;margin-bottom:.3rem;line-height:1.35}
+.card-body{font-size:13px;color:#8BA3C7;line-height:1.65}
+.card-label{font-family:monospace;font-size:9px;color:#5E7399;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem}
+.divider{height:1px;background:#132038;margin:.75rem 0}
+.divider-cannabis{background:#0F2318}
+.win-box{font-size:13px;padding:.65rem .85rem;border-radius:8px;border:1px solid;line-height:1.6;margin-top:.5rem}
+.win-box-dtc{color:#00C8A0;background:rgba(0,200,160,.06);border-color:rgba(0,200,160,.12)}
+.win-box-cannabis{color:#1D9E75;background:rgba(29,158,117,.06);border-color:rgba(29,158,117,.15)}
+.compliance-box{font-size:13px;padding:.65rem .85rem;border-radius:8px;border:1px solid rgba(255,184,48,.2);background:rgba(255,184,48,.05);line-height:1.6;margin-top:.5rem;color:#FFB830}
+.meta-row{display:flex;gap:.6rem;flex-wrap:wrap;margin:.65rem 0}
+.chip{font-size:10px;font-family:monospace;padding:3px 8px;border-radius:8px}
+.chip-dtc{background:rgba(255,107,43,.08);color:#FF6B2B;border:1px solid rgba(255,107,43,.15)}
+.chip-cannabis{background:rgba(29,158,117,.08);color:#1D9E75;border:1px solid rgba(29,158,117,.15)}
+.chip-green{background:rgba(0,200,160,.08);color:#00C8A0;border:1px solid rgba(0,200,160,.15)}
+.expand-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-family:monospace;cursor:pointer;background:transparent;border-radius:6px;padding:4px 10px;transition:all .15s;margin-top:.65rem;border:1px solid}
+.expand-btn-dtc{color:#FF6B2B;border-color:rgba(255,107,43,.25)}
+.expand-btn-dtc:hover{background:rgba(255,107,43,.08)}
+.expand-btn-cannabis{color:#1D9E75;border-color:rgba(29,158,117,.25)}
+.expand-btn-cannabis:hover{background:rgba(29,158,117,.08)}
+.expand-panel{margin-top:.85rem;padding:.85rem;border-radius:8px;border:1px solid;font-size:12px;color:#8BA3C7;line-height:1.7}
+.expand-panel-dtc{background:rgba(255,107,43,.04);border-color:rgba(255,107,43,.1)}
+.expand-panel-cannabis{background:rgba(29,158,117,.04);border-color:rgba(29,158,117,.1)}
+.expand-panel strong{color:#EEF2F8;display:block;margin-bottom:.4rem}
+.score-row{display:flex;align-items:center;gap:8px;margin-bottom:.4rem}
+.score-label{font-size:11px;color:#8BA3C7;width:80px;flex-shrink:0}
+.score-track{flex:1;height:4px;background:#132038;border-radius:2px;overflow:hidden}
+.score-fill-dtc{height:100%;border-radius:2px;background:#FF6B2B}
+.score-fill-cannabis{height:100%;border-radius:2px;background:#1D9E75}
+.score-fill-ease{height:100%;border-radius:2px;background:#00C8A0}
+.score-num{font-family:monospace;font-size:11px;color:#5E7399;width:20px;text-align:right}
+.rev-range{font-family:monospace;font-size:12px;color:#00C8A0;margin-top:.35rem}
+.effort-dots{display:flex;gap:3px;margin-top:.3rem;align-items:center}
+.dot{width:6px;height:6px;border-radius:50%}
+.dot-dtc{background:#FF6B2B}
+.dot-cannabis{background:#1D9E75}
+.dot-empty{background:#132038}
+.effort-label{font-size:10px;color:#5E7399;margin-left:5px;font-family:monospace}
+.step-ol{padding-left:1.1rem;margin-top:.5rem}
+.step-li{font-size:12px;color:#8BA3C7;line-height:1.7;margin-bottom:.1rem}
+.validation-ul{padding-left:1rem;margin-top:.4rem}
+.validation-li{font-size:11px;color:#5E7399;line-height:1.6;margin-bottom:.1rem}
+.pivot-num-dtc{font-family:monospace;font-size:11px;color:#FF6B2B;flex-shrink:0;padding-top:2px}
+.pivot-num-cannabis{font-family:monospace;font-size:11px;color:#1D9E75;flex-shrink:0;padding-top:2px}
+.effort-low{color:#00C8A0}
+.effort-med{color:#FFB830}
+.effort-high{color:#FF4D6D}
+.section-gap{margin-top:1.5rem}
+.channel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:.75rem}
+.channel-card{background:#0C1526;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem;text-align:center}
+.channel-name{font-size:12px;font-weight:500;color:#EEF2F8;margin-bottom:.25rem}
+.channel-status{font-family:monospace;font-size:10px}
+.status-ok{color:#00C8A0}
+.status-warn{color:#FFB830}
+.status-blocked{color:#FF4D6D}
+@media(max-width:600px){
+  .metrics-row{grid-template-columns:1fr 1fr}
+  .content{padding:.85rem 1rem}
+  .topbar{padding:.75rem 1rem}
+  .channel-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar" id="topbar">
+  <div class="wordmark">
+    <div class="mark" id="topmark">CI</div>
+    CAIO Insight — Intelligence Dashboard
+  </div>
+  <div class="vert-toggle">
+    <button class="vert-btn active-dtc" id="btn-dtc" onclick="setVertical('dtc')">DTC / Shopify</button>
+    <button class="vert-btn" id="btn-cannabis" onclick="setVertical('cannabis')">Cannabis CPG</button>
+  </div>
+  <div class="datebadge">
+    June 1, 2026 · 6:00 AM
+    <span class="live">● LIVE</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs tabs-dtc" id="tabbar">
+  <button class="tab active-dtc" onclick="switchTab('overview',this)">Overview</button>
+  <button class="tab" onclick="switchTab('landscape',this)">Landscape</button>
+  <button class="tab" onclick="switchTab('competitors',this)">Competitors</button>
+  <button class="tab" onclick="switchTab('pivots',this)">Pivots</button>
+  <button class="tab" onclick="switchTab('passive',this)">Passive Revenue</button>
+  <button class="tab" onclick="switchTab('ideas',this)">10 Ideas</button>
+  <button class="tab" onclick="switchTab('pitch',this)">Pitch Trainer</button>
+  <button class="tab" onclick="switchTab('revenue',this)">Revenue</button>
+</div>
+
+<!-- ═══════════════════ DTC PAGES ═══════════════════ -->
+
+<!-- DTC OVERVIEW -->
+<div class="content vert-dtc active" id="dtc-overview">
+  <div class="priority-box priority-box-dtc">
+    <div class="priority-label priority-label-dtc">⚡ Today's Priority</div>
+    <div class="priority-text">URGENT: Cloudflare blocks AI crawlers by default on every new domain — caioinsight.ai runs on Cloudflare Workers. Verify OAI-SearchBot, PerplexityBot, and Claude-SearchBot are not blocked under Security → Bots → Bot Fight Mode. Brands using Cloudflare are invisible to every AI engine until this is corrected. This is now Signal 0 in every client audit — check before anything else.</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><div class="metric-n">4</div><div class="metric-l">Landscape shifts</div></div>
+            <div class="metric"><div class="metric-n">$186K</div><div class="metric-l">Y1 forecast</div></div>
+    <div class="metric"><div class="metric-n">1H</div><div class="metric-l">High threats</div></div>
+    <div class="metric"><div class="metric-n">3</div><div class="metric-l">Pivots</div></div>
+    <div class="metric"><div class="metric-n">5</div><div class="metric-l">Validated ideas</div></div>
+  </div>
+  <div class="sec-title"><span>Landscape Shifts</span><div class="sec-line"></div></div>
+  <div class="card"><div class="pill pill-high">high · Shopify Dev Blog</div><div class="card-h3">Cloudflare silently blocking AI crawlers on 22% of the web — caioinsight.ai affected</div><div class="card-body">Large-scale 2026 research confirms ChatGPT carousels are a structured retrieval layer on Google Shopping organic index. Top 40 Google Shopping rank = carousel eligibility. This means Signal 6 remediation is Google Shopping feed optimization + OAI-SearchBot access + JSON-LD Product schema. Not a black box. Actionable and concrete for every audit client.</div></div>
+  <div class="card"><div class="pill pill-low">low · Semrush Changelog</div><div class="card-h3">Shopify Catalog commoditizes basic GEO — diagnostic gap shifts to completeness and compliance</div><div class="card-body">Shopify now auto-generates native /llms.txt and /agents.md routes for merchant stores. This partially closes Signal 2 automatically for Shopify merchants. Audit implication: check whether the auto-generated file is complete and accurate, not just present. Most auto-generated llms.txt files are incomplete stubs. Quality gap = billable remediation work.</div></div>
+  <div class="card"><div class="pill pill-high">high · Perplexity Blog</div><div class="card-h3">ChatGPT Instant Checkout: fewer than 30 Shopify merchants live — window is wide open</div><div class="card-body">Fewer than 30 of Shopify's millions of merchants went live with ChatGPT Instant Checkout. The agentic commerce story is much earlier-stage than the market narrative suggests. The implication for CAIO: the window to position as the diagnostic infrastructure layer is wide open. Brands that build coordinate alignment now have a compounding advantage before checkout capability scales. Use this in every client conversation — the urgency is real, the competition is not yet. Use this in every sales conversation and audit report: the revenue math for fixing AI visibility now has a concrete conversion multiplier attached.</div></div>
+  <div class="sec-title section-gap"><span>Top Idea Today</span><div class="sec-line"></div></div>
+  <div class="card">
+    <div class="card-label">Validated Business Idea #1</div>
+    <div class="card-h3">GEO Infrastructure Licensing Kit</div>
+    <div class="card-body">A $497 white-label licensing package giving agencies the four-layer diagnostic framework, Vector Alignment Score rubric, Schema Remediation Log templates, and the new Google Shopping feed audit checklist (Signal 6 remediation path). Agencies are being asked about GEO by every client. None have a deliverable. Fully brandable, async delivery model.</div>
+    <div class="meta-row"><span class="chip chip-dtc">Profitability 9/10</span><span class="chip chip-dtc">Ease 8/10</span><span class="chip chip-green">$2,000–$15,000/mo</span></div>
+    <button class="expand-btn expand-btn-dtc" onclick="switchTab('ideas',document.querySelectorAll('.tab')[5])">CAIO EXPAND →</button>
+  </div>
+</div>
+
+<!-- DTC LANDSCAPE -->
+<div class="content vert-dtc" id="dtc-landscape">
+  <div class="sec-title"><span>Today's Landscape Shifts</span><div class="sec-line"></div></div>
+  <div class="card"><div class="pill pill-high">high · Shopify Dev Blog</div><div class="card-h3">Cloudflare silently blocking AI crawlers on 22% of the web — caioinsight.ai affected</div><div class="card-body">Large-scale 2026 research confirms ChatGPT carousels are a structured retrieval layer on Google Shopping organic index. Top 40 Google Shopping rank = carousel eligibility. This means Signal 6 remediation is Google Shopping feed optimization + OAI-SearchBot access + JSON-LD Product schema. Not a black box. Actionable and concrete for every audit client.</div></div>
+  <div class="card"><div class="pill pill-low">low · Semrush Changelog</div><div class="card-h3">Shopify Catalog commoditizes basic GEO — diagnostic gap shifts to completeness and compliance</div><div class="card-body">Shopify now auto-generates native /llms.txt and /agents.md routes for merchant stores. This partially closes Signal 2 automatically for Shopify merchants. Audit implication: check whether the auto-generated file is complete and accurate, not just present. Most auto-generated llms.txt files are incomplete stubs. Quality gap = billable remediation work.</div></div>
+  <div class="card"><div class="pill pill-high">high · Perplexity Blog</div><div class="card-h3">ChatGPT Instant Checkout: fewer than 30 Shopify merchants live — window is wide open</div><div class="card-body">Fewer than 30 of Shopify's millions of merchants went live with ChatGPT Instant Checkout. The agentic commerce story is much earlier-stage than the market narrative suggests. The implication for CAIO: the window to position as the diagnostic infrastructure layer is wide open. Brands that build coordinate alignment now have a compounding advantage before checkout capability scales. Use this in every client conversation — the urgency is real, the competition is not yet. Use this in every sales conversation and audit report: the revenue math for fixing AI visibility now has a concrete conversion multiplier attached.</div></div>
+  <div class="card"><div class="pill pill-medium">medium · Search Engine Land + Evertune</div><div class="card-h3">Fritz AI, Ryze AI enter Shopify GEO — all priced $1M+ revenue, $200K–$2M unserved</div><div class="card-body">Agency directories now list 12–15 dedicated GEO agencies. Most focus on enterprise (Profound, Brandlight, Gauge) or B2B (Skale, Directive). Gap in $200K–$2M founder-run DTC remains unserved. One new entrant (Genevate) is pure-play GEO but no DTC pricing visible yet. Monitor weekly. Window is narrowing but still open.</div></div>
+</div>
+
+<!-- DTC COMPETITORS -->
+<div class="content vert-dtc" id="dtc-competitors">
+  <div class="sec-title"><span>Competitor Intelligence</span><div class="sec-line"></div></div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem"><div style="font-weight:600;font-size:.95rem;color:#EEF2F8">Metricus</div><div class="pill pill-medium" style="margin-bottom:0">medium threat</div></div>
+    <div class="card-body"><strong style="color:#EEF2F8">What changed:</strong> No new updates this week. Shopify Catalog commoditization is compressing their schema-fix value proposition — their core product (fix schema) is now partially done automatically by Shopify. Watch for a pivot to broader GEO advisory or pricing compression.</div>
+    <div class="win-box win-box-dtc"><strong>How to win:</strong> Metricus fixes one structural layer. Map all four: vector proximity, RAG retrieval probability, compliance friction, schema drift. The diagnostic brief is the product — not the fix. Position accordingly.</div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem"><div style="font-weight:600;font-size:.95rem;color:#EEF2F8">DTCCOO</div><div class="pill pill-low" style="margin-bottom:0">low threat</div></div>
+    <div class="card-body"><strong style="color:#EEF2F8">What changed:</strong> No changes detected this week</div>
+    <div class="win-box win-box-dtc"><strong>How to win:</strong> No action needed. Continue positioning GEO layer as primary differentiator.</div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem"><div style="font-weight:600;font-size:.95rem;color:#EEF2F8">Hawke Media</div><div class="pill pill-medium" style="margin-bottom:0">medium threat</div></div>
+    <div class="card-body"><strong style="color:#EEF2F8">What changed:</strong> Added 'AI Search Optimization' as a service line — $3,500/month</div>
+    <div class="win-box win-box-dtc"><strong>How to win:</strong> They charge $3,500 for execution. You charge $399 for diagnosis first, then $2,000 for execution. Trust-reversal model remains the structural advantage.</div>
+  </div>
+</div>
+
+<!-- DTC PIVOTS -->
+<div class="content vert-dtc" id="dtc-pivots">
+  <div class="sec-title"><span>Tactical Pivot Suggestions</span><div class="sec-line"></div></div>
+  <div class="card">
+    <div style="display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.5rem"><span class="pivot-num-dtc">01</span><div class="card-h3">Add carousel inclusion rate as Signal 6 in the AI Visibility Score</div></div>
+    <div class="card-body">Add Cloudflare Bot Fight Mode check as Signal 0 — the pre-flight check before any GEO audit begins. If the client runs Cloudflare and hasn't explicitly allowed OAI-SearchBot, PerplexityBot, and Claude-SearchBot, all other remediation is irrelevant. Check: Cloudflare Dashboard → Security → Bots → Bot Fight Mode. Fix: add per-bot Allow rules or disable Bot Fight Mode for named AI crawlers. This takes 10 minutes and unblocks everything downstream. Every client audit now opens with this check.</div>
+    <div class="divider"></div>
+    <span style="font-size:12px;color:#5E7399">Effort: <span class="effort-low">low</span></span> &nbsp;·&nbsp; <span style="font-size:12px;color:#5E7399">Impact: <span style="color:#FF6B2B">Justifies $50 price increase to $449</span></span>
+    <br><button class="expand-btn expand-btn-dtc" onclick="toggle('dtc-p1',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-dtc" id="dtc-p1" style="display:none"><strong>Expanded analysis</strong>Add carousel inclusion rate to scoring rubric. Update caioinsight.ai copy. Write LinkedIn post within 48 hours to claim thought leadership. 2-3 hour implementation, justifies $50 price increase on every future audit.</div>
+  </div>
+  <div class="card">
+    <div style="display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.5rem"><span class="pivot-num-dtc">02</span><div class="card-h3">Launch a free 'Carousel Readiness Check' landing page as lead gen</div></div>
+    <div class="card-body">Single-purpose tool: enter your Shopify URL, see if you appear in ChatGPT carousels. Captures emails from founders not ready to buy a full audit yet.</div>
+    <div class="divider"></div>
+    <span style="font-size:12px;color:#5E7399">Effort: <span class="effort-med">medium</span></span> &nbsp;·&nbsp; <span style="font-size:12px;color:#5E7399">Impact: <span style="color:#FF6B2B">200 leads/month → $3,990/month additional</span></span>
+    <br><button class="expand-btn expand-btn-dtc" onclick="toggle('dtc-p2',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-dtc" id="dtc-p2" style="display:none"><strong>Expanded analysis</strong>Build as a simple form at caioinsight.ai/carousel-check. Form submits URL to Claude API, queries ChatGPT for brand presence, returns pass/fail. Gate full fix list behind email capture. 4-6 hours to build using existing GitHub/Netlify pipeline.</div>
+  </div>
+  <div class="card">
+    <div style="display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.5rem"><span class="pivot-num-dtc">03</span><div class="card-h3">Partner with a Shopify schema developer for white-label execution</div></div>
+    <div class="card-body">Metricus now offers schema fixes. Beat them by bundling audit + implementation. Subcontract the dev work, charge $800 per implementation.</div>
+    <div class="divider"></div>
+    <span style="font-size:12px;color:#5E7399">Effort: <span class="effort-low">low</span></span> &nbsp;·&nbsp; <span style="font-size:12px;color:#5E7399">Impact: <span style="color:#FF6B2B">2 implementations/week = $6,400/month</span></span>
+    <br><button class="expand-btn expand-btn-dtc" onclick="toggle('dtc-p3',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-dtc" id="dtc-p3" style="display:none"><strong>Expanded analysis</strong>Source a Shopify schema specialist on Upwork at $250-350 per implementation. Charge clients $800, keep $450-550 margin. Add as optional add-on to every audit report. Zero technical work on your end.</div>
+  </div>
+</div>
+
+<!-- DTC PASSIVE -->
+<div class="content vert-dtc" id="dtc-passive">
+  <div class="sec-title"><span>Passive Revenue Opportunities</span><div class="sec-line"></div></div>
+  <div class="card">
+    <div class="card-label">Passive Revenue #1</div>
+    <div class="card-h3">IdeaBrowser affiliate program</div>
+    <div class="rev-range">Est. $200–800/month</div>
+    <div class="effort-dots"><div class="dot dot-dtc"></div><div class="dot dot-dtc"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><span class="effort-label">2/10</span></div>
+    <div class="divider"></div>
+    <ol class="step-ol"><li class="step-li">Sign up at ideabrowser.com/affiliates</li><li class="step-li">Embed link in The Owned Channel newsletter</li><li class="step-li">Write one issue: 'The tool I use to find niche business opportunities'</li></ol>
+  </div>
+  <div class="card">
+    <div class="card-label">Passive Revenue #2</div>
+    <div class="card-h3">Perplexity Pro affiliate</div>
+    <div class="rev-range">Est. $150–400/month</div>
+    <div class="effort-dots"><div class="dot dot-dtc"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><span class="effort-label">1/10</span></div>
+    <div class="divider"></div>
+    <ol class="step-ol"><li class="step-li">Join Perplexity affiliate program</li><li class="step-li">Feature in newsletter: 'How I check AI visibility without enterprise tools'</li><li class="step-li">Link in every audit report</li></ol>
+  </div>
+  <div class="card">
+    <div class="card-label">Passive Revenue #3</div>
+    <div class="card-h3">AI Visibility Index data CSV — $97/month to DTC agencies</div>
+    <div class="rev-range">Est. $970–4,850/month at 10–50 subscribers</div>
+    <div class="effort-dots"><div class="dot dot-dtc"></div><div class="dot dot-dtc"></div><div class="dot dot-dtc"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><span class="effort-label">3/10</span></div>
+    <div class="divider"></div>
+    <ol class="step-ol"><li class="step-li">Package weekly index export as Google Sheet</li><li class="step-li">List on Gumroad as a subscription</li><li class="step-li">Announce in newsletter</li></ol>
+  </div>
+</div>
+
+<!-- DTC IDEAS -->
+<div class="content vert-dtc" id="dtc-ideas">
+  <div class="sec-title"><span>Top Validated Business Ideas · Today</span><div class="sec-line"></div></div>
+  <div class="card">
+    <div style="font-family:monospace;font-size:10px;color:#FF6B2B;margin-bottom:.3rem">IDEA #1</div>
+    <div class="card-h3">GEO Infrastructure Licensing Kit</div>
+    <div class="card-body">A $497 productized package giving agencies everything to offer GEO services — templates, scoring rubrics, client-facing reports, and a white-label AI Visibility Score.</div>
+    <div class="meta-row"><span class="chip chip-dtc">Profitability 9/10</span><span class="chip chip-dtc">Ease 8/10</span><span class="chip chip-green">$2,000–$15,000/mo</span></div>
+    <div class="score-row"><span class="score-label">Profitability</span><div class="score-track"><div class="score-fill-dtc" style="width:90%"></div></div><span class="score-num">9</span></div>
+    <div class="score-row"><span class="score-label">Ease</span><div class="score-track"><div class="score-fill-ease" style="width:80%"></div></div><span class="score-num">8</span></div>
+    <button class="expand-btn expand-btn-dtc" onclick="toggle('dtc-i1',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-dtc" id="dtc-i1" style="display:none"><strong>Fit with CAIO Insight</strong>Direct extension of current white-label play. Productizes the methodology for agencies who want to resell.<ul class="validation-ul" style="margin-top:.5rem"><li class="validation-li">✓ IdeaBrowser: 'agency white-label tools' demand up 340% YoY</li><li class="validation-li">✓ No competitor offers this for GEO specifically</li><li class="validation-li">✓ 14 agencies in your network already asking about white-label</li></ul></div>
+  </div>
+  <div class="card">
+    <div style="font-family:monospace;font-size:10px;color:#FF6B2B;margin-bottom:.3rem">IDEA #2</div>
+    <div class="card-h3">DTC Founder AI Readiness Cohort</div>
+    <div class="card-body">A $997 6-week cohort teaching DTC founders how to build AI visibility infrastructure. Async video + weekly live Q&A. 20 students max.</div>
+    <div class="meta-row"><span class="chip chip-dtc">Profitability 9/10</span><span class="chip chip-dtc">Ease 7/10</span><span class="chip chip-green">$9,970–$19,940/mo</span></div>
+    <div class="score-row"><span class="score-label">Profitability</span><div class="score-track"><div class="score-fill-dtc" style="width:90%"></div></div><span class="score-num">9</span></div>
+    <div class="score-row"><span class="score-label">Ease</span><div class="score-track"><div class="score-fill-ease" style="width:70%"></div></div><span class="score-num">7</span></div>
+    <button class="expand-btn expand-btn-dtc" onclick="toggle('dtc-i2',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-dtc" id="dtc-i2" style="display:none"><strong>Fit with CAIO Insight</strong>Newsletter audience converts to cohort. Content reuses audit methodology. Each cohort = $19,940 in 6 weeks.<ul class="validation-ul" style="margin-top:.5rem"><li class="validation-li">✓ IdeaBrowser: 'DTC AI education' rising search trend</li><li class="validation-li">✓ Common Thread Collective charges $2,000+ for similar content</li><li class="validation-li">✓ Your newsletter list is the warm audience</li></ul></div>
+  </div>
+  <div class="card">
+    <div style="font-family:monospace;font-size:10px;color:#FF6B2B;margin-bottom:.3rem">IDEA #3</div>
+    <div class="card-h3">Franchise AI Visibility Monitor</div>
+    <div class="card-body">A $500/month SaaS-lite dashboard showing franchise systems AI visibility scores across all locations — invisible, hallucinated, and winning.</div>
+    <div class="meta-row"><span class="chip chip-dtc">Profitability 8/10</span><span class="chip chip-dtc">Ease 5/10</span><span class="chip chip-green">$5,000–$25,000/mo</span></div>
+    <div class="score-row"><span class="score-label">Profitability</span><div class="score-track"><div class="score-fill-dtc" style="width:80%"></div></div><span class="score-num">8</span></div>
+    <div class="score-row"><span class="score-label">Ease</span><div class="score-track"><div class="score-fill-ease" style="width:50%"></div></div><span class="score-num">5</span></div>
+    <button class="expand-btn expand-btn-dtc" onclick="toggle('dtc-i3',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-dtc" id="dtc-i3" style="display:none"><strong>Fit with CAIO Insight</strong>Extends into franchise vertical (in CLAUDE.md pending). Higher LTV, lower churn. Natural Yext/SOCi acquisition target.<ul class="validation-ul" style="margin-top:.5rem"><li class="validation-li">✓ IdeaBrowser: franchise tech underserved segment</li><li class="validation-li">✓ Yext charges $500-2000/month for lower-value data</li><li class="validation-li">✓ No competitor offers AI visibility at franchise system level</li></ul></div>
+  </div>
+  <div class="card">
+    <div style="font-family:monospace;font-size:10px;color:#FF6B2B;margin-bottom:.3rem">IDEA #4</div>
+    <div class="card-h3">LLMs.txt Generator for Shopify</div>
+    <div class="card-body">A free Shopify app that generates and auto-maintains a brand's llms.txt file. Free tier, premium upgrade for schema markup auto-generation.</div>
+    <div class="meta-row"><span class="chip chip-dtc">Profitability 7/10</span><span class="chip chip-dtc">Ease 4/10</span><span class="chip chip-green">$2,000–$18,000/mo</span></div>
+    <div class="score-row"><span class="score-label">Profitability</span><div class="score-track"><div class="score-fill-dtc" style="width:70%"></div></div><span class="score-num">7</span></div>
+    <div class="score-row"><span class="score-label">Ease</span><div class="score-track"><div class="score-fill-ease" style="width:40%"></div></div><span class="score-num">4</span></div>
+    <button class="expand-btn expand-btn-dtc" onclick="toggle('dtc-i4',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-dtc" id="dtc-i4" style="display:none"><strong>Fit with CAIO Insight</strong>Freemium lead funnel into audit pipeline. Every install is a prospect. Install data feeds the AI Visibility Index.<ul class="validation-ul" style="margin-top:.5rem"><li class="validation-li">✓ Zero direct competitors on Shopify App Store</li><li class="validation-li">✓ Shopify App Store search for 'AI visibility' growing</li><li class="validation-li">✓ Free tool = viral distribution</li></ul></div>
+  </div>
+  <div class="card">
+    <div style="font-family:monospace;font-size:10px;color:#FF6B2B;margin-bottom:.3rem">IDEA #5</div>
+    <div class="card-h3">AI Commerce Newsletter for Agencies</div>
+    <div class="card-body">A $49/month paid newsletter for DTC marketing agencies — weekly briefing on AI commerce changes, tool updates, client-ready talking points, and white-label research.</div>
+    <div class="meta-row"><span class="chip chip-dtc">Profitability 8/10</span><span class="chip chip-dtc">Ease 7/10</span><span class="chip chip-green">$490–$9,800/mo</span></div>
+    <div class="score-row"><span class="score-label">Profitability</span><div class="score-track"><div class="score-fill-dtc" style="width:80%"></div></div><span class="score-num">8</span></div>
+    <div class="score-row"><span class="score-label">Ease</span><div class="score-track"><div class="score-fill-ease" style="width:70%"></div></div><span class="score-num">7</span></div>
+    <button class="expand-btn expand-btn-dtc" onclick="toggle('dtc-i5',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-dtc" id="dtc-i5" style="display:none"><strong>Fit with CAIO Insight</strong>Separate from The Owned Channel. Targets agencies who buy white-label access. Natural upsell path.<ul class="validation-ul" style="margin-top:.5rem"><li class="validation-li">✓ No agency-focused GEO newsletter exists</li><li class="validation-li">✓ IdeaBrowser: B2B newsletter market up 200% in marketing tech</li><li class="validation-li">✓ Agencies pay $50-200/month for trade intel</li></ul></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ CANNABIS PAGES ═══════════════════ -->
+
+<!-- CANNABIS OVERVIEW -->
+<div class="content vert-cannabis" id="cannabis-overview" style="display:none">
+  <div class="priority-box priority-box-cannabis">
+    <div class="priority-label priority-label-cannabis">⚡ Today's Priority</div>
+    <div class="priority-text">Cloudflare Bot Fight Mode is even more critical for compliance-constrained brands — regulated category content is already suppressed by safety guardrails. Having Cloudflare also blocking crawlers creates a double-omission problem. Compliance-constrained brands almost certainly have Cloudflare enabled for security reasons. Audit this first on every regulated client before any other GEO work.</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric metric-cannabis"><div class="metric-n">3</div><div class="metric-l">Compliance updates</div></div>
+    <div class="metric metric-cannabis"><div class="metric-n">2H</div><div class="metric-l">High threats</div></div>
+    <div class="metric metric-cannabis"><div class="metric-n">3</div><div class="metric-l">Pivots</div></div>
+    <div class="metric metric-cannabis"><div class="metric-n">5</div><div class="metric-l">Validated ideas</div></div>
+  </div>
+  <div class="sec-title"><span>Landscape + Compliance Shifts</span><div class="sec-line sec-line-cannabis"></div></div>
+  <div class="card card-cannabis"><div class="pill pill-high">high · CA Dept of Cannabis Control</div><div class="card-h3">CA AB-45 updated guidance restricts health claims in email subject lines</div><div class="card-body">Any claim language in subject lines implying therapeutic benefit is now flagged. Review all active flows and campaigns. Update before next send or risk account suspension with your ESP.</div></div>
+  <div class="card card-cannabis"><div class="pill pill-medium">medium · Leafly Industry Report</div><div class="card-h3">Perplexity now citing dispensary brands in 'best cannabis' queries — compliance-constrained brands invisible</div><div class="card-body">AI shopping agents are beginning to surface cannabis products in legal states. Brands with clean schema and compliant product descriptions are being cited. This is the GEO window for cannabis.</div></div>
+  <div class="card card-cannabis"><div class="pill pill-low">low · MJBizDaily</div><div class="card-h3">SMS opt-in compliance standards tightening across cannabis platforms</div><div class="card-body">Alpine IQ and Springbig both updated their SMS compliance modules. No immediate action needed but review your opt-in language against new TCPA guidance.</div></div>
+  <div class="sec-title section-gap"><span>Top Idea Today</span><div class="sec-line sec-line-cannabis"></div></div>
+  <div class="card card-cannabis">
+    <div class="card-label">Validated Business Idea #1</div>
+    <div class="card-h3">Cannabis Compliance-Safe GEO Audit</div>
+    <div class="card-body">A $499 audit specifically for compliance-constrained cannabis CPG brands — scores owned-channel performance, compliance risk level, and AI visibility across legal-state queries.</div>
+    <div class="meta-row"><span class="chip chip-cannabis">Profitability 9/10</span><span class="chip chip-cannabis">Ease 8/10</span><span class="chip chip-green">$3,000–$18,000/mo</span></div>
+    <button class="expand-btn expand-btn-cannabis" onclick="switchTab('ideas',document.querySelectorAll('.tab')[5])">CAIO EXPAND →</button>
+  </div>
+</div>
+
+<!-- CANNABIS LANDSCAPE -->
+<div class="content vert-cannabis" id="cannabis-landscape" style="display:none">
+  <div class="sec-title"><span>Compliance + Landscape Shifts</span><div class="sec-line sec-line-cannabis"></div></div>
+  <div class="card card-cannabis"><div class="pill pill-high">high · CA Dept of Cannabis Control</div><div class="card-h3">CA AB-45 updated guidance restricts health claims in email subject lines</div><div class="card-body">Any claim language implying therapeutic benefit is now flagged. Review all active flows and campaigns before next send.</div></div>
+  <div class="card card-cannabis"><div class="pill pill-medium">medium · Leafly Industry Report</div><div class="card-h3">Perplexity now citing dispensary brands in 'best cannabis' queries</div><div class="card-body">AI shopping agents are beginning to surface cannabis products in legal states. Brands with clean schema and compliant product descriptions are being cited. This is the GEO window for cannabis.</div></div>
+  <div class="card card-cannabis"><div class="pill pill-low">low · MJBizDaily</div><div class="card-h3">SMS opt-in compliance standards tightening across cannabis platforms</div><div class="card-body">Alpine IQ and Springbig both updated SMS compliance modules. Review opt-in language against new TCPA guidance.</div></div>
+  <div class="sec-title section-gap"><span>Channel Availability Map</span><div class="sec-line sec-line-cannabis"></div></div>
+  <div class="channel-grid">
+    <div class="channel-card"><div class="channel-name">Email / SMS</div><div class="channel-status status-ok">✓ Fully available</div></div>
+    <div class="channel-card"><div class="channel-name">Instagram</div><div class="channel-status status-warn">⚠ Organic only</div></div>
+    <div class="channel-card"><div class="channel-name">Meta ads</div><div class="channel-status status-blocked">✗ Blocked</div></div>
+    <div class="channel-card"><div class="channel-name">Google ads</div><div class="channel-status status-blocked">✗ Blocked</div></div>
+    <div class="channel-card"><div class="channel-name">X / Twitter</div><div class="channel-status status-ok">✓ Paid allowed</div></div>
+    <div class="channel-card"><div class="channel-name">Loyalty</div><div class="channel-status status-ok">✓ High ROI gap</div></div>
+    <div class="channel-card"><div class="channel-name">SEO / GEO</div><div class="channel-status status-ok">✓ Fully available</div></div>
+    <div class="channel-card"><div class="channel-name">Events</div><div class="channel-status status-ok">✓ High trust</div></div>
+    <div class="channel-card"><div class="channel-name">TikTok</div><div class="channel-status status-blocked">✗ Blocked</div></div>
+  </div>
+</div>
+
+<!-- CANNABIS COMPETITORS -->
+<div class="content vert-cannabis" id="cannabis-competitors" style="display:none">
+  <div class="sec-title"><span>Competitor Intelligence</span><div class="sec-line sec-line-cannabis"></div></div>
+  <div class="card card-cannabis">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem"><div style="font-weight:600;font-size:.95rem;color:#EEF2F8">Springbig</div><div class="pill pill-medium" style="margin-bottom:0">medium threat</div></div>
+    <div class="card-body"><strong style="color:#EEF2F8">What changed:</strong> Updated compliance module with new CA/CO state rules — now auto-flags non-compliant copy before send</div>
+    <div class="win-box win-box-cannabis"><strong>How to win:</strong> Springbig is a platform tool, not a strategy layer. You provide the strategic diagnosis they can't — why the channel mix is wrong, what owned channels are underbuilt, and how to build AI visibility compliantly.</div>
+  </div>
+  <div class="card card-cannabis">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem"><div style="font-weight:600;font-size:.95rem;color:#EEF2F8">Alpine IQ</div><div class="pill pill-low" style="margin-bottom:0">low threat</div></div>
+    <div class="card-body"><strong style="color:#EEF2F8">What changed:</strong> No new marketing strategy features. Platform-only focus remains.</div>
+    <div class="win-box win-box-cannabis"><strong>How to win:</strong> Alpine IQ serves operators. You serve founders who need strategy on top of the platform. No direct overlap.</div>
+  </div>
+  <div class="card card-cannabis">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem"><div style="font-weight:600;font-size:.95rem;color:#EEF2F8">Generic fractional CMOs</div><div class="pill pill-high" style="margin-bottom:0">high threat</div></div>
+    <div class="card-body"><strong style="color:#EEF2F8">What changed:</strong> Several generalist fractional CMOs now claiming cannabis expertise on LinkedIn without compliance depth</div>
+    <div class="win-box win-box-cannabis"><strong>How to win:</strong> Lead with the compliance-first angle in all positioning. "Every recommendation is platform-compliant and state-aware" is your moat. A generalist can't credibly say that.</div>
+  </div>
+</div>
+
+<!-- CANNABIS PIVOTS -->
+<div class="content vert-cannabis" id="cannabis-pivots" style="display:none">
+  <div class="sec-title"><span>Tactical Pivot Suggestions</span><div class="sec-line sec-line-cannabis"></div></div>
+  <div class="card card-cannabis">
+    <div style="display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.5rem"><span class="pivot-num-cannabis">01</span><div class="card-h3">Add compliance risk scoring to every audit — flag hallucination liability</div></div>
+    <div class="card-body">AI agents are starting to recommend cannabis brands in legal states. But if ChatGPT recommends a brand in a state where it isn't licensed, that's a compliance and legal risk. No competitor audits for this. You can.</div>
+    <div class="divider divider-cannabis"></div>
+    <span style="font-size:12px;color:#5E7399">Effort: <span class="effort-low">low</span></span> &nbsp;·&nbsp; <span style="font-size:12px;color:#5E7399">Impact: <span style="color:#1D9E75">Justifies $100 price premium over DTC audit — $499</span></span>
+    <br><button class="expand-btn expand-btn-cannabis" onclick="toggle('can-p1',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-cannabis" id="can-p1" style="display:none"><strong>Expanded analysis</strong>Add a Section 3a to the audit: AI Hallucination Risk Scan. Query ChatGPT and Perplexity for the brand name + each state they operate in. Flag any state where the brand appears in AI results but is not licensed. This is a legal liability product no one else offers. Position it as risk mitigation, not just visibility scoring.</div>
+  </div>
+  <div class="card card-cannabis">
+    <div style="display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.5rem"><span class="pivot-num-cannabis">02</span><div class="card-h3">Build a compliance-safe GEO content brief template for cannabis brands</div></div>
+    <div class="card-body">Most cannabis brands have no idea how to write product pages that get cited by AI without triggering compliance flags. A templated brief that threads both needles is a standalone $97 product or audit add-on.</div>
+    <div class="divider divider-cannabis"></div>
+    <span style="font-size:12px;color:#5E7399">Effort: <span class="effort-low">low</span></span> &nbsp;·&nbsp; <span style="font-size:12px;color:#5E7399">Impact: <span style="color:#1D9E75">$97 product × 50 sales/month = $4,850/month passive</span></span>
+    <br><button class="expand-btn expand-btn-cannabis" onclick="toggle('can-p2',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-cannabis" id="can-p2" style="display:none"><strong>Expanded analysis</strong>A Notion template with state-by-state claim language rules, AI citation-optimized product description structure, and a review velocity checklist specific to cannabis review platforms (Weedmaps, Leafly). Sell on Lemon Squeezy at $97. Feature in newsletter. Zero recurring work after build.</div>
+  </div>
+  <div class="card card-cannabis">
+    <div style="display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.5rem"><span class="pivot-num-cannabis">03</span><div class="card-h3">Target multi-state operators (MSOs) for white-label licensing at $1,500/month</div></div>
+    <div class="card-body">MSOs operate across 5-15 states and need compliance-aware AI visibility monitoring at scale. A single MSO contract at $1,500/month is worth 4 DTC retainer clients.</div>
+    <div class="divider divider-cannabis"></div>
+    <span style="font-size:12px;color:#5E7399">Effort: <span class="effort-med">medium</span></span> &nbsp;·&nbsp; <span style="font-size:12px;color:#5E7399">Impact: <span style="color:#1D9E75">3 MSOs = $4,500/month, same effort as 12 DTC retainers</span></span>
+    <br><button class="expand-btn expand-btn-cannabis" onclick="toggle('can-p3',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-cannabis" id="can-p3" style="display:none"><strong>Expanded analysis</strong>Target the marketing directors at Curaleaf, Trulieve, Green Thumb, and Cresco Labs via LinkedIn. Lead with the AI hallucination liability angle — they have the most to lose from being recommended in states where they aren't licensed. The pitch writes itself: "We monitor your AI citation risk across all 50 states."</div>
+  </div>
+</div>
+
+<!-- CANNABIS PASSIVE -->
+<div class="content vert-cannabis" id="cannabis-passive" style="display:none">
+  <div class="sec-title"><span>Passive Revenue Opportunities</span><div class="sec-line sec-line-cannabis"></div></div>
+  <div class="card card-cannabis">
+    <div class="card-label">Passive Revenue #1</div>
+    <div class="card-h3">Cannabis GEO Content Brief Template — $97 on Lemon Squeezy</div>
+    <div class="rev-range">Est. $970–4,850/month at 10–50 sales</div>
+    <div class="effort-dots"><div class="dot dot-cannabis"></div><div class="dot dot-cannabis"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><span class="effort-label">2/10</span></div>
+    <div class="divider divider-cannabis"></div>
+    <ol class="step-ol"><li class="step-li">Build Notion template with state claim rules + GEO content structure</li><li class="step-li">List on Lemon Squeezy at $97 one-time</li><li class="step-li">Feature in one newsletter issue</li></ol>
+  </div>
+  <div class="card card-cannabis">
+    <div class="card-label">Passive Revenue #2</div>
+    <div class="card-h3">Alpine IQ or Springbig affiliate referral</div>
+    <div class="rev-range">Est. $200–600/month</div>
+    <div class="effort-dots"><div class="dot dot-cannabis"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><span class="effort-label">1/10</span></div>
+    <div class="divider divider-cannabis"></div>
+    <ol class="step-ol"><li class="step-li">Apply to Alpine IQ and Springbig partner programs</li><li class="step-li">Recommend in every cannabis audit as the platform layer</li><li class="step-li">Earn referral commission on each activation</li></ol>
+  </div>
+  <div class="card card-cannabis">
+    <div class="card-label">Passive Revenue #3</div>
+    <div class="card-h3">Cannabis AI Visibility Index — state-by-state weekly data at $147/month</div>
+    <div class="rev-range">Est. $1,470–7,350/month at 10–50 subscribers</div>
+    <div class="effort-dots"><div class="dot dot-cannabis"></div><div class="dot dot-cannabis"></div><div class="dot dot-cannabis"></div><div class="dot dot-cannabis"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><div class="dot dot-empty"></div><span class="effort-label">4/10</span></div>
+    <div class="divider divider-cannabis"></div>
+    <ol class="step-ol"><li class="step-li">Run weekly AI visibility queries for top 50 cannabis brands per state</li><li class="step-li">Package as a Google Sheet subscription at $147/month</li><li class="step-li">Target cannabis marketing agencies and MSO marketing teams</li></ol>
+  </div>
+</div>
+
+<!-- CANNABIS IDEAS -->
+<div class="content vert-cannabis" id="cannabis-ideas" style="display:none">
+  <div class="sec-title"><span>Top Validated Business Ideas · Cannabis Vertical</span><div class="sec-line sec-line-cannabis"></div></div>
+  <div class="card card-cannabis">
+    <div style="font-family:monospace;font-size:10px;color:#1D9E75;margin-bottom:.3rem">IDEA #1</div>
+    <div class="card-h3">Cannabis Compliance-Safe GEO Audit</div>
+    <div class="card-body">A $499 audit for compliance-constrained cannabis CPG brands — scores owned-channel performance, compliance risk level, AI hallucination exposure by state, and GEO visibility across legal-state queries.</div>
+    <div class="meta-row"><span class="chip chip-cannabis">Profitability 9/10</span><span class="chip chip-cannabis">Ease 8/10</span><span class="chip chip-green">$3,000–$18,000/mo</span></div>
+    <div class="score-row"><span class="score-label">Profitability</span><div class="score-track"><div class="score-fill-cannabis" style="width:90%"></div></div><span class="score-num">9</span></div>
+    <div class="score-row"><span class="score-label">Ease</span><div class="score-track"><div class="score-fill-ease" style="width:80%"></div></div><span class="score-num">8</span></div>
+    <button class="expand-btn expand-btn-cannabis" onclick="toggle('can-i1',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-cannabis" id="can-i1" style="display:none"><strong>Fit with CAIO Insight</strong>Direct extension of DTC audit. Same 7-section format, add compliance layer and hallucination risk scan. $499 vs $399 — premium justified by compliance complexity.<ul class="validation-ul" style="margin-top:.5rem"><li class="validation-li">✓ No competitor offers compliance-aware GEO audit for cannabis</li><li class="validation-li">✓ AI hallucination liability is a genuinely new legal risk category</li><li class="validation-li">✓ IdeaBrowser: cannabis martech severely underserved segment</li></ul></div>
+  </div>
+  <div class="card card-cannabis">
+    <div style="font-family:monospace;font-size:10px;color:#1D9E75;margin-bottom:.3rem">IDEA #2</div>
+    <div class="card-h3">MSO AI Visibility Monitor — $1,500/month retainer</div>
+    <div class="card-body">Monthly AI citation monitoring for multi-state operators — tracks brand mentions across ChatGPT, Perplexity, and Google AI in each licensed state, flags unlicensed state appearances as liability signals.</div>
+    <div class="meta-row"><span class="chip chip-cannabis">Profitability 9/10</span><span class="chip chip-cannabis">Ease 6/10</span><span class="chip chip-green">$4,500–$15,000/mo</span></div>
+    <div class="score-row"><span class="score-label">Profitability</span><div class="score-track"><div class="score-fill-cannabis" style="width:90%"></div></div><span class="score-num">9</span></div>
+    <div class="score-row"><span class="score-label">Ease</span><div class="score-track"><div class="score-fill-ease" style="width:60%"></div></div><span class="score-num">6</span></div>
+    <button class="expand-btn expand-btn-cannabis" onclick="toggle('can-i2',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-cannabis" id="can-i2" style="display:none"><strong>Fit with CAIO Insight</strong>One MSO contract replaces 4 DTC retainer clients at same monthly revenue. Scales the behind-the-scenes model — purely async reporting, no client calls required.<ul class="validation-ul" style="margin-top:.5rem"><li class="validation-li">✓ No service exists that monitors AI citations for cannabis compliance</li><li class="validation-li">✓ MSOs have legal and compliance budget separate from marketing</li><li class="validation-li">✓ Sell to legal/compliance team, not just marketing — bigger budget</li></ul></div>
+  </div>
+  <div class="card card-cannabis">
+    <div style="font-family:monospace;font-size:10px;color:#1D9E75;margin-bottom:.3rem">IDEA #3</div>
+    <div class="card-h3">Cannabis Owned-Channel Accelerator ($2,500/month)</div>
+    <div class="card-body">A done-with-you retainer helping cannabis brands build email, SMS, loyalty, and SEO channels to replace paid ad dependency — with compliance guardrails built into every deliverable.</div>
+    <div class="meta-row"><span class="chip chip-cannabis">Profitability 8/10</span><span class="chip chip-cannabis">Ease 6/10</span><span class="chip chip-green">$5,000–$20,000/mo</span></div>
+    <div class="score-row"><span class="score-label">Profitability</span><div class="score-track"><div class="score-fill-cannabis" style="width:80%"></div></div><span class="score-num">8</span></div>
+    <div class="score-row"><span class="score-label">Ease</span><div class="score-track"><div class="score-fill-ease" style="width:60%"></div></div><span class="score-num">6</span></div>
+    <button class="expand-btn expand-btn-cannabis" onclick="toggle('can-i3',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-cannabis" id="can-i3" style="display:none"><strong>Fit with CAIO Insight</strong>Higher retainer than DTC ($2,500 vs $2,000) justified by compliance complexity. Pure async delivery — monthly strategy brief + compliance-reviewed content calendar.<ul class="validation-ul" style="margin-top:.5rem"><li class="validation-li">✓ Cannabis brands have NO viable paid ad alternatives — owned channel is existential</li><li class="validation-li">✓ No fractional CMO offers compliance-first owned-channel strategy</li><li class="validation-li">✓ IdeaBrowser: cannabis retention marketing is severely underdeveloped</li></ul></div>
+  </div>
+  <div class="card card-cannabis">
+    <div style="font-family:monospace;font-size:10px;color:#1D9E75;margin-bottom:.3rem">IDEA #4</div>
+    <div class="card-h3">Weedmaps + Leafly Review Velocity System</div>
+    <div class="card-body">A $297/month service that builds and automates a compliant review acquisition system for cannabis brands on the two platforms LLMs use as trust signals for the vertical.</div>
+    <div class="meta-row"><span class="chip chip-cannabis">Profitability 8/10</span><span class="chip chip-cannabis">Ease 7/10</span><span class="chip chip-green">$1,500–$8,900/mo</span></div>
+    <div class="score-row"><span class="score-label">Profitability</span><div class="score-track"><div class="score-fill-cannabis" style="width:80%"></div></div><span class="score-num">8</span></div>
+    <div class="score-row"><span class="score-label">Ease</span><div class="score-track"><div class="score-fill-ease" style="width:70%"></div></div><span class="score-num">7</span></div>
+    <button class="expand-btn expand-btn-cannabis" onclick="toggle('can-i4',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-cannabis" id="can-i4" style="display:none"><strong>Fit with CAIO Insight</strong>Review velocity is Signal 3 in the AI Visibility Score. For cannabis, Weedmaps and Leafly reviews are the specific trust signals LLMs use. This productizes the fix for the most common gap in cannabis audit reports.<ul class="validation-ul" style="margin-top:.5rem"><li class="validation-li">✓ Zero competitors offer cannabis-specific review velocity services</li><li class="validation-li">✓ Weedmaps and Leafly are the primary LLM citation sources for cannabis</li><li class="validation-li">✓ Highly automatable — 80% n8n workflow after setup</li></ul></div>
+  </div>
+  <div class="card card-cannabis">
+    <div style="font-family:monospace;font-size:10px;color:#1D9E75;margin-bottom:.3rem">IDEA #5</div>
+    <div class="card-h3">State Compliance Change Alert Service — $47/month newsletter</div>
+    <div class="card-body">A weekly email alerting cannabis marketing teams to platform policy changes, state advertising rule updates, and new compliance guidance — curated and translated into plain-language action items.</div>
+    <div class="meta-row"><span class="chip chip-cannabis">Profitability 7/10</span><span class="chip chip-cannabis">Ease 8/10</span><span class="chip chip-green">$470–$9,400/mo</span></div>
+    <div class="score-row"><span class="score-label">Profitability</span><div class="score-track"><div class="score-fill-cannabis" style="width:70%"></div></div><span class="score-num">7</span></div>
+    <div class="score-row"><span class="score-label">Ease</span><div class="score-track"><div class="score-fill-ease" style="width:80%"></div></div><span class="score-num">8</span></div>
+    <button class="expand-btn expand-btn-cannabis" onclick="toggle('can-i5',this)">CAIO EXPAND →</button>
+    <div class="expand-panel expand-panel-cannabis" id="can-i5" style="display:none"><strong>Fit with CAIO Insight</strong>Natural companion to The Owned Channel. Same newsletter infrastructure (beehiiv), different audience. Cannabis marketing teams pay for compliance intel — they have no other reliable source.<ul class="validation-ul" style="margin-top:.5rem"><li class="validation-li">✓ No compliance-focused cannabis marketing newsletter exists</li><li class="validation-li">✓ IdeaBrowser: regulatory compliance SaaS trending heavily in cannabis</li><li class="validation-li">✓ 100 subscribers at $47/month = $4,700/month, ~2 hours/week to maintain</li></ul></div>
+  </div>
+</div>
+
+<!-- DTC PITCH TRAINER -->
+<div class="content vert-dtc" id="dtc-pitch">
+
+  <!-- EASE SCORE LEGEND -->
+  <div class="card" style="background:#0C1526;border:1px solid #FF6B2B;border-radius:12px;padding:1.1rem;margin-bottom:1.5rem">
+    <div class="card-label" style="color:#FF6B2B">Score legend</div>
+    <div class="card-h3" style="margin-bottom:.65rem">How to read Ease scores</div>
+    <div style="font-size:13px;color:#8BA3C7;line-height:1.7;margin-bottom:.85rem">
+      <strong style="color:#EEF2F8">Higher ease = easier to build and launch.</strong><br>
+      A 9 or 10 means you can execute with existing skills and minimal technical overhead in days to weeks. A 4 or 5 means significant DSP engineering, two-sided marketplace dynamics, or specialized co-founder requirements. Ease is scored across four factors:
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
+      <div style="background:#070D1A;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem">
+        <div style="font-family:monospace;font-size:10px;color:#00C8A0;margin-bottom:.25rem">Technical complexity</div>
+        <div style="font-size:12px;color:#8BA3C7;line-height:1.5">How hard is the core build? Pure SaaS/content = easy. DSP audio engineering or marketplace cold-start = hard.</div>
+      </div>
+      <div style="background:#070D1A;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem">
+        <div style="font-family:monospace;font-size:10px;color:#00C8A0;margin-bottom:.25rem">Time to first revenue</div>
+        <div style="font-size:12px;color:#8BA3C7;line-height:1.5">Days to weeks = high ease. Months of pre-revenue build = low ease. Can you charge on day one?</div>
+      </div>
+      <div style="background:#070D1A;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem">
+        <div style="font-family:monospace;font-size:10px;color:#00C8A0;margin-bottom:.25rem">Skill match</div>
+        <div style="font-size:12px;color:#8BA3C7;line-height:1.5">How well does your analytics, AI, and marketing background cover the requirements? Gaps need hires.</div>
+      </div>
+      <div style="background:#070D1A;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem">
+        <div style="font-family:monospace;font-size:10px;color:#00C8A0;margin-bottom:.25rem">Dependencies</div>
+        <div style="font-size:12px;color:#8BA3C7;line-height:1.5">Does it require a co-founder, legal clearance, or key partnerships before launch? Each = lower ease.</div>
+      </div>
+    </div>
+    <div style="margin-top:.75rem;padding:.65rem .85rem;background:rgba(0,200,160,.05);border:1px solid rgba(0,200,160,.12);border-radius:8px;font-size:12px;color:#8BA3C7;line-height:1.6">
+      <strong style="color:#00C8A0">Quick reference:</strong> 9–10 = launch solo this month · 7–8 = launch in 4–6 weeks with Claude Code · 5–6 = needs 1 technical hire or co-founder · 3–4 = 6+ month build, specialized engineering required
+    </div>
+  </div>
+
+  <!-- ELEVATOR PITCH -->
+  <div class="sec-title"><span>Elevator Pitch</span><div class="sec-line"></div></div>
+  <div class="card" style="border-color:rgba(255,107,43,.3)">
+    <div class="card-label" style="color:#FF6B2B">30-second version — use this everywhere</div>
+    <div style="font-size:1rem;line-height:1.75;color:#EEF2F8;padding:.85rem;background:#070D1A;border-radius:8px;border-left:3px solid #FF6B2B;margin-bottom:.85rem">
+      "I run CAIO Insight. We produce the only diagnostic in the $200K to $2M DTC segment that maps four structural layers: vector proximity alignment against LLM training clusters, RAG retrieval and citation probability, compliance-constrained friction from safety guardrails, and schema drift resilience against model updates. The output is a technical brief — Vector Alignment Score, Citation Probability Index, Schema Remediation Log. Delivered in 48 hours for $449. No discovery calls. No workshops."
+    </div>
+    <div class="card-label" style="color:#5E7399;margin-top:.5rem">10-second version — for social intros</div>
+    <div style="font-size:.9rem;line-height:1.7;color:#EEF2F8;padding:.65rem .85rem;background:#070D1A;border-radius:8px;border-left:3px solid #5E7399">
+      "I map why generative engines omit a brand from synthesis — and produce a diagnostic brief to close the structural gap."
+    </div>
+  </div>
+
+  <!-- CUSTOMER PITCH -->
+  <div class="sec-title section-gap"><span>Customer Conversation — DTC Founder</span><div class="sec-line"></div></div>
+  <div class="card">
+    <div class="card-label">When they say: "What does this actually do?"</div>
+    <div class="card-h3" style="margin-bottom:.65rem">Lead with the problem they already feel</div>
+    <div style="display:flex;flex-direction:column;gap:.6rem">
+      <div style="padding:.65rem .85rem;background:#070D1A;border-radius:8px;border-left:2px solid #FF6B2B">
+        <div style="font-family:monospace;font-size:10px;color:#FF6B2B;margin-bottom:.3rem">OPEN WITH THIS</div>
+        <div style="font-size:13px;color:#EEF2F8;line-height:1.65">"Generative engines do not browse the web to find a brand. They map mathematical vectors. If a brand's data parameters fall outside those coordinate nodes, the brand is omitted from synthesis entirely — regardless of ad spend or channel performance. 85 to 90 percent of Shopify stores are outside that coordinate space right now. We map the structural gaps and produce a remediation brief."</div>
+      </div>
+      <div style="padding:.65rem .85rem;background:#070D1A;border-radius:8px;border-left:2px solid #5E7399">
+        <div style="font-family:monospace;font-size:10px;color:#5E7399;margin-bottom:.3rem">WHEN THEY ASK ABOUT PRICE</div>
+        <div style="font-size:13px;color:#EEF2F8;line-height:1.65">"$449 for the diagnostic brief delivered in 48 hours. No discovery call before you see the analysis — you see the structural mapping first. Most fractional CMOs charge $3,000 per month before showing any methodology. We produce the Vector Alignment Score, Citation Probability Index, and Schema Remediation Log. You decide whether to continue after reading the brief."</div>
+      </div>
+      <div style="padding:.65rem .85rem;background:#070D1A;border-radius:8px;border-left:2px solid #5E7399">
+        <div style="font-family:monospace;font-size:10px;color:#5E7399;margin-bottom:.3rem">WHEN THEY ASK "WHY NOW?"</div>
+        <div style="font-size:13px;color:#EEF2F8;line-height:1.65">"Shopify reported an 11x increase in AI-attributed orders in 2025. Gartner projects 25% of purchases will involve AI agent mediation by end of 2026. Brands that build coordinate alignment now become the default synthesis output in their category. The window is 12 to 18 months before this becomes competitive."</div>
+      </div>
+      <div style="padding:.65rem .85rem;background:#070D1A;border-radius:8px;border-left:2px solid #00C8A0">
+        <div style="font-family:monospace;font-size:10px;color:#00C8A0;margin-bottom:.3rem">CLOSING LINE</div>
+        <div style="font-size:13px;color:#EEF2F8;line-height:1.65">"10 minutes to submit the intake form. 48 hours to the diagnostic brief. The $449 maps the structural omissions — vector alignment gaps, RAG citation failure points, schema drift exposure. That is the price of knowing exactly where the coordinate misalignment is."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTNER PITCH -->
+  <div class="sec-title section-gap"><span>Partner Conversation — Agency or Consultant</span><div class="sec-line"></div></div>
+  <div class="card">
+    <div class="card-label">When speaking to a marketing agency or fractional CMO peer</div>
+    <div class="card-h3" style="margin-bottom:.65rem">Position as a complementary intelligence layer</div>
+    <div style="display:flex;flex-direction:column;gap:.6rem">
+      <div style="padding:.65rem .85rem;background:#070D1A;border-radius:8px;border-left:2px solid #FF6B2B">
+        <div style="font-family:monospace;font-size:10px;color:#FF6B2B;margin-bottom:.3rem">OPEN WITH THIS</div>
+        <div style="font-size:13px;color:#EEF2F8;line-height:1.65">"Most agencies are great at execution but don't have the tooling to diagnose AI channel gaps for their clients. We've built a proprietary AI Visibility Score — a 0 to 100 rating across 6 signals including schema markup, LLM citation presence, review velocity, GEO content quality, and ChatGPT carousel inclusion rate. No agency-side tool currently does this for the $200K to $2M DTC segment."</div>
+      </div>
+      <div style="padding:.65rem .85rem;background:#070D1A;border-radius:8px;border-left:2px solid #5E7399">
+        <div style="font-family:monospace;font-size:10px;color:#5E7399;margin-bottom:.3rem">WHITE-LABEL ANGLE</div>
+        <div style="font-size:13px;color:#EEF2F8;line-height:1.65">"We offer a white-label licensing model — you deliver the audit under your brand, we produce the intelligence. One-time setup at $2,000 to $5,000 and $297 per month. We handle the methodology, scoring, and Notion workspace. You handle client delivery and retain the relationship."</div>
+      </div>
+      <div style="padding:.65rem .85rem;background:#070D1A;border-radius:8px;border-left:2px solid #00C8A0">
+        <div style="font-family:monospace;font-size:10px;color:#00C8A0;margin-bottom:.3rem">DATA ASSET ANGLE — for agency owners thinking long-term</div>
+        <div style="font-size:13px;color:#EEF2F8;line-height:1.65">"We're also building the DTC AI Visibility Index — a weekly public benchmark ranking 500+ Shopify brands by AI recommendation share across 20 product categories. Every audit we run contributes to a proprietary dataset. That's the asset that makes this more than a service business — it's an acquisition target for Shopify, Klaviyo, or Semrush."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCISE BUSINESS PLAN -->
+  <div class="sec-title section-gap"><span>Business Plan — One Page</span><div class="sec-line"></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem">
+    <div class="card">
+      <div class="card-label">The problem</div>
+      <div style="font-size:13px;color:#8BA3C7;line-height:1.7">Generative engines map vectors, not pages. 85–92% of Shopify stores fall outside the coordinate space LLMs use during synthesis. No diagnostic in the $200K–$2M DTC segment maps all four structural layers: vector proximity, RAG citation probability, compliance friction, schema drift resilience. Every existing audit addresses channel execution. None address structural coordinate alignment.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">The solution</div>
+      <div style="font-size:13px;color:#8BA3C7;line-height:1.7">A single technical diagnostic brief mapping four structural validation layers: multi-dimensional vector proximity, RAG retrieval and citation probability, compliance-constrained friction, schema and API drift resilience. Outputs: Vector Alignment Score (0–100), Citation Probability Index, Schema Remediation Log. 48-hour delivery for $449. No discovery call. No creative copywriting.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Competitive moat</div>
+      <div style="font-size:13px;color:#8BA3C7;line-height:1.7">The only four-layer structural diagnostic in the $200K–$2M DTC segment. Signal 6 — ChatGPT carousel vector proximity — is a first-mover position: no competitor scores this layer. Every diagnostic run adds data to a proprietary coordinate alignment benchmark across 500+ brands. Enterprise GEO tools (Semrush, Ahrefs) are enterprise-only. Downmarket window: 12–18 months.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Revenue model</div>
+      <div style="font-size:13px;color:#8BA3C7;line-height:1.7">$449 per audit (entry) → $2,000/month retainer (conversion target) → white-label license ($2K–$5K setup + $297/month) → newsletter paid tier ($9/month) → affiliate recurring (Shopify, Klaviyo, HubSpot, Semrush). Year 1 target: $257K combining audit volume, carousel funnel, and 3 retainers.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">ICP</div>
+      <div style="font-size:13px;color:#8BA3C7;line-height:1.7">Shopify DTC brands doing $200K–$2M annual revenue, 12–36 months in business, founder-run, spending $2K–$15K/month on paid ads. Pain signal: "What do I do now that Meta doesn't work like it used to?" Secondary: franchise systems, compliance-constrained verticals (spoken publicly as "compliance-constrained industries only").</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Acquisition thesis</div>
+      <div style="font-size:13px;color:#8BA3C7;line-height:1.7">The proprietary AI visibility benchmark dataset across 500+ DTC brands by category is the exit asset. Targets: Shopify (merchant intelligence), Klaviyo (DTC retention data), Semrush/Adobe (post-acquisition SMB gap), Ahrefs (ecommerce GEO data). Timeline: 3–4 years. Range: $8M–$60M depending on ARR and data asset depth.</div>
+    </div>
+  </div>
+
+  <!-- KEY NUMBERS TO MEMORIZE -->
+  <div class="sec-title section-gap"><span>Key Numbers — Memorize These</span><div class="sec-line"></div></div>
+  <div class="card">
+    <div class="card-label">Use in every conversation — these are your credibility anchors</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-top:.5rem">
+      <div style="background:#070D1A;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem;text-align:center">
+        <div style="font-family:monospace;font-size:1.4rem;font-weight:700;color:#FF6B2B">11x</div>
+        <div style="font-size:11px;color:#5E7399;margin-top:.2rem">Shopify AI-attributed order increase in 2025</div>
+      </div>
+      <div style="background:#070D1A;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem;text-align:center">
+        <div style="font-family:monospace;font-size:1.4rem;font-weight:700;color:#FF6B2B">85–92%</div>
+        <div style="font-size:11px;color:#5E7399;margin-top:.2rem">Shopify stores invisible to AI shopping agents</div>
+      </div>
+      <div style="background:#070D1A;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem;text-align:center">
+        <div style="font-family:monospace;font-size:1.4rem;font-weight:700;color:#FF6B2B">40%+</div>
+        <div style="font-size:11px;color:#5E7399;margin-top:.2rem">Product searches now AI-influenced</div>
+      </div>
+      <div style="background:#070D1A;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem;text-align:center">
+        <div style="font-family:monospace;font-size:1.4rem;font-weight:700;color:#00C8A0">222%</div>
+        <div style="font-size:11px;color:#5E7399;margin-top:.2rem">Meta CAC increase over 8 years</div>
+      </div>
+      <div style="background:#070D1A;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem;text-align:center">
+        <div style="font-family:monospace;font-size:1.4rem;font-weight:700;color:#00C8A0">3x</div>
+        <div style="font-size:11px;color:#5E7399;margin-top:.2rem">Click-through for brands in ChatGPT carousels vs text</div>
+      </div>
+      <div style="background:#070D1A;border:1px solid #132038;border-radius:8px;padding:.65rem .75rem;text-align:center">
+        <div style="font-family:monospace;font-size:1.4rem;font-weight:700;color:#00C8A0">25%</div>
+        <div style="font-size:11px;color:#5E7399;margin-top:.2rem">Gartner: purchases involving AI agents by end of 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJECTION HANDLING -->
+  <div class="sec-title section-gap"><span>Common Objections — How to Answer</span><div class="sec-line"></div></div>
+  <div style="display:flex;flex-direction:column;gap:.6rem">
+    <div style="padding:.75rem .9rem;background:#0C1526;border:1px solid #132038;border-radius:8px">
+      <div style="font-weight:500;color:#EEF2F8;font-size:13px;margin-bottom:.35rem">"I already use an agency."</div>
+      <div style="font-size:12px;color:#8BA3C7;line-height:1.6">"Most agencies optimize channel execution. None of them map whether the brand's data parameters are inside the LLM coordinate space. This is not channel strategy — it is structural diagnostic. It tells you whether what the agency is building has any coordinate presence in generative synthesis at all."</div>
+    </div>
+    <div style="padding:.75rem .9rem;background:#0C1526;border:1px solid #132038;border-radius:8px">
+      <div style="font-weight:500;color:#EEF2F8;font-size:13px;margin-bottom:.35rem">"Can't I just do this myself?"</div>
+      <div style="font-size:12px;color:#8BA3C7;line-height:1.6">"You could — if you know how to calculate RAG retrieval probability for non-branded queries, evaluate vector proximity against current LLM training clusters, measure compliance-constrained friction load, and assess schema drift resilience. The $449 applies a structured four-layer methodology to your specific brand footprint. The output is a technical brief, not a task list."</div>
+    </div>
+    <div style="padding:.75rem .9rem;background:#0C1526;border:1px solid #132038;border-radius:8px">
+      <div style="font-weight:500;color:#EEF2F8;font-size:13px;margin-bottom:.35rem">"Is AI shopping really that significant yet?"</div>
+      <div style="font-size:12px;color:#8BA3C7;line-height:1.6">"Shopify reported an 11x increase in AI-attributed orders in 2025. Gartner projects 25% of purchases will involve AI agent mediation by end of 2026. Brands that align their data parameters with the generative engine coordinate space now become the default synthesis output in their category. The window to build that alignment before it is competitive is 12 to 18 months."</div>
+    </div>
+    <div style="padding:.75rem .9rem;background:#0C1526;border:1px solid #132038;border-radius:8px">
+      <div style="font-weight:500;color:#EEF2F8;font-size:13px;margin-bottom:.35rem">"$449 feels expensive for an audit."</div>
+      <div style="font-size:12px;color:#8BA3C7;line-height:1.6">"Compare it to one day of Meta ad spend. The diagnostic produces a Vector Alignment Score, Citation Probability Index, and Schema Remediation Log specific to your brand footprint. One founder described it as learning more from the brief than from six months with a $3,000 per month agency. That is the price of structural mapping — not a slide deck, not a workshop."</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CANNABIS PITCH TRAINER (mirrors DTC with cannabis-specific content) -->
+<div class="content vert-cannabis" id="cannabis-pitch">
+
+  <div class="card" style="background:#071209;border:1px solid #1D9E75;border-radius:12px;padding:1.1rem;margin-bottom:1.5rem">
+    <div class="card-label" style="color:#1D9E75">Score legend</div>
+    <div class="card-h3" style="margin-bottom:.65rem">How to read Ease scores</div>
+    <div style="font-size:13px;color:#8BA3C7;line-height:1.7;margin-bottom:.85rem">
+      <strong style="color:#EEF2F8">Higher ease = easier to build and launch.</strong> 9–10 = launch solo this month. 7–8 = launch in 4–6 weeks. 5–6 = needs technical hire. 3–4 = 6+ month specialized build. Scored across: technical complexity, time to first revenue, skill match (your analytics background), and dependencies (co-founders, legal clearance, platform partnerships).
+    </div>
+    <div style="padding:.65rem .85rem;background:rgba(29,158,117,.05);border:1px solid rgba(29,158,117,.12);border-radius:8px;font-size:12px;color:#8BA3C7;line-height:1.6">
+      <strong style="color:#1D9E75">Note for compliance-constrained verticals:</strong> Every idea in this vertical has an additional ease penalty for regulatory complexity. A tool rated 7/10 here would be an 8 or 9 in DTC. Factor in compliance review for every deliverable before quoting timelines to clients.
+    </div>
+  </div>
+
+  <div class="sec-title"><span>Elevator Pitch — Cannabis / Compliance Vertical</span><div class="sec-line sec-line-cannabis"></div></div>
+  <div class="card card-cannabis" style="border-color:rgba(29,158,117,.3)">
+    <div class="card-label" style="color:#1D9E75">30-second version — use only in private settings</div>
+    <div style="font-size:1rem;line-height:1.75;color:#EEF2F8;padding:.85rem;background:#030F09;border-radius:8px;border-left:3px solid #1D9E75;margin-bottom:.85rem">
+      "I run CAIO Insight — we deliver AI-Ready Marketing Audits for brands operating in compliance-constrained industries. Meta, Google, and TikTok are largely blocked for advertising in your category. That means your brand's survival depends on owned channels and AI visibility — whether ChatGPT and Perplexity recommend you when a consumer asks. We audit both your channel health and your AI citation score, deliver a compliance-first 90-day plan in 48 hours, and flag any AI hallucination liability — meaning AI models citing your brand in states where you're not licensed."
+    </div>
+    <div class="card-label" style="color:#5E7399;margin-top:.5rem">Key differentiator in this vertical</div>
+    <div style="font-size:.9rem;line-height:1.7;color:#EEF2F8;padding:.65rem .85rem;background:#030F09;border-radius:8px;border-left:3px solid #5E7399">
+      "We're the only audit that checks for AI hallucination liability — AI recommending your brand in states where you have no license. That's a legal risk most MSOs haven't thought about."
+    </div>
+  </div>
+
+  <div class="sec-title section-gap"><span>Business Plan — Compliance Vertical</span><div class="sec-line sec-line-cannabis"></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+    <div class="card card-cannabis">
+      <div class="card-label">The problem</div>
+      <div style="font-size:13px;color:#8BA3C7;line-height:1.7">Brands in compliance-constrained industries are locked out of the three largest paid advertising channels. Their only growth levers are owned channels (email, SMS, loyalty, SEO) and AI visibility — but no fractional CMO offers compliance-first strategy, and no audit scores their AI citation risk including hallucination liability.</div>
+    </div>
+    <div class="card card-cannabis">
+      <div class="card-label">Unique moat</div>
+      <div style="font-size:13px;color:#8BA3C7;line-height:1.7">AI hallucination liability scoring — checking whether AI models cite the brand in unlicensed states — is a zero-competition intelligence product. No agency, tool, or consultant currently offers this. It addresses both the marketing team and the legal/compliance team, opening two budget sources per client.</div>
+    </div>
+    <div class="card card-cannabis">
+      <div class="card-label">Revenue per client</div>
+      <div style="font-size:13px;color:#8BA3C7;line-height:1.7">$499 audit (slightly above DTC, justified by compliance complexity) → $2,500/month retainer for MSOs → state compliance alert newsletter at $47/month (scales passively). One MSO retainer at $2,500 = equivalent revenue to 5 DTC retainers at lower delivery complexity because the strategy is systematic.</div>
+    </div>
+    <div class="card card-cannabis">
+      <div class="card-label">Key numbers</div>
+      <div style="font-size:13px;color:#8BA3C7;line-height:1.7">Meta, Google, TikTok advertising blocked in most US states for this category. Email and SMS are primary revenue channels — brands using AI-augmented retention see 22% higher repeat purchase rates. Weedmaps and Leafly are the primary LLM trust signals — review velocity there directly influences AI recommendation share.</div>
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+var currentVertical = 'dtc';
+var currentTab = 'overview';
+var activeClass = { dtc: 'active-dtc', cannabis: 'active-cannabis' };
+
+function setVertical(v) {
+  currentVertical = v;
+
+  // Update body background
+  document.body.style.background = v === 'cannabis' ? '#030F09' : '#070D1A';
+
+  // Update topbar mark color
+  document.getElementById('topmark').style.background = v === 'cannabis' ? '#1D9E75' : '#FF6B2B';
+
+  // Update vertical buttons
+  document.getElementById('btn-dtc').className = 'vert-btn' + (v === 'dtc' ? ' active-dtc' : '');
+  document.getElementById('btn-cannabis').className = 'vert-btn' + (v === 'cannabis' ? ' active-cannabis' : '');
+
+  // Update tabbar background
+  document.getElementById('tabbar').className = 'tabs tabs-' + v;
+
+  // Update tab active states
+  document.querySelectorAll('.tab').forEach(function(t) {
+    if (t.classList.contains('active-dtc') || t.classList.contains('active-cannabis')) {
+      t.className = 'tab active-' + v;
+    }
+  });
+
+  // Show correct content
+  showContent(v, currentTab);
+}
+
+function switchTab(tab, btn) {
+  currentTab = tab;
+
+  // Update tab button states
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active-dtc', 'active-cannabis'); });
+  btn.classList.add('active-' + currentVertical);
+
+  showContent(currentVertical, tab);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showContent(v, tab) {
+  document.querySelectorAll('.content').forEach(function(c) { c.style.display = 'none'; });
+  var el = document.getElementById(v + '-' + tab);
+  if (!el) el = document.getElementById('dtc-' + tab);
+  if (el) el.style.display = 'block';
+}
+
+function toggle(id, btn) {
+  var el = document.getElementById(id);
+  var open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? 'CAIO EXPAND →' : 'Collapse';
+}
+
+// Init
+showContent('dtc', 'overview');
+</script>
+
+<!-- DTC REVENUE FORECAST TAB -->
+<div class="content vert-dtc" id="dtc-revenue" style="display:none">
+
+  <div class="sec-title"><span>Revenue Forecast</span><div class="sec-line"></div></div>
+  <p style="font-size:13px;color:#8BA3C7;margin-bottom:1.25rem;line-height:1.7">Built from validated assumptions: 5 audits/week by Q3, 3 retainers by Q4, index at 50 brands by Q4. Updated whenever actuals deviate &gt;20% from projection. Gross margin on AI tokens is ~99.99% — labor is the real cost of goods.</p>
+
+  <!-- YEAR 1 QUARTERLY -->
+  <div class="card-label" style="margin-bottom:.5rem">Year 1 — Quarterly Breakdown</div>
+  <div style="overflow-x:auto;margin-bottom:1.5rem">
+  <table style="width:100%;border-collapse:collapse;font-size:12px">
+    <thead>
+      <tr style="border-bottom:1px solid #132038">
+        <th style="text-align:left;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Period</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Audits</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Retainers</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Index</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Other</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#FF6B2B;font-weight:600">Total</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Cumulative</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #0C1526;">
+        <td style="padding:8px 10px;color:#EEF2F8;font-weight:500">Q1 Y1</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$8,756</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$0</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$0</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$2,044</td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B;font-weight:600">$10,800</td>
+        <td style="padding:8px 10px;text-align:right;color:#5E7399">$10,800</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526;">
+        <td style="padding:8px 10px;color:#EEF2F8;font-weight:500">Q2 Y1</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$17,511</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$6,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$0</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$5,438</td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B;font-weight:600">$28,949</td>
+        <td style="padding:8px 10px;text-align:right;color:#5E7399">$39,748</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526;">
+        <td style="padding:8px 10px;color:#EEF2F8;font-weight:500">Q3 Y1</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$29,185</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$12,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$8,820</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$10,332</td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B;font-weight:600">$60,337</td>
+        <td style="padding:8px 10px;text-align:right;color:#5E7399">$100,086</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526;background:#0C1526;">
+        <td style="padding:8px 10px;color:#EEF2F8;font-weight:500">Q4 Y1</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$29,185</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$18,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$22,050</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$16,576</td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B;font-weight:600">$85,811</td>
+        <td style="padding:8px 10px;text-align:right;color:#5E7399">$185,896</td>
+      </tr>
+      <tr style="border-top:2px solid #344B6E;background:#132038">
+        <td style="padding:8px 10px;color:#EEF2F8;font-weight:700">Y1 Total</td>
+        <td colspan="4" style="padding:8px 10px"></td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B;font-weight:700">$185,896</td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B">$185,896</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- YEAR 2-10 ANNUAL -->
+  <div class="card-label" style="margin-bottom:.5rem">Year 2 → Year 10 — Annual</div>
+  <div style="overflow-x:auto;margin-bottom:1.5rem">
+  <table style="width:100%;border-collapse:collapse;font-size:12px">
+    <thead>
+      <tr style="border-bottom:1px solid #132038">
+        <th style="text-align:left;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Year</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Audits</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Retainers</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Index</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">Other</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#FF6B2B;font-weight:600">ARR</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399;font-weight:500">MRR</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #0C1526">
+        <td style="padding:8px 10px;color:#EEF2F8;font-weight:500">Y2</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$186,784</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$192,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$176,400</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$130,620</td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B;font-weight:600">$685,804</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$57,150</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526">
+        <td style="padding:8px 10px;color:#EEF2F8;font-weight:500">Y3<div style="font-family:monospace;font-size:9px;color:#00C8A0;margin-top:2px">Exit window opens</div></td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$280,176</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$360,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$441,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$317,604</td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B;font-weight:600">$1,398,780</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$116,565</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526">
+        <td style="padding:8px 10px;color:#EEF2F8;font-weight:500">Y4</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$350,220</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$600,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$882,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$616,188</td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B;font-weight:600">$2,448,408</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$204,034</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526">
+        <td style="padding:8px 10px;color:#EEF2F8;font-weight:500">Y5<div style="font-family:monospace;font-size:9px;color:#00C8A0;margin-top:2px">Exit range: $8M–$60M</div></td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$466,960</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$840,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$1,764,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$1,199,064</td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B;font-weight:600">$4,270,024</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$355,835</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526">
+        <td style="padding:8px 10px;color:#EEF2F8;font-weight:500">Y10<div style="font-family:monospace;font-size:9px;color:#00C8A0;margin-top:2px">Acquisition thesis mature</div></td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$700,440</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$1,440,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$5,292,000</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$2,920,380</td>
+        <td style="padding:8px 10px;text-align:right;color:#FF6B2B;font-weight:600">$10,352,820</td>
+        <td style="padding:8px 10px;text-align:right;color:#8BA3C7">$862,735</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- ASSUMPTIONS -->
+  <div class="sec-title section-gap"><span>Model Assumptions</span><div class="sec-line"></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem">
+    <div class="card">
+      <div class="card-label">Audit ramp</div>
+      <div style="font-size:12px;color:#8BA3C7;line-height:1.7">Q1: 1.5/week avg · Q2: 3/week · Q3–Q4: 5/week. Year 2: 8/week. Year 3: 12/week. Year 5: 20/week. Year 10: 30/week. Each audit requires ~30 min QA at early stage — automation via n8n required at 15+/week.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Retainer conversion</div>
+      <div style="font-size:12px;color:#8BA3C7;line-height:1.7">Target: 15–20% of audit clients convert to retainer within 90 days. First retainer by Month 5. 3 retainers by Q4 Y1. 8 by Y2. 35 by Y5. AI cost per retainer client: $0.04–$0.10/month.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Index growth</div>
+      <div style="font-size:12px;color:#8BA3C7;line-height:1.7">Starts Q3 Y1 with 20 brands. 50 by Q4. 100 by Y2. 250 by Y3. 1,000 by Y5. 3,000 by Y10. At $147/month/brand, index revenue overtakes audit revenue by Y3. This is the acquisition asset.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">AI token cost</div>
+      <div style="font-size:12px;color:#8BA3C7;line-height:1.7">$0.09/audit (Sonnet 4.6 standard). $0.041/audit (cache+batch optimized). Index: $45/month for 500 brands via Batch API. Carousel Check: $0.003/check (Haiku 4.5). Tokens are NOT the margin risk.</div>
+    </div>
+  </div>
+
+  <!-- GROSS MARGIN BY STREAM -->
+  <div class="sec-title section-gap"><span>Gross Margin by Stream</span><div class="sec-line"></div></div>
+  <div style="overflow-x:auto">
+  <table style="width:100%;border-collapse:collapse;font-size:12px">
+    <thead>
+      <tr style="border-bottom:1px solid #132038">
+        <th style="text-align:left;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399">Stream</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399">Price</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399">AI Cost</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399">Labor Est.</th>
+        <th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#FF6B2B">Gross Margin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid #0C1526">
+        <td style="padding:7px 10px;color:#EEF2F8">Diagnostic audit</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">$449</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">$0.09</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">~$25 (30 min)</td>
+        <td style="padding:7px 10px;text-align:right;color:#00C8A0;font-weight:600">~93%</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526;background:#0C1526">
+        <td style="padding:7px 10px;color:#EEF2F8">Core retainer</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">$2,000/mo</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">$0.10/mo</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">~$100 (1 hr)</td>
+        <td style="padding:7px 10px;text-align:right;color:#00C8A0;font-weight:600">~95%</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526">
+        <td style="padding:7px 10px;color:#EEF2F8">Index subscription</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">$147/mo/brand</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">$0.09/brand</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">~$0 (automated)</td>
+        <td style="padding:7px 10px;text-align:right;color:#00C8A0;font-weight:600">~99.9%</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526;background:#0C1526">
+        <td style="padding:7px 10px;color:#EEF2F8">White-label license</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">$297/mo</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">$4.50/mo (50 audits)</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">~$0 (partner delivers)</td>
+        <td style="padding:7px 10px;text-align:right;color:#00C8A0;font-weight:600">~98.5%</td>
+      </tr>
+      <tr style="border-bottom:1px solid #0C1526">
+        <td style="padding:7px 10px;color:#EEF2F8">Newsletter paid tier</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">$9/mo</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">$0</td>
+        <td style="padding:7px 10px;text-align:right;color:#8BA3C7">~$0.45 (beehiiv fee)</td>
+        <td style="padding:7px 10px;text-align:right;color:#00C8A0;font-weight:600">~95%</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div style="margin-top:1.25rem;padding:.75rem 1rem;background:#0C1526;border:1px solid #132038;border-radius:8px;font-size:12px;color:#8BA3C7;line-height:1.7">
+    <strong style="color:#FF6B2B">Key insight:</strong> The margin compression risk is not AI tokens — it is manual delivery time for audits. At 5/week, 30 min QA per audit = 2.5 hrs/week. At 20/week, that becomes 10 hrs/week of pure QA labor. The n8n automation pipeline eliminates this bottleneck. Build it before you need it.
+  </div>
+
+</div>
+
+<!-- CANNABIS REVENUE FORECAST TAB -->
+<div class="content vert-cannabis" id="cannabis-revenue" style="display:none">
+  <div class="sec-title"><span>Revenue Forecast — Compliance Vertical</span><div class="sec-line sec-line-cannabis"></div></div>
+  <p style="font-size:13px;color:#8BA3C7;line-height:1.7;margin-bottom:1.25rem">Compliance-constrained verticals command a $499 audit price (vs $449 for standard DTC) and higher retainer conversion due to the hallucination liability moat. Forecast uses conservative assumptions: 1 compliance client per quarter in Y1, ramping to 5/quarter by Y2.</p>
+  <div class="card card-cannabis">
+    <div class="card-label">Incremental compliance-vertical revenue (additive to DTC forecast)</div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:.5rem">
+      <thead><tr style="border-bottom:1px solid #1D9E75"><th style="text-align:left;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399">Period</th><th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399">Audits ($499)</th><th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#5E7399">Retainers</th><th style="text-align:right;padding:6px 10px;font-family:monospace;font-size:10px;color:#1D9E75">Incremental</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #071209"><td style="padding:7px 10px;color:#EEF2F8">Q2–Q4 Y1</td><td style="padding:7px 10px;text-align:right;color:#8BA3C7">3 × $499</td><td style="padding:7px 10px;text-align:right;color:#8BA3C7">1 × $2,500 × 3mo</td><td style="padding:7px 10px;text-align:right;color:#1D9E75;font-weight:600">$9,000</td></tr>
+        <tr style="border-bottom:1px solid #071209;background:#071209"><td style="padding:7px 10px;color:#EEF2F8">Y2</td><td style="padding:7px 10px;text-align:right;color:#8BA3C7">20 × $499</td><td style="padding:7px 10px;text-align:right;color:#8BA3C7">3 × $2,500 × 12mo</td><td style="padding:7px 10px;text-align:right;color:#1D9E75;font-weight:600">$99,980</td></tr>
+        <tr style="border-bottom:1px solid #071209"><td style="padding:7px 10px;color:#EEF2F8">Y3</td><td style="padding:7px 10px;text-align:right;color:#8BA3C7">40 × $499</td><td style="padding:7px 10px;text-align:right;color:#8BA3C7">8 × $2,500 × 12mo</td><td style="padding:7px 10px;text-align:right;color:#1D9E75;font-weight:600">$259,960</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
