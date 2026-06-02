@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 60" width="300" height="60">
+  <rect width="300" height="60" fill="#070D1A"/>
+  <text x="4" y="43" font-family="'Barlow Condensed',sans-serif" font-weight="700" font-size="39">
+    <tspan letter-spacing="2" fill="#F0F4FA">CAIO</tspan><tspan dx="6" letter-spacing="1" fill="#F0F4FA" opacity="0.55">Insight</tspan>
+  </text>
+</svg>
