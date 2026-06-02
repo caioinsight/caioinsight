@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" width="1500" height="500">
+  <rect width="1500" height="500" fill="#070D1A"/>
+  <circle cx="726" cy="216" r="5" fill="#FF6B2B" opacity="0.18"/>  <circle cx="750" cy="216" r="5" fill="#FF6B2B" opacity="0.18"/>  <circle cx="774" cy="216" r="5" fill="#FF6B2B" opacity="0.95"/>  <circle cx="726" cy="240" r="5" fill="#FF6B2B" opacity="0.18"/>  <circle cx="750" cy="240" r="5" fill="#FF6B2B" opacity="0.55"/>  <circle cx="774" cy="240" r="5" fill="#FF6B2B" opacity="0.18"/>  <circle cx="726" cy="264" r="5" fill="#FF6B2B" opacity="0.22"/>  <circle cx="750" cy="264" r="5" fill="#FF6B2B" opacity="0.18"/>  <circle cx="774" cy="264" r="5" fill="#FF6B2B" opacity="0.18"/>
+  <text x="750" y="264" font-family="'Barlow Condensed',sans-serif" font-weight="700" font-size="72" text-anchor="middle">
+    <tspan letter-spacing="4" fill="#F0F4FA">CAIO</tspan><tspan dx="10" letter-spacing="2" fill="#F0F4FA" opacity="0.55">Insight</tspan>
+  </text>
+  <text x="750" y="310" font-family="'Barlow Condensed',sans-serif" font-weight="700" font-size="28" letter-spacing="1" fill="#F0F4FA" opacity="0.45" text-anchor="middle">AI Visibility Diagnostics · caioinsight.ai</text>
+</svg>
