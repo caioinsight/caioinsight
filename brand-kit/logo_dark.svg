@@ -1,9 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 88" width="440" height="88">
-  <rect width="440" height="88" fill="#070D1A"/>
-  <circle cx="5.0" cy="26.0" r="2.5" fill="#FF6B2B" opacity="0.18"/>  <circle cx="17.0" cy="26.0" r="2.5" fill="#FF6B2B" opacity="0.18"/>  <circle cx="29.0" cy="26.0" r="2.5" fill="#FF6B2B" opacity="0.95"/>  <circle cx="5.0" cy="38.0" r="2.5" fill="#FF6B2B" opacity="0.18"/>  <circle cx="17.0" cy="38.0" r="2.5" fill="#FF6B2B" opacity="0.55"/>  <circle cx="29.0" cy="38.0" r="2.5" fill="#FF6B2B" opacity="0.18"/>  <circle cx="5.0" cy="50.0" r="2.5" fill="#FF6B2B" opacity="0.22"/>  <circle cx="17.0" cy="50.0" r="2.5" fill="#FF6B2B" opacity="0.18"/>  <circle cx="29.0" cy="50.0" r="2.5" fill="#FF6B2B" opacity="0.18"/>
-  <text x="46" y="60"
-    font-family="'Barlow Condensed',sans-serif"
-    font-weight="700" font-size="52">
-    <tspan letter-spacing="2" fill="#F0F4FA">CAIO</tspan><tspan dx="6" letter-spacing="1" fill="#F0F4FA" opacity="0.55">Insight</tspan>
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 40" width="220" height="40">
+  <rect width="220" height="40" fill="#070D1A"/>
+  <circle cx="5" cy="8" r="2.5" fill="#FF6B2B" opacity="0.35"/>
+  <circle cx="17" cy="8" r="2.5" fill="#FF6B2B" opacity="0.35"/>
+  <circle cx="29" cy="8" r="2.5" fill="#FF6B2B" opacity="0.90"/>
+  <circle cx="5" cy="20" r="2.5" fill="#FF6B2B" opacity="0.35"/>
+  <circle cx="17" cy="20" r="2.5" fill="#FF6B2B" opacity="0.35"/>
+  <circle cx="29" cy="20" r="2.5" fill="#FF6B2B" opacity="0.35"/>
+  <circle cx="5" cy="32" r="2.5" fill="#FF6B2B" opacity="0.35"/>
+  <circle cx="17" cy="32" r="2.5" fill="#FF6B2B" opacity="0.35"/>
+  <circle cx="29" cy="32" r="2.5" fill="#FF6B2B" opacity="0.35"/>
+  <text x="42" y="27" font-family="'Barlow Condensed',Arial Narrow,sans-serif" font-weight="700" font-size="26" letter-spacing="2" fill="#F0F4FA">CAIO</text>
 </svg>
