@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cowy · Weekly Action Board</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mint:#A3E2C9; --mint-deep:#5FBF9B; --mint-soft:#E7F6EF;
+  --ink:#1C2521; --paper:#EEF5F0; --card:#FFFFFF; --border:#DDEAE3; --muted:#5E726A;
+  --brown:#5B4636; --tan:#C9A36F;
+  --today:#5FBF9B; --week:#C98A2B; --out:#6E8FB5; --park:#9AA39E;
+  --sans:'Nunito',sans-serif; --mono:'Geist Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;line-height:1.5}
+.mono{font-family:var(--mono)}
+
+.bar{background:var(--card);border-bottom:1px solid var(--border);padding:.8rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap;position:sticky;top:0;z-index:50}
+.brand{display:flex;align-items:center;gap:9px;font-weight:900;font-size:1.15rem}
+.brand .dot{font-size:1.3rem}
+.weekchip{font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.weekchip b{color:var(--ink)}
+.savedot{font-size:10px;font-family:var(--mono);padding:3px 8px;border-radius:8px;background:var(--mint-soft);color:var(--mint-deep)}
+
+.stats{display:flex;gap:.5rem;padding:.8rem 1.1rem 0;flex-wrap:wrap}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.5rem .8rem;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.stat b{color:var(--ink);font-size:15px}
+
+.wrap{padding:.9rem 1.1rem 3rem;max-width:1100px;margin:0 auto}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+
+.col{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:.9rem;display:flex;flex-direction:column;min-height:140px}
+.col.over{border-color:var(--mint-deep);box-shadow:0 0 0 3px var(--mint-soft)}
+.colhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem}
+.coltitle{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:.95rem}
+.swatch{width:10px;height:10px;border-radius:3px}
+.coltime{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.s-today{background:var(--today)} .s-week{background:var(--week)} .s-out{background:var(--out)} .s-park{background:var(--park)}
+
+.card{background:var(--paper);border:1px solid var(--border);border-radius:11px;padding:.6rem .7rem;margin-bottom:.5rem;cursor:grab;transition:border-color .12s,transform .05s}
+.card:active{cursor:grabbing}
+.card.dragging{opacity:.4}
+.card.done .ctext{text-decoration:line-through;color:var(--muted)}
+.crow{display:flex;align-items:flex-start;gap:.5rem}
+.chk{flex-shrink:0;width:18px;height:18px;border:2px solid var(--border);border-radius:5px;margin-top:1px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
+.chk.on{background:var(--mint-deep);border-color:var(--mint-deep)}
+.ctext{flex:1;font-size:13.5px;line-height:1.45;outline:none}
+.cdel{flex-shrink:0;color:var(--muted);background:none;border:none;cursor:pointer;font-size:15px;line-height:1;padding:0 2px;opacity:.5}
+.cdel:hover{opacity:1;color:#B23B3B}
+.cmeta{display:flex;align-items:center;gap:.4rem;margin-top:.4rem;padding-left:.1rem}
+.est{font-family:var(--mono);font-size:10px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:6px;padding:1px 6px;cursor:pointer}
+.est:hover{border-color:var(--mint-deep);color:var(--ink)}
+.movehint{font-family:var(--mono);font-size:9px;color:var(--muted);margin-left:auto}
+.crackbtn{display:block;width:100%;margin-top:.5rem;border:none;background:linear-gradient(135deg,var(--mint-deep),#4FA888);color:#fff;border-radius:8px;padding:.45rem;font-family:var(--sans);font-weight:800;font-size:12px;cursor:pointer;letter-spacing:.01em}
+.crackbtn:hover{filter:brightness(1.06)}
+.crackbtn:active{transform:translateY(1px)}
+
+.bigsheet{background:var(--card);border-radius:16px;max-width:620px;width:100%;max-height:86vh;display:flex;flex-direction:column;overflow:hidden}
+.bigsheet .sh-head{padding:1.1rem 1.3rem .7rem;border-bottom:1px solid var(--border)}
+.bigsheet .sh-task{font-size:11px;font-family:var(--mono);color:var(--mint-deep);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.3rem}
+.bigsheet .sh-title{font-size:1.05rem;font-weight:800;line-height:1.35}
+.bigsheet .sh-body{padding:1rem 1.3rem;overflow:auto;font-size:13.5px;line-height:1.6;color:#3A463F}
+.bigsheet .sh-body h4{font-size:13px;margin:.9rem 0 .4rem;color:var(--ink)}
+.bigsheet .sh-body strong{color:var(--ink)}
+.bigsheet .sh-body ul{margin:.3rem 0 .6rem 1.1rem}
+.bigsheet .sh-body li{margin-bottom:.3rem}
+.bigsheet .sh-body pre{background:var(--mint-soft);border:1px solid var(--border);border-radius:9px;padding:.7rem;font-family:var(--mono);font-size:11.5px;white-space:pre-wrap;line-height:1.55;margin:.5rem 0;color:var(--ink)}
+.bigsheet .sh-foot{padding:.8rem 1.3rem;border-top:1px solid var(--border);display:flex;gap:.5rem;flex-wrap:wrap}
+.loaddots{display:flex;align-items:center;gap:.5rem;color:var(--muted);font-size:13px;padding:1rem 0}
+.loaddots .sp{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--mint-deep);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.addrow{display:flex;gap:.4rem;margin-top:.3rem}
+.addinput{flex:1;border:1px dashed var(--border);background:transparent;border-radius:9px;padding:.5rem .6rem;font-family:var(--sans);font-size:13px;color:var(--ink);outline:none}
+.addinput:focus{border-color:var(--mint-deep);border-style:solid}
+.addbtn{border:none;background:var(--mint-soft);color:var(--mint-deep);border-radius:9px;padding:0 .8rem;font-weight:800;font-size:18px;cursor:pointer}
+
+.actionbtn{display:block;width:100%;margin-top:.6rem;border:none;background:var(--out);color:#fff;border-radius:10px;padding:.6rem;font-family:var(--sans);font-weight:800;font-size:13px;cursor:pointer}
+.actionbtn:hover{filter:brightness(1.05)}
+.actionbtn.secondary{background:transparent;color:var(--muted);border:1px solid var(--border);font-weight:700}
+
+.toolbar{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap}
+.tbtn{font-family:var(--mono);font-size:11px;border:1px solid var(--border);background:var(--card);color:var(--muted);border-radius:9px;padding:.5rem .8rem;cursor:pointer}
+.tbtn:hover{border-color:var(--mint-deep);color:var(--ink)}
+
+.modal{position:fixed;inset:0;background:rgba(28,37,33,.5);display:none;align-items:center;justify-content:center;padding:1.2rem;z-index:100}
+.modal.show{display:flex}
+.sheet{background:var(--card);border-radius:16px;padding:1.3rem;max-width:480px;width:100%;max-height:80vh;overflow:auto}
+.sheet h3{font-size:1.05rem;margin-bottom:.7rem}
+.sheet textarea{width:100%;min-height:200px;border:1px solid var(--border);border-radius:10px;padding:.7rem;font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--ink);resize:vertical}
+.sheet .row{display:flex;gap:.5rem;margin-top:.8rem}
+.note{font-size:11px;color:var(--muted);font-style:italic;margin-top:.5rem;line-height:1.5}
+.footer{text-align:center;font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:1.4rem;line-height:1.6}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="brand"><span class="dot">🐮</span> cowy <span class="mono" style="font-size:11px;color:var(--muted);font-weight:400">ACTION BOARD</span></div>
+  <div class="weekchip">
+    <span>Week of <b id="weekrange">—</b></span>
+    <span id="dayleft"></span>
+    <span class="savedot" id="savedot">saved</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat">Open <b id="st-open">0</b></div>
+  <div class="stat">Done <b id="st-done">0</b></div>
+  <div class="stat">Today's load <b id="st-load">0h</b></div>
+  <div class="stat">This week <b id="st-week">0h</b></div>
+</div>
+
+<div class="wrap">
+  <div class="grid" id="grid">
+    <!-- columns injected -->
+  </div>
+
+  <div class="toolbar">
+    <button class="tbtn" onclick="rolloverPrompt()">↻ Start a fresh week</button>
+    <button class="tbtn" onclick="openContext()">🧠 Edit Claude's context</button>
+    <button class="tbtn" onclick="exportText()">⬇ Export this week</button>
+    <button class="tbtn" onclick="resetSeed()">⤺ Reload starter list</button>
+  </div>
+
+  <div class="footer">
+    Rolling week, auto-detected. Your edits save to this board and reload on any device you open it on.<br>
+    Tip: drag cards between columns. Tap a card's time chip to cycle the estimate. Tap text to edit.
+  </div>
+</div>
+
+<!-- share/outsource modal -->
+<div class="modal" id="modal">
+  <div class="sheet">
+    <h3 id="modaltitle">Outsource list</h3>
+    <textarea id="modaltext" readonly></textarea>
+    <div class="note" id="modalnote"></div>
+    <div class="row">
+      <button class="actionbtn" style="background:var(--mint-deep)" onclick="copyModal()">Copy to clipboard</button>
+      <button class="actionbtn secondary" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- crack'n plan modal -->
+<div class="modal" id="crackmodal">
+  <div class="bigsheet">
+    <div class="sh-head">
+      <div class="sh-task">⚡ get crack'n plan</div>
+      <div class="sh-title" id="cracktitle">—</div>
+    </div>
+    <div class="sh-body" id="crackbody"></div>
+    <div class="sh-foot">
+      <button class="actionbtn" style="background:var(--mint-deep);width:auto;flex:1" onclick="openDesktop()">🖥 Open in Claude Desktop</button>
+      <button class="actionbtn" style="background:var(--out);width:auto;flex:1" onclick="copyOpenWeb()">📋 Copy &amp; open Claude (web/phone)</button>
+      <button class="actionbtn secondary" style="width:auto" onclick="closeCrack()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- Cowy context (distilled from our build, editable, persists) ----------
+const DEFAULT_CONTEXT =
+"BUSINESS: Cowy is a done-for-you AI search optimization (GEO/AEO) service for baby & kids CONSUMABLES DTC brands (infant formula, baby food/pouches, diapers, wipes, toddler snacks, baby skincare, kids vitamins). " +
+"FOUNDER: Patrick O'Brien, solo, non-developer, MSBA + MBA focused on AI, based in Carlsbad CA. Wants Claude to do ~90% of the work to start and run the business. " +
+"POSITIONING: Sell ACCURACY + RECOMMENDATION-SHARE, not just visibility. The wedge: make AI name the brand over competitors and never misquote a product fact (ingredients, safety, compatibility). Visibility is now automatic via Shopify's AI feeds, so the defensible work is being chosen and being correct. " +
+"OFFER LADDER: free AI-visibility check -> $79/mo Watchdog monitoring (alerts on wrong facts or a competitor overtaking) -> $1,500 one-time audit (credited toward retainer) -> $2,500/mo done-for-you retainer (monitor + 2-4 fixes/mo + prove lift; 'no lift that month, you don't pay it'). " +
+"SALES MOTION: fully async, no calls. Cold email + a 3-minute personalized video showing the brand's real AI gap, then intake form, then report, then upsell. Lead the Watchdog as the easy first yes. Goal early on: land 3 clients + one real before/after case study. " +
+"TARGET BRANDS (Tier 1, funded, DTC-native): Bobbie, Coterie, Little Spoon, ByHeart, Tubby Todd, Mushie. " +
+"TOOLS CLAUDE HAS: web search/research, writing, building websites and documents and files, image search, Notion connector (client tracker + report template already built), Canva connector. " +
+"CLAUDE CANNOT: log into Patrick's personal accounts, make payments, sign legal docs, register domains, or take physical actions. " +
+"BRAND: website palette is mint (#A3E2C9 / #5FBF9B), logo is a brown cow, fonts Nunito + Geist Mono. " +
+"ASSETS BUILT: marketing site (cowy_kids), intelligence dashboard, Notion report template + client tracker, intake form, cold email + video script, this action board.";
+
+let cowyContext = DEFAULT_CONTEXT;
+const CTX_KEY = 'cowy_context_v1';
+
+async function loadContext(){
+  try{ const r=await window.storage.get(CTX_KEY); if(r&&r.value) cowyContext=r.value; }catch(e){}
+}
+async function saveContext(){
+  try{ await window.storage.set(CTX_KEY, cowyContext); }catch(e){}
+}
+
+// ---------- build the full prompt ----------
+function buildPrompt(task){
+  return (
+"You are Claude, co-running my business with me. Do roughly 90% of the work yourself. " +
+"Exhaust every automation and Claude-doable option BEFORE assigning anything to me. Assign me ONLY what truly needs me: my personal accounts, payments, legal signatures, final approval, or a physical action.\n\n" +
+"CONTEXT (everything you need to know about the business):\n" + cowyContext + "\n\n" +
+"TASK I need done:\n\"" + task + "\"\n\n" +
+"Do this now: (1) briefly confirm the plan, (2) split it into what you will do (~90%) versus the few things only I can do, (3) start doing the automatable parts immediately using web search, writing, file/site building, and the Notion/Canva connectors as needed, (4) end with the short list of what you need from me. Keep me out of anything you can handle yourself."
+  );
+}
+
+let lastTask = "", lastPrompt = "";
+
+function crackin(task){   // "Mooove" handler
+  lastTask = task;
+  lastPrompt = buildPrompt(task);
+  document.getElementById('cracktitle').textContent = task;
+  document.getElementById('crackbody').innerHTML =
+    '<p style="margin-bottom:.6rem">Your prompt is ready, with the full business context baked in. Send it to Claude:</p>' +
+    '<pre id="promptpre">' + escForHtml(lastPrompt) + '</pre>' +
+    '<p class="note" style="margin-top:.6rem">Claude opens with this pre-filled (desktop) or on your clipboard to paste (phone/web). You press enter to run it. That last step is a built-in safety stop, not a bug.</p>';
+  document.getElementById('crackmodal').classList.add('show');
+}
+function escForHtml(s){ return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+function openDesktop(){
+  const url = 'claude://claude.ai/new?q=' + encodeURIComponent(lastPrompt);
+  window.location.href = url;
+  flash('Opening Claude Desktop… press enter to run. If nothing opens, use Copy & open web.');
+}
+function copyOpenWeb(){
+  if(navigator.clipboard) navigator.clipboard.writeText(lastPrompt);
+  window.open('https://claude.ai/new', '_blank');
+  flash('Prompt copied. Paste into Claude (long-press → Paste) and press enter.');
+}
+function flash(msg){
+  let f=document.getElementById('flashmsg');
+  if(!f){ f=document.createElement('div'); f.id='flashmsg'; f.style.cssText='position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);background:var(--ink);color:#fff;padding:.6rem 1rem;border-radius:10px;font-size:12.5px;z-index:300;max-width:90%;text-align:center;line-height:1.4'; document.body.appendChild(f); }
+  f.textContent=msg; f.style.opacity='1';
+  setTimeout(()=>{ f.style.transition='opacity .5s'; f.style.opacity='0'; }, 3200);
+}
+
+function closeCrack(){ document.getElementById('crackmodal').classList.remove('show'); }
+
+// ---------- context editor ----------
+function openContext(){
+  openModal('Business context Claude carries into every Mooove', cowyContext,
+    'This is the distilled context from everything we built. Edit it as the business changes, then Save. Every Mooove prompt includes it so a fresh Claude chat already knows your business.');
+  // make the export modal's textarea editable + add a save button for this case
+  const ta=document.getElementById('modaltext'); ta.readOnly=false;
+  const foot=document.querySelector('#modal .row');
+  document.querySelector('#modal .actionbtn').textContent='Save context';
+  document.querySelector('#modal .actionbtn').onclick=async()=>{ cowyContext=ta.value.trim()||cowyContext; await saveContext(); closeModal(); ta.readOnly=true; document.querySelector('#modal .actionbtn').textContent='Copy to clipboard'; document.querySelector('#modal .actionbtn').onclick=copyModal; };
+}
+
+// light markdown -> html
+function mdToHtml(md){
+  const esc = s => s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const lines = md.split('\n');
+  let html = '', inList = false, inCode = false, code = '';
+  const closeList = () => { if(inList){ html += '</ul>'; inList=false; } };
+  lines.forEach(raw => {
+    const line = raw.replace(/\r/,'');
+    if(line.trim().startsWith('```')){
+      if(inCode){ html += '<pre>'+esc(code)+'</pre>'; code=''; inCode=false; }
+      else { closeList(); inCode=true; }
+      return;
+    }
+    if(inCode){ code += (code?'\n':'')+line; return; }
+    const bold = s => esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`(.+?)`/g,'<code>$1</code>');
+    if(/^\s*[-*•]\s+/.test(line)){
+      if(!inList){ html+='<ul>'; inList=true; }
+      html += '<li>'+bold(line.replace(/^\s*[-*•]\s+/,''))+'</li>';
+    } else if(line.trim()===''){
+      closeList();
+    } else if(/^\*\*.+\*\*$/.test(line.trim())){
+      closeList(); html += '<h4>'+bold(line.trim())+'</h4>';
+    } else {
+      closeList(); html += '<p>'+bold(line)+'</p>';
+    }
+  });
+  closeList();
+  if(inCode && code) html += '<pre>'+esc(code)+'</pre>';
+  return html;
+}
+
+// ---------- column config ----------
+const COLS = [
+  {key:'today', name:'Do Today',  sw:'s-today', action:null},
+  {key:'week',  name:'This Week', sw:'s-week',  action:null},
+  {key:'out',   name:'Outsource', sw:'s-out',   action:'outsource'},
+  {key:'park',  name:'Park',      sw:'s-park',  action:null}
+];
+const ESTS = ['15m','30m','1h','2h','3h','half day','—'];
+
+// ---------- starter list (this week) ----------
+function seed(){
+  return {
+    today: [
+      {t:"Run real AI teardown on Bobbie (formula): 'best organic baby formula 2026'", e:'30m', d:false},
+      {t:"Screenshot the gap (who AI names + any wrong fact)", e:'15m', d:false},
+      {t:"Send cold email + 3-min video to first 3 brands", e:'1h', d:false}
+    ],
+    week: [
+      {t:"Teardowns on Coterie, Little Spoon, ByHeart, Tubby Todd, Mushie", e:'2h', d:false},
+      {t:"Update cold email + video script to accuracy/misquote angle", e:'1h', d:false},
+      {t:"Reposition outreach copy: 'AI is misquoting your product'", e:'30m', d:false},
+      {t:"Log every prospect in Notion tracker (Lead → Check sent)", e:'30m', d:false},
+      {t:"Register cowy.ai + getcowy.com at Porkbun", e:'15m', d:false},
+      {t:"Line up one reliable Shopify dev (Upwork post + test task)", e:'2h', d:false}
+    ],
+    out: [
+      {t:"Logo vectorize: run Inkscape Trace Bitmap or Vectorizer.AI", e:'30m', d:false},
+      {t:"Animated explainer video: brief a motion designer (Route C)", e:'1h', d:false},
+      {t:"Watchdog tier: set up on Scrunch/Otterly agency plan", e:'2h', d:false}
+    ],
+    park: [
+      {t:"Port v8 AEO/schema layer onto live site", e:'half day', d:false},
+      {t:"Productized template kit ($200-400 DIY download)", e:'3h', d:false},
+      {t:"Agentic-commerce readiness service line (research)", e:'2h', d:false}
+    ]
+  };
+}
+
+// ---------- rolling week ----------
+function weekStart(d){ // Monday start
+  const x=new Date(d); const day=(x.getDay()+6)%7; x.setHours(0,0,0,0); x.setDate(x.getDate()-day); return x;
+}
+function fmt(d){ return d.toLocaleDateString(undefined,{month:'short',day:'numeric'}); }
+function weekKey(d){ const w=weekStart(d); return w.toISOString().slice(0,10); }
+
+let state=null;
+const STORAGE_KEY='cowy_board_v1';
+
+async function load(){
+  let saved=null;
+  try{ const r=await window.storage.get(STORAGE_KEY); if(r&&r.value) saved=JSON.parse(r.value); }catch(e){ saved=null; }
+  const curKey=weekKey(new Date());
+  if(!saved){
+    state={week:curKey, cols:seed()};
+    await save();
+  } else if(saved.week!==curKey){
+    // rolling: new week. Carry unfinished items from today+week+out into the new week's "This Week"; drop done; keep park.
+    const carry=[];
+    ['today','week','out'].forEach(k=>{ (saved.cols[k]||[]).forEach(c=>{ if(!c.d) carry.push(c); }); });
+    state={week:curKey, cols:{ today:[], week:carry, out:[], park:(saved.cols.park||[]).filter(c=>!c.d) }};
+    await save();
+  } else {
+    state=saved;
+  }
+  render();
+}
+
+let saveTimer=null;
+async function save(){
+  try{
+    document.getElementById('savedot').textContent='saving…';
+    await window.storage.set(STORAGE_KEY, JSON.stringify(state));
+    document.getElementById('savedot').textContent='saved';
+  }catch(e){
+    document.getElementById('savedot').textContent='save failed';
+  }
+}
+function queueSave(){ clearTimeout(saveTimer); saveTimer=setTimeout(save,400); }
+
+// ---------- render ----------
+function render(){
+  // week label
+  const ws=weekStart(new Date(state.week+'T00:00:00'));
+  const we=new Date(ws); we.setDate(we.getDate()+6);
+  document.getElementById('weekrange').textContent=fmt(ws)+' – '+fmt(we);
+  const today=new Date(); const end=new Date(we); end.setHours(23,59,59);
+  const daysLeft=Math.max(0,Math.ceil((end-today)/86400000));
+  document.getElementById('dayleft').textContent='· '+daysLeft+' day'+(daysLeft===1?'':'s')+' left';
+
+  const grid=document.getElementById('grid'); grid.innerHTML='';
+  COLS.forEach(col=>{
+    const items=state.cols[col.key]||[];
+    const div=document.createElement('div');
+    div.className='col'; div.dataset.col=col.key;
+    const mins=items.filter(i=>!i.d).reduce((a,i)=>a+estMin(i.e),0);
+    div.innerHTML=`
+      <div class="colhead">
+        <div class="coltitle"><span class="swatch ${col.sw}"></span>${col.name}</div>
+        <span class="coltime">${items.filter(i=>!i.d).length} open · ${fmtH(mins)}</span>
+      </div>
+      <div class="cards" data-col="${col.key}"></div>
+      <div class="addrow">
+        <input class="addinput" placeholder="Add to ${col.name}…" data-col="${col.key}">
+        <button class="addbtn" data-col="${col.key}">+</button>
+      </div>
+      ${col.action==='outsource' ? '<button class="actionbtn" onclick="shareOutsource()">📤 Turn into a ready-to-send message</button>' : ''}
+    `;
+    grid.appendChild(div);
+    const cardsWrap=div.querySelector('.cards');
+    items.forEach((it,idx)=>cardsWrap.appendChild(makeCard(col.key,it,idx)));
+    // add handlers
+    const inp=div.querySelector('.addinput'), btn=div.querySelector('.addbtn');
+    const add=()=>{ const v=inp.value.trim(); if(!v) return; state.cols[col.key].push({t:v,e:'30m',d:false}); inp.value=''; queueSave(); render(); };
+    btn.onclick=add; inp.onkeydown=e=>{ if(e.key==='Enter') add(); };
+    // drop target
+    div.ondragover=e=>{e.preventDefault();div.classList.add('over');};
+    div.ondragleave=()=>div.classList.remove('over');
+    div.ondrop=e=>{e.preventDefault();div.classList.remove('over');doDrop(col.key);};
+  });
+  updateStats();
+}
+
+function makeCard(colKey,it,idx){
+  const c=document.createElement('div');
+  c.className='card'+(it.d?' done':''); c.draggable=true;
+  c.innerHTML=`
+    <div class="crow">
+      <div class="chk ${it.d?'on':''}">${it.d?'✓':''}</div>
+      <div class="ctext" contenteditable="true">${escapeHtml(it.t)}</div>
+      <button class="cdel">×</button>
+    </div>
+    <div class="cmeta">
+      <span class="est">${it.e}</span>
+      <span class="movehint">drag to move</span>
+    </div>
+    <button class="crackbtn">🐄 Mooove!</button>`;
+  c.querySelector('.chk').onclick=()=>{ it.d=!it.d; queueSave(); render(); };
+  c.querySelector('.cdel').onclick=()=>{ state.cols[colKey].splice(idx,1); queueSave(); render(); };
+  const txt=c.querySelector('.ctext');
+  txt.onblur=()=>{ it.t=txt.textContent.trim()||it.t; queueSave(); };
+  c.querySelector('.est').onclick=()=>{ const i=ESTS.indexOf(it.e); it.e=ESTS[(i+1)%ESTS.length]; queueSave(); render(); };
+  c.querySelector('.crackbtn').onclick=(e)=>{ e.stopPropagation(); crackin(it.t); };
+  c.ondragstart=e=>{ dragSrc={col:colKey,idx}; c.classList.add('dragging'); };
+  c.ondragend=()=>c.classList.remove('dragging');
+  return c;
+}
+
+let dragSrc=null;
+function doDrop(destCol){
+  if(!dragSrc) return;
+  const item=state.cols[dragSrc.col].splice(dragSrc.idx,1)[0];
+  if(item) state.cols[destCol].push(item);
+  dragSrc=null; queueSave(); render();
+}
+
+// ---------- estimates / stats ----------
+function estMin(e){ const m={'15m':15,'30m':30,'1h':60,'2h':120,'3h':180,'half day':240,'—':0}; return m[e]||0; }
+function fmtH(min){ if(min<60) return min+'m'; const h=(min/60); return (Math.round(h*10)/10)+'h'; }
+function updateStats(){
+  let open=0,done=0,todayMin=0,weekMin=0;
+  Object.keys(state.cols).forEach(k=>{ state.cols[k].forEach(i=>{ i.d?done++:open++; }); });
+  state.cols.today.filter(i=>!i.d).forEach(i=>todayMin+=estMin(i.e));
+  state.cols.week.filter(i=>!i.d).forEach(i=>weekMin+=estMin(i.e));
+  document.getElementById('st-open').textContent=open;
+  document.getElementById('st-done').textContent=done;
+  document.getElementById('st-load').textContent=fmtH(todayMin);
+  document.getElementById('st-week').textContent=fmtH(weekMin+todayMin);
+}
+
+// ---------- outsource -> message ----------
+function shareOutsource(){
+  const items=state.cols.out.filter(i=>!i.d);
+  if(!items.length){ openModal('Outsource list','Nothing in Outsource yet. Drag cards here, then generate the message.',''); return; }
+  let msg="Hi — a few things I'd like to hand off this week:\n\n";
+  items.forEach((i,n)=>{ msg+=`${n+1}. ${i.t}${i.e&&i.e!=='—'?'  (est. '+i.e+')':''}\n`; });
+  msg+="\nLet me know what you'd charge and your turnaround. Thanks!";
+  openModal('Ready-to-send outsource message', msg, 'Copy this into email, Slack, or an Upwork message to a freelancer or dev.');
+}
+function openModal(title,text,note){
+  document.getElementById('modaltitle').textContent=title;
+  document.getElementById('modaltext').value=text;
+  document.getElementById('modalnote').textContent=note||'';
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+function copyModal(){ const t=document.getElementById('modaltext'); t.select(); try{document.execCommand('copy');}catch(e){} navigator.clipboard&&navigator.clipboard.writeText(t.value); document.querySelector('#modal .actionbtn').textContent='Copied ✓'; setTimeout(()=>document.querySelector('#modal .actionbtn').textContent='Copy to clipboard',1400); }
+
+// ---------- toolbar ----------
+function exportText(){
+  let out='COWY — Week of '+document.getElementById('weekrange').textContent+'\n\n';
+  COLS.forEach(c=>{ out+=c.name.toUpperCase()+'\n'; (state.cols[c.key]||[]).forEach(i=>{ out+=(i.d?'[x] ':'[ ] ')+i.t+(i.e&&i.e!=='—'?'  ('+i.e+')':'')+'\n'; }); out+='\n'; });
+  openModal('Export this week', out, 'Copy to paste into Notion, a doc, or email.');
+}
+async function rolloverPrompt(){
+  if(!confirm('Start a fresh week? Unfinished Today/This Week/Outsource items carry into the new week. Done items clear. Park stays.')) return;
+  const carry=[]; ['today','week','out'].forEach(k=>{ state.cols[k].forEach(c=>{ if(!c.d) carry.push(c); }); });
+  state={week:weekKey(new Date()), cols:{today:[],week:carry,out:[],park:state.cols.park.filter(c=>!c.d)}};
+  await save(); render();
+}
+async function resetSeed(){
+  if(!confirm('Reload the starter list? This replaces the current board with the original this-week to-dos.')) return;
+  state={week:weekKey(new Date()), cols:seed()}; await save(); render();
+}
+
+function escapeHtml(s){ return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+loadContext();
+load();
+</script>
+</body>
+</html>
