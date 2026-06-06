@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cowy · Start your AI visibility check</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--mint:#A3E2C9;--mint-deep:#5FBF9B;--mint-soft:#E7F6EF;--ink:#1C2521;--paper:#EEF5F0;--card:#FFFFFF;--border:#DDEAE3;--muted:#5E726A;--sans:'Nunito',sans-serif;--mono:'Geist Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:600px;margin:0 auto;padding:48px 22px 80px}
+.brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:36px}
+.brand .wm{font-weight:900;font-size:1.5rem;color:var(--ink)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mint-deep);font-weight:500;display:flex;align-items:center;gap:7px;justify-content:center;margin-bottom:14px}
+.eyebrow::before{content:"";width:18px;height:1.5px;background:var(--mint-deep);display:inline-block}
+h1{font-size:2rem;font-weight:900;letter-spacing:-.02em;text-align:center;line-height:1.15;margin-bottom:12px}
+.sub{text-align:center;color:var(--muted);font-size:15.5px;margin-bottom:8px}
+.async-note{text-align:center;font-size:13px;color:var(--mint-deep);font-weight:700;margin-bottom:36px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:34px}
+.field{margin-bottom:22px}
+label{display:block;font-weight:800;font-size:14.5px;margin-bottom:7px}
+label .req{color:var(--mint-deep)}
+.hint{font-size:12.5px;color:var(--muted);margin-bottom:9px;line-height:1.5}
+input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--ink);background:#fff}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--mint-deep);box-shadow:0 0 0 3px var(--mint-soft)}
+textarea{resize:vertical;min-height:84px;font-weight:600}
+.btn{width:100%;padding:15px;border:none;border-radius:10px;background:var(--mint-deep);color:#fff;font-family:var(--sans);font-weight:900;font-size:16px;cursor:pointer;margin-top:8px}
+.btn:hover{background:#4FA888}
+.foot{text-align:center;font-size:12.5px;color:var(--muted);margin-top:22px;line-height:1.6}
+.ok{display:none;text-align:center;padding:30px 0}
+.ok h2{font-size:1.5rem;font-weight:900;margin-bottom:10px}
+.ok p{color:var(--muted);font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><span class="wm">cowy</span></div>
+  <div class="eyebrow">Start here</div>
+  <h1>Let us check your AI visibility.</h1>
+  <p class="sub">Two minutes. We run your store through the questions parents ask AI, then send your report.</p>
+  <p class="async-note">No call. No meeting. We reply by email.</p>
+
+  <div class="card" id="formcard">
+    <div class="field">
+      <label>Your store URL <span class="req">*</span></label>
+      <div class="hint">The Shopify store you want checked.</div>
+      <input type="url" id="store" placeholder="https://yourbrand.com" required>
+    </div>
+    <div class="field">
+      <label>What do you sell? <span class="req">*</span></label>
+      <select id="cat">
+        <option value="">Pick one</option>
+        <option>Baby formula</option>
+        <option>Baby food &amp; pouches</option>
+        <option>Diapers</option>
+        <option>Baby wipes</option>
+        <option>Toddler snacks</option>
+        <option>Baby skincare &amp; bath</option>
+        <option>Baby &amp; kids vitamins</option>
+        <option>Other kids consumable</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Your top 2 or 3 competitors</label>
+      <div class="hint">The brands you keep losing to. Helps us see who AI names instead of you.</div>
+      <input type="text" id="comp" placeholder="e.g. Bobbie, Kendamil">
+    </div>
+    <div class="field">
+      <label>What is the one question a parent asks before buying from you?</label>
+      <div class="hint">In their words. This is what we test AI against first.</div>
+      <input type="text" id="q" placeholder="e.g. is this formula palm-oil free?">
+    </div>
+    <div class="field">
+      <label>Your name &amp; email <span class="req">*</span></label>
+      <div class="hint">Where we send your report.</div>
+      <input type="text" id="name" placeholder="Name" style="margin-bottom:10px">
+      <input type="email" id="email" placeholder="you@brand.com" required>
+    </div>
+    <div class="field">
+      <label>Anything else we should know?</label>
+      <textarea id="notes" placeholder="Optional. A recent launch, a fact AI keeps getting wrong, a goal."></textarea>
+    </div>
+    <button class="btn" onclick="submitForm()">Send my free check request</button>
+    <p class="foot">We reply within 2 business days with your results. If you want the full report, it is $1,500 and credited back if you continue monthly.</p>
+  </div>
+
+  <div class="ok" id="ok">
+    <div class="brand"><span class="wm">cowy</span></div>
+    <h2>Got it. Thank you.</h2>
+    <p>We will run your check and email your results within 2 business days. No call needed. Watch your inbox.</p>
+  </div>
+</div>
+<script>
+function submitForm(){
+  var store=document.getElementById('store').value.trim();
+  var cat=document.getElementById('cat').value;
+  var email=document.getElementById('email').value.trim();
+  if(!store||!cat||!email){alert('Please add your store URL, what you sell, and your email.');return;}
+  // NOTE: wire this to your form handler (Formspree, Tally webhook, or email service).
+  // For now it confirms locally so the page works as a preview.
+  document.getElementById('formcard').style.display='none';
+  document.getElementById('ok').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
