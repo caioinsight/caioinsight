@@ -28,6 +28,25 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
 .btn{width:100%;padding:15px;border:none;border-radius:10px;background:var(--mint-deep);color:#fff;font-family:var(--sans);font-weight:900;font-size:16px;cursor:pointer;margin-top:8px}
 .btn:hover{background:#4FA888}
 .foot{text-align:center;font-size:12.5px;color:var(--muted);margin-top:22px;line-height:1.6}
+/* upgrade / plans */
+.plans{margin-top:30px}
+.plans .ph{text-align:center;margin-bottom:18px}
+.plans .ph h3{font-size:1.3rem;font-weight:900;letter-spacing:-.01em}
+.plans .ph p{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.55}
+.tier{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:14px}
+.tier.feature{border:2px solid var(--mint-deep);box-shadow:0 8px 24px rgba(95,191,155,.12)}
+.tier .tname{font-weight:900;font-size:1.05rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tier .tprice{font-family:var(--mono);font-weight:700;font-size:1.05rem;margin-left:auto}
+.tier .tsub{font-size:13px;color:var(--muted);margin:6px 0 12px;line-height:1.5}
+.tier ul{list-style:none;margin:0 0 14px;padding:0}
+.tier li{font-size:13.5px;color:var(--ink);line-height:1.5;padding:5px 0 5px 24px;position:relative}
+.tier li::before{content:"✓";position:absolute;left:0;color:var(--mint-deep);font-weight:900}
+.tier li b{font-weight:800}
+.badge{font-size:10px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;background:var(--mint-soft);color:var(--mint-deep);padding:2px 8px;border-radius:20px;font-weight:700}
+.btn.alt{background:var(--ink)}
+.btn.ghostb{background:transparent;border:1px solid var(--mint-deep);color:var(--mint-deep)}
+.coflash{font-size:12px;color:var(--mint-deep);text-align:center;margin-top:8px;display:none;line-height:1.5}
+.vs{font-size:12px;color:var(--muted);text-align:center;margin:6px 0 16px;font-style:italic}
 .ok{display:none;text-align:center;padding:30px 0}
 .ok h2{font-size:1.5rem;font-weight:900;margin-bottom:10px}
 .ok p{color:var(--muted);font-size:15px}
@@ -82,13 +101,16 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
       <textarea id="notes" placeholder="Optional. A recent launch, a fact AI keeps getting wrong, a goal."></textarea>
     </div>
     <button class="btn" onclick="submitForm()">Send my free check request</button>
-    <p class="foot">We reply within 2 business days with your results. If you want the full report, it is $1,500 and credited back if you continue monthly.</p>
+    <p class="foot">We reply within 2 business days with your results. The free check shows whether AI names you or a competitor. Want the whole picture now? See the plans below.</p>
   </div>
+
+  <div class="plans" id="plansBelow"></div>
 
   <div class="ok" id="ok">
     <div class="brand"><span class="wm">cowy</span></div>
     <h2>Got it. Thank you.</h2>
     <p>We will run your check and email your results within 2 business days. No call needed. Watch your inbox.</p>
+    <div class="plans" id="plansThanks"></div>
   </div>
 </div>
 <script>
@@ -103,6 +125,84 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
 // Field names sent (map these in your Zap): brand, category, competitors,
 //   buyer_question, contact_name, contact_email, store_url, notes, source.
 const ENDPOINT = "https://hooks.zapier.com/hooks/catch/27755702/4bxmsdo/"; // <-- live Zapier Catch Hook
+
+// ============================================================
+// CHECKOUT: paste your Stripe Payment Link for each plan here once.
+//   In Stripe, create three Payment Links:
+//     report   = $1,500 one-time
+//     watchdog = $79/month recurring
+//     dfy      = $2,500/month recurring
+//   Copy each link (https://buy.stripe.com/...) into the matching slot.
+//   Until a slot is filled, its button gracefully tells the buyer we'll
+//   email a secure checkout link (so it's never a dead button).
+const CHECKOUT = {
+  report:   "",   // $1,500 one-time
+  watchdog: "",   // $79/mo
+  dfy:      ""    // $2,500/mo
+};
+function goCheckout(plan, btn){
+  var url = CHECKOUT[plan];
+  if(url){ window.open(url, '_blank'); return; }
+  // graceful fallback before Stripe links are set
+  var flash = btn.parentElement.querySelector('.coflash');
+  if(flash){ flash.style.display='block'; flash.textContent='Reply to your email and we will send you a secure checkout link.'; }
+}
+
+// ---------- plans / upgrade section ----------
+function plansHtml(forThanks){
+  var intro = forThanks
+    ? '<h3>While we run your free check…</h3><p>Skip the wait. Here is what each plan unlocks, with the report credited back if you continue.</p>'
+    : '<h3>Want the whole picture now?</h3><p>The free check shows whether AI names you or a competitor. Here is what more looks like.</p>';
+  return ''
+  + '<div class="ph">'+intro+'</div>'
+  + '<div class="tier feature">'
+  +   '<div class="tname">Full report <span class="tprice">$1,500</span></div>'
+  +   '<div class="tsub">The free check finds the gap. The report shows you all of it, and how to win it back.</div>'
+  +   '<ul>'
+  +     '<li><b>Every</b> question where AI misses or misquotes you, not just one</li>'
+  +     '<li>The exact wrong facts AI is stating about your product</li>'
+  +     '<li>Who AI names instead of you, on the queries that decide the sale</li>'
+  +     '<li>A prioritized 90-day fix plan</li>'
+  +     '<li>The first fixes shipped for you</li>'
+  +     '<li><b>Credited back</b> if you go monthly</li>'
+  +   '</ul>'
+  +   '<button class="btn" onclick="goCheckout(\'report\',this)">Get the full report · $1,500</button>'
+  +   '<div class="coflash"></div>'
+  + '</div>'
+  + '<div class="vs">Want to keep an eye on things first, or have us run the whole thing?</div>'
+  + '<div class="tier">'
+  +   '<div class="tname">AI Watchdog <span class="badge">add-on</span> <span class="tprice">$79/mo</span></div>'
+  +   '<div class="tsub">Get told the moment AI gets you wrong, for the price of a couple of coffees.</div>'
+  +   '<ul>'
+  +     '<li>We watch AI answers about your brand every month</li>'
+  +     '<li>Alert the moment AI states a <b>wrong fact</b> about you</li>'
+  +     '<li>Alert when a <b>competitor overtakes</b> you</li>'
+  +     '<li>A short monthly recap</li>'
+  +     '<li>Credits toward the report if you upgrade</li>'
+  +   '</ul>'
+  +   '<button class="btn ghostb" onclick="goCheckout(\'watchdog\',this)">Add Watchdog · $79/mo</button>'
+  +   '<div class="coflash"></div>'
+  + '</div>'
+  + '<div class="tier">'
+  +   '<div class="tname">Done For You <span class="tprice">$2,500/mo</span></div>'
+  +   '<div class="tsub">We run the whole plan and prove the lift. You watch your name climb.</div>'
+  +   '<ul>'
+  +     '<li>Two to four fixes shipped <b>every month</b></li>'
+  +     '<li>A monthly scoreboard: your name vs theirs</li>'
+  +     '<li>Proof of the lift, in writing</li>'
+  +     '<li>We watch what rivals are doing</li>'
+  +     '<li><b>No lift that month? You don\'t pay it.</b></li>'
+  +     '<li>Your $1,500 report credits toward month one</li>'
+  +   '</ul>'
+  +   '<button class="btn alt" onclick="goCheckout(\'dfy\',this)">Go Done For You · $2,500/mo</button>'
+  +   '<div class="coflash"></div>'
+  + '</div>';
+}
+function renderPlans(){
+  var below=document.getElementById('plansBelow'); if(below) below.innerHTML=plansHtml(false);
+  var thanks=document.getElementById('plansThanks'); if(thanks) thanks.innerHTML=plansHtml(true);
+}
+renderPlans();
 // ============================================================
 
 function submitForm(){
