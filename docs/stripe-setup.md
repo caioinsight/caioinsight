@@ -88,3 +88,30 @@ Until they're filled in, each button gracefully says "Reply to your email and we
 | Get the full report | `report` | $1,500 | one-time |
 | Add Watchdog | `watchdog` | $79 | monthly |
 | Go Done For You | `dfy` | $2,500 | monthly |
+
+
+---
+
+## Update · Annual subscription links (15% off)
+
+The form now offers monthly **and** annual billing for the two subscriptions, so create two more Payment Links:
+
+### Link 4 — AI Watchdog (annual)
+- Product name: `Cowy AI Watchdog (Annual)`
+- Price: **$806.00** · **Recurring → Yearly**  (that's $79/mo × 12, minus 15%)
+- Copy link → **watchdog_annual** slot.
+
+### Link 5 — Done For You (annual)
+- Product name: `Cowy Done For You (Annual)`
+- Price: **$25,500.00** · **Recurring → Yearly**  ($2,500/mo × 12, minus 15%)
+- Copy link → **dfy_annual** slot.
+
+So the form's `CHECKOUT` now has five slots:
+
+```
+report:           https://buy.stripe.com/...   ($1,500 one-time)
+watchdog_monthly: https://buy.stripe.com/...   ($79/mo)
+watchdog_annual:  https://buy.stripe.com/...   ($806/yr)
+dfy_monthly:      https://buy.stripe.com/...   ($2,500/mo)
+dfy_annual:       https://buy.stripe.com/...   ($25,500/yr)
+```
