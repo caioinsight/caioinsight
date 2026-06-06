@@ -211,7 +211,8 @@ function plansHtml(forThanks){
   }
   return '<div class="ph">'+intro+'</div>'
     + plans.map(card).join('')
-    + '<p class="foot" style="margin-top:6px">The $1,500 report comes back to you if you go monthly. So if you continue, the report is basically free.</p>';
+    + '<p class="foot" style="margin-top:6px">The $1,500 report comes back to you if you go monthly. So if you continue, the report is basically free.</p>'
+    + '<p class="foot" style="margin-top:4px"><a href="/terms.html" style="color:var(--muted)">Terms</a> · <a href="/refund.html" style="color:var(--muted)">Refund policy</a></p>';
 }
 function renderPlans(){
   var below=document.getElementById('plansBelow'); if(below) below.innerHTML=plansHtml(false);
