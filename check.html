@@ -66,7 +66,11 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
 .pcbtn.alt{background:var(--ink);color:#fff}
 .pcbtn.ghostb{background:transparent;border:1px solid var(--mint-deep);color:var(--mint-deep)}
 .pccurrent{text-align:center;font-weight:800;font-size:14px;color:var(--mint-deep);padding:12px;background:#fff;border:1px dashed var(--mint-deep);border-radius:10px}
-.ok{display:none;text-align:center;padding:30px 0}
+.ok{display:none;text-align:center;padding:6px 0 4px}
+.okcard{background:var(--mint-soft);border:1px solid var(--mint-deep);border-radius:18px;padding:28px 22px;margin-bottom:8px}
+.okmark{width:54px;height:54px;border-radius:50%;background:var(--mint-deep);color:#fff;font-size:28px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.okcard h2{font-size:1.5rem;font-weight:900;margin-bottom:8px}
+.okcard p{font-size:15px;color:var(--ink);line-height:1.6;max-width:440px;margin:0 auto}
 .ok h2{font-size:1.5rem;font-weight:900;margin-bottom:10px}
 .ok p{color:var(--muted);font-size:15px}
 </style>
@@ -74,63 +78,70 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
 <body>
 <div class="wrap">
   <div class="brand"><span class="wm">cowy</span></div>
-  <div class="eyebrow">Start here</div>
-  <h1>Let us check your AI visibility.</h1>
-  <p class="sub">Two minutes. We run your store through the questions parents ask AI, then send your report.</p>
-  <p class="async-note">No call. No meeting. We reply by email.</p>
 
-  <div class="card" id="formcard">
-    <div class="field">
-      <label>Your store URL <span class="req">*</span></label>
-      <div class="hint">The Shopify store you want checked.</div>
-      <input type="url" id="store" placeholder="https://yourbrand.com" required>
+  <!-- intro + form: hidden after submit -->
+  <div id="formzone">
+    <div class="eyebrow">Start here</div>
+    <h1>Let us check your AI visibility.</h1>
+    <p class="sub">Two minutes. We run your store through the questions parents ask AI, then send your report.</p>
+    <p class="async-note">No call. No meeting. We reply by email.</p>
+
+    <div class="card" id="formcard">
+      <div class="field">
+        <label>Your store URL <span class="req">*</span></label>
+        <div class="hint">The Shopify store you want checked.</div>
+        <input type="url" id="store" placeholder="https://yourbrand.com" required>
+      </div>
+      <div class="field">
+        <label>What do you sell? <span class="req">*</span></label>
+        <select id="cat">
+          <option value="">Pick one</option>
+          <option>Baby formula</option>
+          <option>Baby food &amp; pouches</option>
+          <option>Diapers</option>
+          <option>Baby wipes</option>
+          <option>Toddler snacks</option>
+          <option>Baby skincare &amp; bath</option>
+          <option>Baby &amp; kids vitamins</option>
+          <option>Other kids consumable</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Your top 2 or 3 competitors</label>
+        <div class="hint">The brands you keep losing to. Helps us see who AI names instead of you.</div>
+        <input type="text" id="comp" placeholder="e.g. Bobbie, Kendamil">
+      </div>
+      <div class="field">
+        <label>What is the one question a parent asks before buying from you?</label>
+        <div class="hint">In their words. This is what we test AI against first.</div>
+        <input type="text" id="q" placeholder="e.g. is this formula palm-oil free?">
+      </div>
+      <div class="field">
+        <label>Your name &amp; email <span class="req">*</span></label>
+        <div class="hint">Where we send your report.</div>
+        <input type="text" id="name" placeholder="Name" style="margin-bottom:10px">
+        <input type="email" id="email" placeholder="you@brand.com" required>
+      </div>
+      <div class="field">
+        <label>Anything else we should know?</label>
+        <textarea id="notes" placeholder="Optional. A recent launch, a fact AI keeps getting wrong, a goal."></textarea>
+      </div>
+      <button class="btn" onclick="submitForm()">Send my free check request</button>
+      <p class="foot">We reply within 2 business days with your results. The free check shows whether AI names you or a competitor. Want the whole picture now? See the plans below.</p>
     </div>
-    <div class="field">
-      <label>What do you sell? <span class="req">*</span></label>
-      <select id="cat">
-        <option value="">Pick one</option>
-        <option>Baby formula</option>
-        <option>Baby food &amp; pouches</option>
-        <option>Diapers</option>
-        <option>Baby wipes</option>
-        <option>Toddler snacks</option>
-        <option>Baby skincare &amp; bath</option>
-        <option>Baby &amp; kids vitamins</option>
-        <option>Other kids consumable</option>
-      </select>
-    </div>
-    <div class="field">
-      <label>Your top 2 or 3 competitors</label>
-      <div class="hint">The brands you keep losing to. Helps us see who AI names instead of you.</div>
-      <input type="text" id="comp" placeholder="e.g. Bobbie, Kendamil">
-    </div>
-    <div class="field">
-      <label>What is the one question a parent asks before buying from you?</label>
-      <div class="hint">In their words. This is what we test AI against first.</div>
-      <input type="text" id="q" placeholder="e.g. is this formula palm-oil free?">
-    </div>
-    <div class="field">
-      <label>Your name &amp; email <span class="req">*</span></label>
-      <div class="hint">Where we send your report.</div>
-      <input type="text" id="name" placeholder="Name" style="margin-bottom:10px">
-      <input type="email" id="email" placeholder="you@brand.com" required>
-    </div>
-    <div class="field">
-      <label>Anything else we should know?</label>
-      <textarea id="notes" placeholder="Optional. A recent launch, a fact AI keeps getting wrong, a goal."></textarea>
-    </div>
-    <button class="btn" onclick="submitForm()">Send my free check request</button>
-    <p class="foot">We reply within 2 business days with your results. The free check shows whether AI names you or a competitor. Want the whole picture now? See the plans below.</p>
   </div>
 
-  <div class="plans" id="plansBelow"></div>
-
+  <!-- confirmation banner: shown after submit -->
   <div class="ok" id="ok">
-    <div class="brand"><span class="wm">cowy</span></div>
-    <h2>Got it. Thank you.</h2>
-    <p>We will run your check and email your results within 2 business days. No call needed. Watch your inbox.</p>
-    <div class="plans" id="plansThanks"></div>
+    <div class="okcard">
+      <div class="okmark">✓</div>
+      <h2>Got it. Thank you.</h2>
+      <p>We will run your check and email your results within 2 business days. No call needed. Watch your inbox.</p>
+    </div>
   </div>
+
+  <!-- plans: rendered ONCE, always visible below -->
+  <div class="plans" id="plansBelow"></div>
 </div>
 <script>
 // ============================================================
@@ -216,7 +227,6 @@ function plansHtml(forThanks){
 }
 function renderPlans(){
   var below=document.getElementById('plansBelow'); if(below) below.innerHTML=plansHtml(false);
-  var thanks=document.getElementById('plansThanks'); if(thanks) thanks.innerHTML=plansHtml(true);
 }
 renderPlans();
 // ============================================================
@@ -262,8 +272,10 @@ function submitForm(){
 }
 
 function showThanks(){
-  document.getElementById('formcard').style.display='none';
+  var fz=document.getElementById('formzone'); if(fz) fz.style.display='none';
   document.getElementById('ok').style.display='block';
+  // update the plans intro to the post-submit message now that the form is gone
+  var below=document.getElementById('plansBelow'); if(below) below.innerHTML=plansHtml(true);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
