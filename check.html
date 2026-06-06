@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cowy · Start your AI visibility check</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--mint:#A3E2C9;--mint-deep:#5FBF9B;--mint-soft:#E7F6EF;--ink:#1C2521;--paper:#EEF5F0;--card:#FFFFFF;--border:#DDEAE3;--muted:#5E726A;--sans:'Nunito',sans-serif;--mono:'Geist Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:600px;margin:0 auto;padding:48px 22px 80px}
+.brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:36px}
+.brand .wm{font-weight:900;font-size:1.5rem;color:var(--ink)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mint-deep);font-weight:500;display:flex;align-items:center;gap:7px;justify-content:center;margin-bottom:14px}
+.eyebrow::before{content:"";width:18px;height:1.5px;background:var(--mint-deep);display:inline-block}
+h1{font-size:2rem;font-weight:900;letter-spacing:-.02em;text-align:center;line-height:1.15;margin-bottom:12px}
+.sub{text-align:center;color:var(--muted);font-size:15.5px;margin-bottom:8px}
+.async-note{text-align:center;font-size:13px;color:var(--mint-deep);font-weight:700;margin-bottom:36px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:34px}
+.field{margin-bottom:22px}
+label{display:block;font-weight:800;font-size:14.5px;margin-bottom:7px}
+label .req{color:var(--mint-deep)}
+.hint{font-size:12.5px;color:var(--muted);margin-bottom:9px;line-height:1.5}
+input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-family:var(--sans);font-size:15px;font-weight:600;color:var(--ink);background:#fff}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--mint-deep);box-shadow:0 0 0 3px var(--mint-soft)}
+textarea{resize:vertical;min-height:84px;font-weight:600}
+.btn{width:100%;padding:15px;border:none;border-radius:10px;background:var(--mint-deep);color:#fff;font-family:var(--sans);font-weight:900;font-size:16px;cursor:pointer;margin-top:8px}
+.btn:hover{background:#4FA888}
+.foot{text-align:center;font-size:12.5px;color:var(--muted);margin-top:22px;line-height:1.6}
+/* upgrade / plans */
+.plans{margin-top:30px}
+.plans .ph{text-align:center;margin-bottom:18px}
+.plans .ph h3{font-size:1.3rem;font-weight:900;letter-spacing:-.01em}
+.plans .ph p{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.55}
+.tier{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:14px}
+.tier.feature{border:2px solid var(--mint-deep);box-shadow:0 8px 24px rgba(95,191,155,.12)}
+.tier .tname{font-weight:900;font-size:1.05rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tier .tprice{font-family:var(--mono);font-weight:700;font-size:1.05rem;margin-left:auto}
+.tier .tsub{font-size:13px;color:var(--muted);margin:6px 0 12px;line-height:1.5}
+.tier ul{list-style:none;margin:0 0 14px;padding:0}
+.tier li{font-size:13.5px;color:var(--ink);line-height:1.5;padding:5px 0 5px 24px;position:relative}
+.tier li::before{content:"✓";position:absolute;left:0;color:var(--mint-deep);font-weight:900}
+.tier li b{font-weight:800}
+.badge{font-size:10px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;background:var(--mint-soft);color:var(--mint-deep);padding:2px 8px;border-radius:20px;font-weight:700}
+.btn.alt{background:var(--ink)}
+.btn.ghostb{background:transparent;border:1px solid var(--mint-deep);color:var(--mint-deep)}
+.coflash{font-size:12px;color:var(--mint-deep);text-align:center;margin-top:8px;display:none;line-height:1.5}
+/* plan cards (mobile-first, stacked) */
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px}
+.pcard.feature{border:2px solid var(--mint-deep);box-shadow:0 8px 24px rgba(95,191,155,.12)}
+.pcard.current{background:var(--mint-soft);border-color:var(--mint-deep)}
+.pchead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.pcname{font-weight:900;font-size:1.15rem}
+.pcprice{font-family:var(--mono);font-weight:700;font-size:1.05rem;margin-left:auto;color:var(--ink)}
+.pctag{display:inline-block;font-size:10px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;background:var(--mint-deep);color:#fff;border-radius:20px;padding:2px 9px;font-weight:700}
+.pcsub{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.pcfeat{list-style:none;margin:0 0 16px;padding:0}
+.pcfeat li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;line-height:1.45;padding:5px 0;color:var(--ink)}
+.pcfeat li.off{color:#9AA39E}
+.pcfeat .mk{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;margin-top:1px}
+.pcfeat .mk.y{background:rgba(95,191,155,.18);color:var(--mint-deep)}
+.pcfeat .mk.n{background:rgba(194,69,58,.12);color:#C2453A}
+.pcbtn{width:100%;padding:14px;border:none;border-radius:10px;font-family:var(--sans);font-weight:900;font-size:15px;cursor:pointer}
+.pcbtn.primary{background:var(--mint-deep);color:#fff}
+.pcbtn.alt{background:var(--ink);color:#fff}
+.pcbtn.ghostb{background:transparent;border:1px solid var(--mint-deep);color:var(--mint-deep)}
+.pccurrent{text-align:center;font-weight:800;font-size:14px;color:var(--mint-deep);padding:12px;background:#fff;border:1px dashed var(--mint-deep);border-radius:10px}
+.ok{display:none;text-align:center;padding:30px 0}
+.ok h2{font-size:1.5rem;font-weight:900;margin-bottom:10px}
+.ok p{color:var(--muted);font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><span class="wm">cowy</span></div>
+  <div class="eyebrow">Start here</div>
+  <h1>Let us check your AI visibility.</h1>
+  <p class="sub">Two minutes. We run your store through the questions parents ask AI, then send your report.</p>
+  <p class="async-note">No call. No meeting. We reply by email.</p>
+
+  <div class="card" id="formcard">
+    <div class="field">
+      <label>Your store URL <span class="req">*</span></label>
+      <div class="hint">The Shopify store you want checked.</div>
+      <input type="url" id="store" placeholder="https://yourbrand.com" required>
+    </div>
+    <div class="field">
+      <label>What do you sell? <span class="req">*</span></label>
+      <select id="cat">
+        <option value="">Pick one</option>
+        <option>Baby formula</option>
+        <option>Baby food &amp; pouches</option>
+        <option>Diapers</option>
+        <option>Baby wipes</option>
+        <option>Toddler snacks</option>
+        <option>Baby skincare &amp; bath</option>
+        <option>Baby &amp; kids vitamins</option>
+        <option>Other kids consumable</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Your top 2 or 3 competitors</label>
+      <div class="hint">The brands you keep losing to. Helps us see who AI names instead of you.</div>
+      <input type="text" id="comp" placeholder="e.g. Bobbie, Kendamil">
+    </div>
+    <div class="field">
+      <label>What is the one question a parent asks before buying from you?</label>
+      <div class="hint">In their words. This is what we test AI against first.</div>
+      <input type="text" id="q" placeholder="e.g. is this formula palm-oil free?">
+    </div>
+    <div class="field">
+      <label>Your name &amp; email <span class="req">*</span></label>
+      <div class="hint">Where we send your report.</div>
+      <input type="text" id="name" placeholder="Name" style="margin-bottom:10px">
+      <input type="email" id="email" placeholder="you@brand.com" required>
+    </div>
+    <div class="field">
+      <label>Anything else we should know?</label>
+      <textarea id="notes" placeholder="Optional. A recent launch, a fact AI keeps getting wrong, a goal."></textarea>
+    </div>
+    <button class="btn" onclick="submitForm()">Send my free check request</button>
+    <p class="foot">We reply within 2 business days with your results. The free check shows whether AI names you or a competitor. Want the whole picture now? See the plans below.</p>
+  </div>
+
+  <div class="plans" id="plansBelow"></div>
+
+  <div class="ok" id="ok">
+    <div class="brand"><span class="wm">cowy</span></div>
+    <h2>Got it. Thank you.</h2>
+    <p>We will run your check and email your results within 2 business days. No call needed. Watch your inbox.</p>
+    <div class="plans" id="plansThanks"></div>
+  </div>
+</div>
+<script>
+// ============================================================
+// SETUP: paste your endpoint URL here once. Two easy options:
+//   A) Zapier: make a Zap with trigger "Webhooks by Zapier > Catch Hook",
+//      copy its custom webhook URL, paste below. Action step: "Notion > Create
+//      Database Item" into your Cowy Clients tracker, mapping the fields below.
+//   B) Formspree: create a form at formspree.io, paste its endpoint below
+//      (looks like https://formspree.io/f/xxxx). Submissions email you + show
+//      in the Formspree dashboard; connect Formspree->Notion via Zapier later.
+// Field names sent (map these in your Zap): brand, category, competitors,
+//   buyer_question, contact_name, contact_email, store_url, notes, source.
+const ENDPOINT = "https://hooks.zapier.com/hooks/catch/27755702/4bxmsdo/"; // <-- live Zapier Catch Hook
+
+// ============================================================
+// CHECKOUT: paste your Stripe Payment Link for each plan here once.
+//   In Stripe, create three Payment Links:
+//     report   = $1,500 one-time
+//     watchdog = $79/month recurring
+//     dfy      = $2,500/month recurring
+//   Copy each link (https://buy.stripe.com/...) into the matching slot.
+//   Until a slot is filled, its button gracefully tells the buyer we'll
+//   email a secure checkout link (so it's never a dead button).
+const CHECKOUT = {
+  report:   "",   // $1,500 one-time
+  watchdog: "",   // $79/mo
+  dfy:      ""    // $2,500/mo
+};
+function goCheckout(plan, btn){
+  var url = CHECKOUT[plan];
+  if(url){ window.open(url, '_blank'); return; }
+  // graceful fallback before Stripe links are set
+  var flash = btn.parentElement.querySelector('.coflash');
+  if(flash){ flash.style.display='block'; flash.textContent='Reply to your email and we will send you a secure checkout link.'; }
+}
+
+// ---------- plans / upgrade section ----------
+function plansHtml(forThanks){
+  var intro = forThanks
+    ? '<h3>While we run your free check…</h3><p>You are on the free plan now. Here is what each one gives you. Move up any time.</p>'
+    : '<h3>See what each plan gives you</h3><p>You are on the free check. Each plan below gives you more. Green check means you get it. Red X means you do not.</p>';
+  // features in order
+  var F = [
+    "See if AI names you or a competitor",
+    "A full list of every place AI leaves you out",
+    "The exact wrong facts AI says about you",
+    "A step-by-step plan to fix it",
+    "We make the first fixes for you",
+    "We watch AI every month and warn you",
+    "We do all the fixes for you, every month",
+    "You only pay if it works that month"
+  ];
+  var plans = [
+    {key:'free',  name:'Free check', price:'$0',        cls:'current', sub:'Where you are now. A quick look at where you stand.',
+     has:[1,0,0,0,0,0,0,0]},
+    {key:'report',name:'Full report',price:'$1,500',    cls:'feature', sub:'The whole picture, plus we fix the first things for you. Comes back to you if you go monthly.',
+     has:[1,1,1,1,1,0,0,0], cta:'Get the report · $1,500', btn:'primary'},
+    {key:'watchdog',name:'AI Watchdog',price:'$79/mo',  cls:'',        sub:'We keep an eye on AI for you and warn you the moment it gets you wrong.',
+     has:[1,0,0,0,0,1,0,0], cta:'Add Watchdog · $79/mo', btn:'ghostb'},
+    {key:'dfy',   name:'Done For You', price:'$2,500/mo',cls:'',        sub:'We run the whole thing every month and prove your name is climbing.',
+     has:[1,1,1,1,1,1,1,1], cta:'Go Done For You · $2,500/mo', btn:'alt'}
+  ];
+  function card(p){
+    var feats = F.map(function(name,i){
+      var on = p.has[i]===1;
+      return '<li class="'+(on?'':'off')+'"><span class="mk '+(on?'y':'n')+'">'+(on?'✓':'✕')+'</span>'+name+'</li>';
+    }).join('');
+    var action = (p.key==='free')
+      ? '<div class="pccurrent">✓ Your current plan</div>'
+      : '<button class="pcbtn '+p.btn+'" onclick="goCheckout(\''+p.key+'\',this)">'+p.cta+'</button><div class="coflash"></div>';
+    var tag = (p.key==='free') ? '<span class="pctag">current</span>' : '';
+    return '<div class="pcard '+p.cls+'">'
+      + '<div class="pchead"><span class="pcname">'+p.name+'</span> '+tag+' <span class="pcprice">'+p.price+'</span></div>'
+      + '<div class="pcsub">'+p.sub+'</div>'
+      + '<ul class="pcfeat">'+feats+'</ul>'
+      + action
+      + '</div>';
+  }
+  return '<div class="ph">'+intro+'</div>'
+    + plans.map(card).join('')
+    + '<p class="foot" style="margin-top:6px">The $1,500 report comes back to you if you go monthly. So if you continue, the report is basically free.</p>';
+}
+function renderPlans(){
+  var below=document.getElementById('plansBelow'); if(below) below.innerHTML=plansHtml(false);
+  var thanks=document.getElementById('plansThanks'); if(thanks) thanks.innerHTML=plansHtml(true);
+}
+renderPlans();
+// ============================================================
+
+function submitForm(){
+  var store=document.getElementById('store').value.trim();
+  var cat=document.getElementById('cat').value;
+  var email=document.getElementById('email').value.trim();
+  if(!store||!cat||!email){ alert('Please add your store URL, what you sell, and your email.'); return; }
+
+  var payload={
+    brand: document.getElementById('name') ? '' : '',
+    store_url: store,
+    category: cat,
+    competitors: document.getElementById('comp').value.trim(),
+    buyer_question: document.getElementById('q').value.trim(),
+    contact_name: document.getElementById('name').value.trim(),
+    contact_email: email,
+    notes: document.getElementById('notes').value.trim(),
+    source: 'cowy intake form',
+    submitted_at: new Date().toISOString()
+  };
+
+  var btn=document.querySelector('.btn');
+  var prev=btn.textContent; btn.textContent='Sending…'; btn.disabled=true;
+
+  if(!ENDPOINT){
+    console.warn('No ENDPOINT set in the form. Submission was not delivered. Paste your webhook/Formspree URL into ENDPOINT.');
+    showThanks(); return;
+  }
+
+  // Zapier catch hooks don't send CORS headers, so post no-cors + form-encoded.
+  // The data reaches Zapier; we can't read the opaque response, so completion = success.
+  var form = new URLSearchParams();
+  Object.keys(payload).forEach(function(k){ form.append(k, payload[k]==null?'':payload[k]); });
+
+  fetch(ENDPOINT, { method:'POST', mode:'no-cors', body: form })
+    .then(function(){ showThanks(); })
+    .catch(function(){
+      btn.textContent=prev; btn.disabled=false;
+      alert('Something went wrong sending that. Please email us directly and we will run your check.');
+    });
+}
+
+function showThanks(){
+  document.getElementById('formcard').style.display='none';
+  document.getElementById('ok').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
