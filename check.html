@@ -66,6 +66,13 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
 .pcbtn.alt{background:var(--ink);color:#fff}
 .pcbtn.ghostb{background:transparent;border:1px solid var(--mint-deep);color:var(--mint-deep)}
 .pccurrent{text-align:center;font-weight:800;font-size:14px;color:var(--mint-deep);padding:12px;background:#fff;border:1px dashed var(--mint-deep);border-radius:10px}
+.grouplabel{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:22px 0 12px;display:flex;align-items:center;gap:10px}
+.grouplabel::after{content:"";flex:1;height:1px;background:var(--border)}
+.billtoggle{display:flex;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:5px;margin-bottom:14px}
+.billtoggle button{flex:1;border:none;background:transparent;border-radius:8px;padding:9px;font-family:var(--sans);font-weight:800;font-size:13px;color:var(--muted);cursor:pointer}
+.billtoggle button.on{background:var(--mint-deep);color:#fff}
+.billtoggle button .save{font-size:10px;font-family:var(--mono);opacity:.9;display:block;font-weight:500}
+.pcprice .persub{display:block;font-size:11px;font-family:var(--mono);color:var(--muted);font-weight:500;margin-top:2px;text-align:right}
 .ok{display:none;text-align:center;padding:6px 0 4px}
 .okcard{background:var(--mint-soft);border:1px solid var(--mint-deep);border-radius:18px;padding:28px 22px;margin-bottom:8px}
 .okmark{width:54px;height:54px;border-radius:50%;background:var(--mint-deep);color:#fff;font-size:28px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
@@ -157,18 +164,19 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
 const ENDPOINT = "https://hooks.zapier.com/hooks/catch/27755702/4bxmsdo/"; // <-- live Zapier Catch Hook
 
 // ============================================================
-// CHECKOUT: paste your Stripe Payment Link for each plan here once.
-//   In Stripe, create three Payment Links:
-//     report   = $1,500 one-time
-//     watchdog = $79/month recurring
-//     dfy      = $2,500/month recurring
-//   Copy each link (https://buy.stripe.com/...) into the matching slot.
-//   Until a slot is filled, its button gracefully tells the buyer we'll
-//   email a secure checkout link (so it's never a dead button).
+// CHECKOUT: paste your Stripe Payment Link for each option here once.
+//   report           = $1,500 one-time
+//   watchdog_monthly = $79/month
+//   watchdog_annual  = $806/year (15% off)
+//   dfy_monthly      = $2,500/month
+//   dfy_annual       = $25,500/year (15% off)
+//   Until a slot is filled, its button tells the buyer we'll email a secure link.
 const CHECKOUT = {
-  report:   "",   // $1,500 one-time
-  watchdog: "",   // $79/mo
-  dfy:      ""    // $2,500/mo
+  report:           "",
+  watchdog_monthly: "",
+  watchdog_annual:  "",
+  dfy_monthly:      "",
+  dfy_annual:       ""
 };
 function goCheckout(plan, btn){
   var url = CHECKOUT[plan];
@@ -179,11 +187,13 @@ function goCheckout(plan, btn){
 }
 
 // ---------- plans / upgrade section ----------
+var billing = 'monthly';
+function setBilling(b){ billing=b; renderPlans(); }
+
 function plansHtml(forThanks){
   var intro = forThanks
     ? '<h3>While we run your free check…</h3><p>You are on the free plan now. Here is what each one gives you. Move up any time.</p>'
     : '<h3>See what each plan gives you</h3><p>You are on the free check. Each plan below gives you more. Green check means you get it. Red X means you do not.</p>';
-  // features in order
   var F = [
     "See if AI names you or a competitor",
     "A full list of every place AI leaves you out",
@@ -194,35 +204,57 @@ function plansHtml(forThanks){
     "We do all the fixes for you, every month",
     "You only pay if it works that month"
   ];
-  var plans = [
-    {key:'free',  name:'Free check', price:'$0',        cls:'current', sub:'Where you are now. A quick look at where you stand.',
-     has:[1,0,0,0,0,0,0,0]},
-    {key:'report',name:'Full report',price:'$1,500',    cls:'feature', sub:'The whole picture, plus we fix the first things for you. Comes back to you if you go monthly.',
-     has:[1,1,1,1,1,0,0,0], cta:'Get the report · $1,500', btn:'primary'},
-    {key:'watchdog',name:'AI Watchdog',price:'$79/mo',  cls:'',        sub:'We keep an eye on AI for you and warn you the moment it gets you wrong.',
-     has:[1,0,0,0,0,1,0,0], cta:'Add Watchdog · $79/mo', btn:'ghostb'},
-    {key:'dfy',   name:'Done For You', price:'$2,500/mo',cls:'',        sub:'We run the whole thing every month and prove your name is climbing.',
-     has:[1,1,1,1,1,1,1,1], cta:'Go Done For You · $2,500/mo', btn:'alt'}
-  ];
-  function card(p){
-    var feats = F.map(function(name,i){
-      var on = p.has[i]===1;
+  function feats(has){
+    return F.map(function(name,i){
+      var on = has[i]===1;
       return '<li class="'+(on?'':'off')+'"><span class="mk '+(on?'y':'n')+'">'+(on?'✓':'✕')+'</span>'+name+'</li>';
     }).join('');
-    var action = (p.key==='free')
-      ? '<div class="pccurrent">✓ Your current plan</div>'
-      : '<button class="pcbtn '+p.btn+'" onclick="goCheckout(\''+p.key+'\',this)">'+p.cta+'</button><div class="coflash"></div>';
-    var tag = (p.key==='free') ? '<span class="pctag">current</span>' : '';
-    return '<div class="pcard '+p.cls+'">'
-      + '<div class="pchead"><span class="pcname">'+p.name+'</span> '+tag+' <span class="pcprice">'+p.price+'</span></div>'
-      + '<div class="pcsub">'+p.sub+'</div>'
-      + '<ul class="pcfeat">'+feats+'</ul>'
-      + action
-      + '</div>';
   }
+  // ---- one-time cards ----
+  function freeCard(){
+    return '<div class="pcard current">'
+      + '<div class="pchead"><span class="pcname">Free check</span> <span class="pctag">current</span> <span class="pcprice">$0</span></div>'
+      + '<div class="pcsub">Where you are now. A quick look at where you stand.</div>'
+      + '<ul class="pcfeat">'+feats([1,0,0,0,0,0,0,0])+'</ul>'
+      + '<div class="pccurrent">✓ Your current plan</div></div>';
+  }
+  function reportCard(){
+    return '<div class="pcard feature">'
+      + '<div class="pchead"><span class="pcname">Full report</span> <span class="pcprice">$1,500</span></div>'
+      + '<div class="pcsub">The whole picture, plus we fix the first things for you. Comes back to you if you go monthly.</div>'
+      + '<ul class="pcfeat">'+feats([1,1,1,1,1,0,0,0])+'</ul>'
+      + '<button class="pcbtn primary" onclick="goCheckout(\'report\',this)">Get the report · $1,500</button><div class="coflash"></div></div>';
+  }
+  // ---- subscription cards (price depends on billing) ----
+  function subCard(o){
+    var price, persub, key, label;
+    if(billing==='annual'){
+      price = o.yr; persub = o.yrPer; key = o.key+'_annual'; label = o.name+' · '+o.yr+'/yr';
+    } else {
+      price = o.mo; persub = ''; key = o.key+'_monthly'; label = o.name+' · '+o.mo+'/mo';
+    }
+    var priceBlock = '<span class="pcprice">'+price+(persub?'<span class="persub">'+persub+'</span>':'')+'</span>';
+    return '<div class="pcard '+(o.cls||'')+'">'
+      + '<div class="pchead"><span class="pcname">'+o.name+'</span> '+priceBlock+'</div>'
+      + '<div class="pcsub">'+o.sub+'</div>'
+      + '<ul class="pcfeat">'+feats(o.has)+'</ul>'
+      + '<button class="pcbtn '+o.btn+'" onclick="goCheckout(\''+key+'\',this)">'+label+'</button><div class="coflash"></div></div>';
+  }
+  var toggle = '<div class="billtoggle">'
+    + '<button class="'+(billing==='monthly'?'on':'')+'" onclick="setBilling(\'monthly\')">Monthly</button>'
+    + '<button class="'+(billing==='annual'?'on':'')+'" onclick="setBilling(\'annual\')">Annual <span class="save">save 15%</span></button>'
+    + '</div>';
+  var watchdog = subCard({key:'watchdog', name:'AI Watchdog', mo:'$79', yr:'$806', yrPer:'~$67/mo, billed yearly',
+    cls:'', btn:'ghostb', sub:'We keep an eye on AI for you and warn you the moment it gets you wrong.', has:[1,0,0,0,0,1,0,0]});
+  var dfy = subCard({key:'dfy', name:'Done For You', mo:'$2,500', yr:'$25,500', yrPer:'~$2,125/mo, billed yearly',
+    cls:'', btn:'alt', sub:'We run the whole thing every month and prove your name is climbing.', has:[1,1,1,1,1,1,1,1]});
+
   return '<div class="ph">'+intro+'</div>'
-    + plans.map(card).join('')
-    + '<p class="foot" style="margin-top:6px">The $1,500 report comes back to you if you go monthly. So if you continue, the report is basically free.</p>'
+    + '<div class="grouplabel">Pay once</div>'
+    + freeCard() + reportCard()
+    + '<div class="grouplabel">Subscribe</div>'
+    + toggle + watchdog + dfy
+    + '<p class="foot" style="margin-top:6px">The $1,500 report comes back to you if you go monthly. So if you continue, the report is basically free. Annual plans save 15%.</p>'
     + '<p class="foot" style="margin-top:4px"><a href="/terms.html" style="color:var(--muted)">Terms</a> · <a href="/refund.html" style="color:var(--muted)">Refund policy</a></p>';
 }
 function renderPlans(){
