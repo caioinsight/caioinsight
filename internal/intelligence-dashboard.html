@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cowy · Intelligence Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FBF7F0; --sand:#E0C9A6; --sand-deep:#C9A36F; --line-brown:#5B4636;
+  --ink:#2B2620; --paper:#F4EFE7; --card:#FFFDF9; --border:#E7DECE; --muted:#8A7A68;
+  --green:#3C7A4E; --amber:#C98A2B; --red:#B23B3B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',system-ui,sans-serif;background:var(--paper);color:var(--ink);min-height:100vh}
+.mono{font-family:'Geist Mono',monospace}
+
+/* TOPBAR */
+.topbar{background:var(--cream);border-bottom:1px solid var(--border);padding:.85rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;position:sticky;top:0;z-index:200}
+.wordmark{display:flex;align-items:center;gap:10px;font-weight:900;font-size:1.15rem;letter-spacing:-.01em}
+.datebadge{font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:.75rem}
+.live{font-size:10px;font-family:'Geist Mono',monospace;padding:3px 8px;background:rgba(60,122,78,.12);color:var(--green);border-radius:8px}
+
+/* TABS */
+.tabs{display:flex;gap:4px;padding:.75rem 1.5rem 0;border-bottom:1px solid var(--border);overflow-x:auto;background:var(--paper);position:sticky;top:57px;z-index:199}
+.tab{padding:8px 15px;font-size:12.5px;font-weight:700;cursor:pointer;border:none;border-radius:8px 8px 0 0;background:transparent;color:var(--muted);transition:all .15s;white-space:nowrap;font-family:'Nunito',sans-serif}
+.tab.active{background:var(--sand-deep);color:#fff}
+.tab:hover:not(.active){color:var(--ink);background:rgba(201,163,111,.12)}
+
+/* CONTENT */
+.content{padding:1.4rem 1.5rem;max-width:920px;margin:0 auto;display:none}
+.content.active{display:block}
+
+.priority-box{background:linear-gradient(135deg,rgba(201,163,111,.18),rgba(224,201,166,.08));border:1px solid rgba(201,163,111,.35);border-radius:14px;padding:1.2rem;margin-bottom:1.5rem}
+.priority-label{font-family:'Geist Mono',monospace;font-size:10px;color:var(--sand-deep);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.45rem;font-weight:500}
+.priority-text{font-size:14px;line-height:1.7;color:var(--ink);font-weight:600}
+
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.6rem}
+.metric{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;text-align:center}
+.metric-n{font-family:'Geist Mono',monospace;font-size:1.7rem;font-weight:700;color:var(--ink);line-height:1}
+.metric-l{font-family:'Geist Mono',monospace;font-size:10px;color:var(--muted);margin-top:.3rem}
+
+.sec-title{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem;display:flex;align-items:center;gap:.6rem}
+.sec-line{flex:1;height:1px;background:var(--border)}
+.section-gap{margin-top:1.6rem}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.15rem;margin-bottom:.85rem;transition:border-color .15s}
+.card:hover{border-color:var(--sand-deep)}
+.pill{display:inline-block;font-size:10px;font-family:'Geist Mono',monospace;padding:3px 9px;border-radius:20px;margin-bottom:.55rem}
+.pill-high{background:rgba(178,59,59,.1);color:var(--red)}
+.pill-medium{background:rgba(201,138,43,.12);color:var(--amber)}
+.pill-low{background:rgba(60,122,78,.12);color:var(--green)}
+.card-h3{font-weight:800;font-size:1rem;color:var(--ink);margin-bottom:.35rem;line-height:1.35}
+.card-body{font-size:13.5px;color:#5C5043;line-height:1.65}
+.card-label{font-family:'Geist Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem}
+.divider{height:1px;background:var(--border);margin:.8rem 0}
+.win-box{font-size:13px;color:var(--green);padding:.7rem .9rem;background:rgba(60,122,78,.06);border-radius:9px;border:1px solid rgba(60,122,78,.15);line-height:1.6;margin-top:.5rem}
+.meta-row{display:flex;gap:.55rem;flex-wrap:wrap;margin:.7rem 0}
+.chip{font-size:10px;font-family:'Geist Mono',monospace;padding:3px 9px;border-radius:8px;background:rgba(201,163,111,.12);color:var(--sand-deep);border:1px solid rgba(201,163,111,.25)}
+.chip-green{background:rgba(60,122,78,.1);color:var(--green);border:1px solid rgba(60,122,78,.2)}
+.expand-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-family:'Geist Mono',monospace;color:var(--sand-deep);cursor:pointer;background:transparent;border:1px solid rgba(201,163,111,.35);border-radius:7px;padding:5px 11px;transition:all .15s;margin-top:.7rem}
+.expand-btn:hover{background:rgba(201,163,111,.1)}
+.expand-panel{margin-top:.85rem;padding:.9rem;background:rgba(201,163,111,.05);border-radius:9px;border:1px solid rgba(201,163,111,.12);font-size:12.5px;color:#5C5043;line-height:1.7}
+.expand-panel strong{color:var(--ink);display:block;margin-bottom:.4rem}
+.score-row{display:flex;align-items:center;gap:8px;margin-bottom:.4rem}
+.score-label{font-size:11px;color:#5C5043;width:84px;flex-shrink:0}
+.score-track{flex:1;height:5px;background:var(--paper);border-radius:3px;overflow:hidden}
+.score-fill{height:100%;border-radius:3px;background:var(--sand-deep)}
+.score-fill-ease{height:100%;border-radius:3px;background:var(--green)}
+.score-num{font-family:'Geist Mono',monospace;font-size:11px;color:var(--muted);width:22px;text-align:right}
+.rev-range{font-family:'Geist Mono',monospace;font-size:12px;color:var(--green);margin-top:.4rem;font-weight:500}
+.effort-dots{display:flex;gap:3px;margin-top:.35rem;align-items:center}
+.dot{width:7px;height:7px;border-radius:50%}
+.dot-filled{background:var(--sand-deep)}
+.dot-empty{background:var(--border)}
+.effort-label{font-size:10px;color:var(--muted);margin-left:6px;font-family:'Geist Mono',monospace}
+.step-ol{padding-left:1.1rem;margin-top:.55rem}
+.step-li{font-size:12.5px;color:#5C5043;line-height:1.7;margin-bottom:.15rem}
+.validation-ul{padding-left:1rem;margin-top:.5rem}
+.validation-li{font-size:11.5px;color:var(--muted);line-height:1.6;margin-bottom:.15rem}
+.pivot-num{font-family:'Geist Mono',monospace;font-size:11px;color:var(--sand-deep);flex-shrink:0;padding-top:2px;font-weight:500}
+.effort-tag{font-size:12px;color:var(--muted)}
+.effort-low{color:var(--green)}.effort-med{color:var(--amber)}.effort-high{color:var(--red)}
+@media(max-width:600px){.metrics-row{grid-template-columns:1fr 1fr}.content{padding:1rem}.topbar{padding:.75rem 1rem}}
+.page{display:none}.page.active{display:block}
+.disclaimer{font-size:11px;color:var(--muted);font-style:italic;margin-top:.4rem;line-height:1.5}
+</style>
+</head>
+
+<body>
+<div class="topbar">
+  <div class="wordmark">
+    <svg width="34" height="34" viewBox="0 0 80 80" fill="none" aria-label="Cowy">
+      <path d="M30 40 C18 34 11 39 13 48 C15 55 27 51 31 45Z" fill="#E0C9A6" stroke="#5B4636" stroke-width="3"/>
+      <path d="M70 40 C82 34 89 39 87 48 C85 55 73 51 69 45Z" fill="#E0C9A6" stroke="#5B4636" stroke-width="3"/>
+      <path d="M40 24 C37 13 43 9 46 12 C43 17 43 21 45 26" fill="#FBF7F0" stroke="#5B4636" stroke-width="2.6"/>
+      <path d="M60 24 C63 13 57 9 54 12 C57 17 57 21 55 26" fill="#FBF7F0" stroke="#5B4636" stroke-width="2.6"/>
+      <path d="M40 22 C56 22 66 32 66 48 C66 62 55 70 40 70 C25 70 14 62 14 48 C14 32 24 22 40 22Z" fill="#FBF7F0" stroke="#5B4636" stroke-width="3"/>
+      <path d="M52 24 C46 36 50 50 60 50 C72 50 70 30 60 24 C57 22 54 22 52 24Z" fill="#E0C9A6"/>
+      <circle cx="33" cy="44" r="3.4" fill="#5B4636"/>
+      <path d="M50 45 C54 49 60 49 63 44" fill="none" stroke="#5B4636" stroke-width="3" stroke-linecap="round"/>
+      <ellipse cx="40" cy="58" rx="17" ry="11" fill="#E0C9A6" stroke="#5B4636" stroke-width="3"/>
+      <circle cx="34" cy="56" r="1.4" fill="#5B4636"/><circle cx="46" cy="56" r="1.4" fill="#5B4636"/>
+      <path d="M33 61 C37 66 43 66 47 61" fill="none" stroke="#5B4636" stroke-width="2.4" stroke-linecap="round"/>
+    </svg>
+    cowy
+    <span class="mono" style="font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.08em">INTELLIGENCE</span>
+  </div>
+  <div class="datebadge">
+    June 5, 2026 · Research snapshot
+    <span class="live">UPDATED TODAY</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('overview',this)">Overview</button>
+  <button class="tab" onclick="switchTab('market',this)">Market Report</button>
+  <button class="tab" onclick="switchTab('niche',this)">The Niche</button>
+  <button class="tab" onclick="switchTab('competitors',this)">Competitors</button>
+  <button class="tab" onclick="switchTab('fit',this)">Where I Fit</button>
+  <button class="tab" onclick="switchTab('headlines',this)">Headlines</button>
+  <button class="tab" onclick="switchTab('moves',this)">Strategic Moves</button>
+</div>
+
+<!-- OVERVIEW -->
+<div class="content page active" id="page-overview">
+  <div class="priority-box">
+    <div class="priority-label">⚡ Today's Read</div>
+    <div class="priority-text">The window is real and closing on the easy version. Shopify now auto-feeds products into AI (March 2026), and ChatGPT is testing shopping ads (confirmed Jan 16, 2026). "Get me into AI" is becoming a free platform feature. What stays valuable: making AI <em>choose</em> you over a rival and never misquote your product. Sell accuracy and recommendation share, not visibility.</div>
+  </div>
+  <div class="metrics-row">
+    <div class="metric"><div class="metric-n">$17B</div><div class="metric-l">GEO SERVICES BY 2034 (45.5% CAGR)</div></div>
+    <div class="metric"><div class="metric-n">61%</div><div class="metric-l">SHOPPERS USE AI TO RESEARCH</div></div>
+    <div class="metric"><div class="metric-n">$63.5B</div><div class="metric-l">US BABY CARE BY 2034</div></div>
+    <div class="metric"><div class="metric-n">393%</div><div class="metric-l">AI REFERRAL TRAFFIC YOY GROWTH</div></div>
+  </div>
+
+  <div class="sec-title">The thesis in one line<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-body">A growing, well-funded niche (baby/kids consumables) meets a fast-growing service market (GEO/AEO), at the exact moment AI shopping goes mainstream. The model clears Patrick's $160K target by year 2 as a solo operator, with a real path to a $1M+ exit if the Watchdog tier becomes recurring software. The risk is timing: the commodity layer is being absorbed by platforms now, so the offer must be the non-commodity version (fact-correction + being chosen) and it must move fast.</div>
+  </div>
+
+  <div class="sec-title">What changed since last snapshot<span class="sec-line"></span></div>
+  <div class="card">
+    <span class="pill pill-high">MARKET MOVE</span>
+    <div class="card-h3">Coterie sold to Mammoth Brands (Harry's parent) at a $1B+ valuation</div>
+    <div class="card-body">A six-year-old DTC diaper brand, $200M+ revenue, ~60% YoY growth, acquired March 2026. Proof the premium baby-consumables niche is funded and consolidating. These are exactly the brands with budget for a $2,500/mo service.</div>
+  </div>
+  <div class="card">
+    <span class="pill pill-high">PLATFORM THREAT</span>
+    <div class="card-h3">ChatGPT testing shopping ads + Instant Checkout at 900M weekly users</div>
+    <div class="card-body">Ads confirmed Jan 16, 2026; Instant Checkout live since Sept 2025. Google's rival agentic protocol launched Jan 2026 with Shopify, Walmart, Target. McKinsey projects $3-5T in agentic commerce by 2030. The channel is real; being absent or wrong in it has a measurable cost.</div>
+  </div>
+</div>
+
+<!-- MARKET REPORT -->
+<div class="content page" id="page-market">
+  <div class="sec-title">Market sizing<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-label">THE SERVICE MARKET YOU SELL INTO</div>
+    <div class="card-h3">GEO/AEO services: ~$1B (2025) → ~$17B (2034)</div>
+    <div class="card-body">A 45.5% CAGR, among the fastest-growing service categories anywhere. Validated retainer pricing: entry $1,000-2,500/mo, mid-market $2,000-8,000/mo, enterprise $10,000-25,000+/mo. One-time audit sprints are a common entry point. Cowy's $1,500 audit and $2,500/mo retainer sit squarely in the validated entry band.</div>
+    <div class="disclaimer">Sources: multiple 2026 GEO pricing guides (Fuel Online, Digital Elevator, EWR). Figures are directional; firms define the category differently.</div>
+  </div>
+  <div class="card">
+    <div class="card-label">THE CUSTOMER MARKET</div>
+    <div class="card-h3">US baby personal care: $32.9B (2024) → $63.5B (2034)</div>
+    <div class="card-body">Baby care overall tracks toward $575B globally by 2033. US diaper market alone is $7B+. Online is the fastest-growing channel. Consumables (formula, food, diapers, wipes) carry the best economics: constant replenishment, subscription-native, ingredient-and-safety-driven research.</div>
+    <div class="disclaimer">Sources: Market.us, Statista 2026. Category definitions vary widely ($75B-$177B for "baby care" depending on scope).</div>
+  </div>
+
+  <div class="sec-title">Demand drivers<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-body">
+      <strong style="color:var(--ink)">Why this market exists and grows:</strong><br>
+      • 61% of shoppers now use AI tools for product research; AI-referred visitors convert up to 23x higher than organic search.<br>
+      • AI Overviews appear on ~48% of Google searches and cut organic clicks ~61%. Baby brands are hit hardest because parents ask research-heavy safety/ingredient/comparison questions.<br>
+      • ChatGPT handles ~87% of AI referral traffic; 83% of its shopping carousel pulls from Google Shopping feeds.<br>
+      • Akeneo: ~half of Americans say AI recommendations influenced a purchase; ~1/3 used ChatGPT on the way to buying.<br>
+      • Agentic commerce (autonomous AI buying) projected at $3-5T globally by 2030 (McKinsey).
+    </div>
+  </div>
+
+  <div class="sec-title">Restraints &amp; challenges<span class="sec-line"></span></div>
+  <div class="card">
+    <span class="pill pill-medium">HEADWIND</span>
+    <div class="card-h3">The commodity layer is being absorbed by platforms</div>
+    <div class="card-body">Shopify auto-syndicates product data into ChatGPT, Copilot, Google AI Mode and Gemini, and infers missing attributes with ML. Free AI-visibility graders are multiplying. "Get listed in AI" is becoming a default feature, not a sellable service. This compresses the easy offer and forces the value up the stack.</div>
+  </div>
+  <div class="card">
+    <span class="pill pill-medium">HEADWIND</span>
+    <div class="card-h3">Measurement is hard; trust requires verification</div>
+    <div class="card-body">There's no click data in agentic channels, so proving ROI takes server-side tracking and citation evidence. And 98% of AI-shoppers verify before buying (45% Google the brand, 78% say reviews drive trust). AI visibility alone doesn't convert; it must pair with a verification presence.</div>
+  </div>
+
+  <div class="sec-title">Future outlook (12-36 months)<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-body">
+      • <strong style="color:var(--ink)">Visibility commoditizes; accuracy and recommendation-share appreciate.</strong> The defensible work moves to fact-correction, earned third-party authority, and winning head-to-head against named competitors.<br><br>
+      • <strong style="color:var(--ink)">Agentic commerce shifts spend bottom-of-funnel.</strong> Product-data completeness, feed hygiene, schema, and checkout-API reliability matter more than blog content. New service line: "agent-readiness."<br><br>
+      • <strong style="color:var(--ink)">Tooling consolidates.</strong> Profound hit a $1B valuation ($96M Series C, Feb 2026). Expect roll-ups. Niche, vertical-owned positions become acquisition targets.
+    </div>
+  </div>
+</div>
+
+<!-- THE NICHE -->
+<div class="content page" id="page-niche">
+  <div class="sec-title">Why baby/kids consumables is the right niche<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-body">It scores on all four filters at once: <strong style="color:var(--ink)">funded</strong> (Coterie $1B+ exit, Bobbie $150M+ revenue), <strong style="color:var(--ink)">research-heavy</strong> (parents ask AI before every purchase), <strong style="color:var(--ink)">accuracy-critical</strong> (a wrong ingredient or safety claim is a trust crisis, not just a lost sale), and <strong style="color:var(--ink)">replenishment economics</strong> (subscriptions fund retainers). Adobe: 37% of parents use AI for shopping vs 24% of all shoppers.</div>
+  </div>
+
+  <div class="sec-title">Sub-niche map (AI-research intensity)<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="score-row"><span class="score-label">Baby formula</span><div class="score-track"><div class="score-fill" style="width:100%"></div></div><span class="score-num">40%</span></div>
+    <div class="score-row"><span class="score-label">Baby food</span><div class="score-track"><div class="score-fill" style="width:95%"></div></div><span class="score-num">38%</span></div>
+    <div class="score-row"><span class="score-label">Toddler snacks</span><div class="score-track"><div class="score-fill" style="width:88%"></div></div><span class="score-num">35%</span></div>
+    <div class="score-row"><span class="score-label">Diapers</span><div class="score-track"><div class="score-fill" style="width:83%"></div></div><span class="score-num">33%</span></div>
+    <div class="score-row"><span class="score-label">Skincare/bath</span><div class="score-track"><div class="score-fill" style="width:80%"></div></div><span class="score-num">32%</span></div>
+    <div class="score-row"><span class="score-label">Baby wipes</span><div class="score-track"><div class="score-fill" style="width:75%"></div></div><span class="score-num">30%</span></div>
+    <div class="score-row"><span class="score-label">Kids vitamins</span><div class="score-track"><div class="score-fill" style="width:70%"></div></div><span class="score-num">28%</span></div>
+    <div class="disclaimer">Best-available estimates blended from Adobe, Gartner, YouGov, STRYDE 2026. Formula/baby-food best-supported; others reasoned. Update as live data appears.</div>
+  </div>
+
+  <div class="sec-title">Funded target brands (real, Shopify-likely)<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-label">TIER 1 · DTC-NATIVE, FUNDED, REACHABLE</div>
+    <div class="card-body"><strong style="color:var(--ink)">Bobbie</strong> (formula, $150M+ rev, #3 US brand) · <strong style="color:var(--ink)">Coterie</strong> (diapers, now Mammoth-owned, premium) · <strong style="color:var(--ink)">Little Spoon</strong> (baby food/pouches) · <strong style="color:var(--ink)">ByHeart</strong> (formula) · <strong style="color:var(--ink)">Tubby Todd</strong> (skincare, going into Target 2026) · <strong style="color:var(--ink)">Mushie</strong> (essentials, $10M Series A).</div>
+    <div class="win-box">Lead with the funded DTC challengers, not the giants. They feel the pain directly, move fast, and the founder is reachable by email. Run the free check before contact.</div>
+  </div>
+</div>
+
+<!-- COMPETITORS -->
+<div class="content page" id="page-competitors">
+  <div class="priority-box">
+    <div class="priority-label">🎯 The gap, stated plainly</div>
+    <div class="priority-text">Every major player is either a self-serve <em>tool</em> (you do the work) or an enterprise <em>agency</em> ($3K-25K/mo, B2B SaaS focus). None are a done-for-you service for non-technical founders, and none are niched to baby/kids. That intersection, done-for-you + vertical + accuracy-led, is open.</div>
+  </div>
+
+  <div class="sec-title">The tools (monitoring, DIY)<span class="sec-line"></span></div>
+  <div class="card">
+    <span class="pill pill-medium">INDIRECT · TOOL, NOT SERVICE</span>
+    <div class="card-h3">Profound, the 800lb gorilla</div>
+    <div class="card-body">$1B valuation, $96M Series C (Feb 2026), fires millions of prompts daily across 10 engines. Has a Shopping Analysis module and new autonomous "Agents." But: enterprise-priced ($399/mo Growth, custom Enterprise), Starter is ChatGPT-only, no revenue attribution, "overkill for SMBs." It shows the problem; the founder still has to fix it.</div>
+  </div>
+  <div class="card">
+    <span class="pill pill-low">INDIRECT · CHEAP TRACKERS</span>
+    <div class="card-h3">Otterly ($29+), Peec, Scrunch ($250+), Visiblie (€79)</div>
+    <div class="card-body">Visibility-only trackers. They report mentions and share-of-voice but, in reviewers' words, "expect your team to architect solutions." Scrunch has an agency partner program (referral perks, client workspaces) you could resell on top of. These are your <em>tooling layer</em>, not your competition.</div>
+  </div>
+  <div class="card">
+    <span class="pill pill-medium">INDIRECT · PRODUCT-LEVEL</span>
+    <div class="card-h3">Ranketta, Goodie, Bluefish: ecommerce-leaning tools</div>
+    <div class="card-body">Ranketta tracks individual <em>products</em> (not just brands) in AI shopping and ships copy-paste fixes; Shopify integration "in development." Goodie/Bluefish cover Amazon Rufus. Closest in spirit to Cowy's product focus, but still self-serve tools, still horizontal, no done-for-you delivery, no vertical.</div>
+  </div>
+
+  <div class="sec-title">The agencies (done-for-you, but not niched)<span class="sec-line"></span></div>
+  <div class="card">
+    <span class="pill pill-high">DIRECT-ISH · eCOMMERCE GEO AGENCIES</span>
+    <div class="card-h3">First Page Sage, Focus Digital, Sentic, EWR, Field Group</div>
+    <div class="card-body">These do managed GEO/AEO for ecommerce. Focus Digital even targets small/Series-A brands with templated packages. Retainers run $1,500-25,000/mo. But they're generalists across verticals and B2B-heavy; none own baby/kids, and most skew larger than a $500K DTC formula brand. Cowy undercuts on focus, not just price.</div>
+  </div>
+
+  <div class="sec-title">Direct niched competitors<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-h3">None found, today</div>
+    <div class="card-body">No managed GEO/AEO service positioned specifically for baby/kids consumables brands surfaced in research. The closest threats are (1) a generalist ecommerce GEO agency adding a baby vertical, and (2) a tool like Ranketta shipping a Shopify app that makes DIY easy enough. Both are real but neither occupies the space yet. The niche is winnable if claimed fast and backed by one real case study.</div>
+    <div class="disclaimer">Absence of evidence isn't proof none exist. Re-check quarterly; a vertical entrant is the most likely future competitor.</div>
+  </div>
+</div>
+
+<!-- WHERE I FIT -->
+<div class="content page" id="page-fit">
+  <div class="sec-title">Positioning map<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-body">
+      Two axes define the space: <strong style="color:var(--ink)">DIY tool ↔ done-for-you service</strong>, and <strong style="color:var(--ink)">horizontal ↔ niched</strong>.<br><br>
+      • Profound, Otterly, Peec, Ranketta → <em>DIY tool, horizontal</em><br>
+      • First Page Sage, Sentic, EWR → <em>done-for-you, horizontal</em><br>
+      • <strong style="color:var(--ink)">Cowy → done-for-you, niched to baby/kids.</strong> The empty quadrant.
+    </div>
+  </div>
+
+  <div class="sec-title">Cowy's wedge<span class="sec-line"></span></div>
+  <div class="card">
+    <span class="pill pill-low">DEFENSIBLE</span>
+    <div class="card-h3">Done-for-you accuracy &amp; recommendation-share, for one nervous vertical</div>
+    <div class="card-body">Not "we monitor your AI visibility" (commoditizing). Instead: "we make sure AI names your baby brand over rivals and never states a wrong ingredient or safety fact, and we do the work so you don't touch code." Three things no competitor combines: done-for-you delivery, a single high-trust vertical, and an accuracy/safety angle that's existential for parent brands.</div>
+    <div class="win-box">The accuracy angle is the moat. Shopify can make you visible; it cannot catch AI telling a parent your formula is palm-oil-free when it isn't. That fear is unique to this niche and unautomatable.</div>
+  </div>
+
+  <div class="sec-title">Pricing position<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-body">Free check → $79/mo Watchdog → $1,500 audit → $2,500/mo done-for-you. The $79 Watchdog is the strategic piece: it sits below every tracker's meaningful tier, captures brands not ready for the retainer, and is the hinge that could become recurring SaaS (the exit path). Against $3K-25K agencies, Cowy is the accessible, focused option a $500K-2M brand can say yes to.</div>
+  </div>
+
+  <div class="sec-title">Honest risks to the fit<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-body">
+      • <strong style="color:var(--ink)">A generalist agency adds a baby vertical.</strong> Counter: move first, own the case study, build referral density inside the niche.<br>
+      • <strong style="color:var(--ink)">A tool makes DIY trivial</strong> (e.g. Ranketta's Shopify app). Counter: sell the <em>doing</em>, not the seeing; non-technical founders want it handled.<br>
+      • <strong style="color:var(--ink)">Solo capacity caps growth (~8-10 retainers).</strong> Counter: the Watchdog and productized templates scale past your hours; that's also the exit lever.
+    </div>
+  </div>
+</div>
+
+<!-- HEADLINES -->
+<div class="content page" id="page-headlines">
+  <div class="sec-title">Today's relevant headlines<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-label">1 DAY AGO · FASHION/RETAIL</div>
+    <div class="card-h3">Athos Commerce: 60% of consumers now use AI (ChatGPT, Claude, Gemini) while shopping for fashion</div>
+    <div class="card-body">Confirms AI shopping is now mainstream behavior, not early-adopter. The "fragmented discovery" framing matches Cowy's pitch: brands are scattered and invisible across AI surfaces.</div>
+  </div>
+  <div class="card">
+    <div class="card-label">4 HOURS AGO · ECOMMERCE</div>
+    <div class="card-h3">ChatGPT shopping optimization playbooks proliferating for 2026</div>
+    <div class="card-body">Industry now openly coaching brands on buyer-guide content, comparison tables, product schema, FAQ schema, fresh availability signals, and AI-referrer tracking. The exact deliverables in Cowy's retainer. Demand-side awareness is rising, which warms outreach.</div>
+  </div>
+  <div class="card">
+    <div class="card-label">JAN 16, 2026 · OPENAI</div>
+    <div class="card-h3">OpenAI confirmed testing ads inside ChatGPT (US, Free + Go tiers)</div>
+    <div class="card-body">Intent-matched product placements in conversations. Raises the stakes of being the brand AI surfaces, and adds a future angle: paid + organic AI presence management.</div>
+  </div>
+  <div class="card">
+    <div class="card-label">MAR 2026 · BABY CARE</div>
+    <div class="card-h3">Coterie's $1B+ sale to Mammoth Brands closes the premium-baby thesis</div>
+    <div class="card-body">$200M+ revenue, 60% YoY growth, sold to Harry's parent. The niche is funded and consolidating, validating both the customer base and a potential acquirer profile.</div>
+  </div>
+  <div class="card">
+    <div class="card-label">FEB 2026 · TOOLING</div>
+    <div class="card-h3">Profound raised $96M Series C at a $1B valuation</div>
+    <div class="card-body">The category's tooling leader is now a unicorn. Signals huge capital betting on AI visibility, and a likely future acquirer for a niche-owning Watchdog product.</div>
+  </div>
+  <div class="disclaimer">Headlines pulled from live web search on June 5, 2026. Dates as reported by sources.</div>
+</div>
+
+<!-- STRATEGIC MOVES -->
+<div class="content page" id="page-moves">
+  <div class="sec-title">Do now (next 30 days)<span class="sec-line"></span></div>
+  <div class="card">
+    <span class="pill pill-high">PRIORITY</span>
+    <div class="card-h3">Reposition everything to accuracy + recommendation-share</div>
+    <div class="card-body">Site is done; now update the cold email and video to lead with "AI is misquoting your product" not just "a competitor is named." It's the least-commoditized hook and the one Shopify can't automate away.</div>
+  </div>
+  <div class="card">
+    <span class="pill pill-high">PRIORITY</span>
+    <div class="card-h3">Run real teardowns on the Tier 1 brands, land 3 + one case study</div>
+    <div class="card-body">Bobbie, Coterie, Little Spoon, ByHeart, Tubby Todd, Mushie. Manual AI queries, screenshot the gap or the wrong fact, send the async email + video. The first real before/after is the single biggest multiplier on every channel.</div>
+  </div>
+
+  <div class="sec-title">Build next (60-90 days)<span class="sec-line"></span></div>
+  <div class="card">
+    <span class="pill pill-medium">RECURRING REVENUE</span>
+    <div class="card-h3">Stand up the $79 Watchdog on a tracker's agency tier</div>
+    <div class="card-body">Build it on Scrunch's or Otterly's agency/partner plan rather than from scratch. Near-passive once running, and it's the hinge toward a sellable SaaS asset. This is the most strategically important product, not the retainer.</div>
+  </div>
+  <div class="card">
+    <span class="pill pill-low">PASSIVE</span>
+    <div class="card-h3">Productized templates + tool affiliate income</div>
+    <div class="card-body">Sell the schema/FAQ/llms.txt kit as a one-time $200-400 DIY download. Take disclosed affiliate fees from the trackers and apps you'd recommend anyway. Low effort after first build.</div>
+  </div>
+
+  <div class="sec-title">Watch / revisit<span class="sec-line"></span></div>
+  <div class="card">
+    <div class="card-body">
+      • <strong style="color:var(--ink)">Ranketta Shopify app</strong> ("in development") could make DIY easy; monitor.<br>
+      • <strong style="color:var(--ink)">Any generalist GEO agency announcing a baby/parenting vertical</strong>, your first true direct competitor.<br>
+      • <strong style="color:var(--ink)">Agentic-commerce readiness</strong> as a fresh, less-crowded service line as checkout moves into ChatGPT/Gemini.<br>
+      • <strong style="color:var(--ink)">Exit signal:</strong> if Watchdog crosses ~100 paying subs, the conversation shifts from income to acquisition (Profound, Scrunch, Semrush, Adobe as buyers).
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(tab, btn){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  var el=document.getElementById('page-'+tab);
+  if(el) el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggle(id, btn){
+  var el=document.getElementById(id);
+  if(!el) return;
+  var open=el.style.display==='block';
+  el.style.display=open?'none':'block';
+  if(btn) btn.textContent=open?'Expand →':'Collapse ↑';
+}
+</script>
+</body>
+</html>
