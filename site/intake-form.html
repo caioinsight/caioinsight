@@ -46,23 +46,26 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
 .btn.alt{background:var(--ink)}
 .btn.ghostb{background:transparent;border:1px solid var(--mint-deep);color:var(--mint-deep)}
 .coflash{font-size:12px;color:var(--mint-deep);text-align:center;margin-top:8px;display:none;line-height:1.5}
-.vs{font-size:12px;color:var(--muted);text-align:center;margin:6px 0 16px;font-style:italic}
-/* comparison table */
-.cmpwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:14px;background:var(--card)}
-table.cmp{border-collapse:collapse;width:100%;min-width:540px}
-table.cmp th,table.cmp td{padding:11px 12px;text-align:center;border-bottom:1px solid var(--border);font-size:13px}
-table.cmp thead th{background:var(--mint-soft);font-weight:900;font-size:13.5px;vertical-align:top;line-height:1.3}
-table.cmp thead th .pr{display:block;font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:500;margin-top:3px}
-table.cmp thead th.feat{background:var(--mint-deep);color:#fff}
-table.cmp thead th.feat .pr{color:rgba(255,255,255,.85)}
-table.cmp td.lab,table.cmp th.lab{text-align:left;font-weight:700;color:var(--ink);background:#fff;position:sticky;left:0;z-index:1;min-width:190px}
-table.cmp td.lab{font-weight:600;font-size:12.5px}
-table.cmp .yes{color:var(--mint-deep);font-weight:900;font-size:16px}
-table.cmp .no{color:#C2453A;font-weight:900;font-size:15px}
-table.cmp tr:last-child td{border-bottom:none}
-.curtag{display:inline-block;font-size:9px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;background:#fff;color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:1px 7px;margin-top:4px}
-.ctarow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.ctarow .btn{margin-top:0;flex:1;min-width:150px;font-size:14px;padding:13px}
+/* plan cards (mobile-first, stacked) */
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:14px}
+.pcard.feature{border:2px solid var(--mint-deep);box-shadow:0 8px 24px rgba(95,191,155,.12)}
+.pcard.current{background:var(--mint-soft);border-color:var(--mint-deep)}
+.pchead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.pcname{font-weight:900;font-size:1.15rem}
+.pcprice{font-family:var(--mono);font-weight:700;font-size:1.05rem;margin-left:auto;color:var(--ink)}
+.pctag{display:inline-block;font-size:10px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase;background:var(--mint-deep);color:#fff;border-radius:20px;padding:2px 9px;font-weight:700}
+.pcsub{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.pcfeat{list-style:none;margin:0 0 16px;padding:0}
+.pcfeat li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;line-height:1.45;padding:5px 0;color:var(--ink)}
+.pcfeat li.off{color:#9AA39E}
+.pcfeat .mk{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;margin-top:1px}
+.pcfeat .mk.y{background:rgba(95,191,155,.18);color:var(--mint-deep)}
+.pcfeat .mk.n{background:rgba(194,69,58,.12);color:#C2453A}
+.pcbtn{width:100%;padding:14px;border:none;border-radius:10px;font-family:var(--sans);font-weight:900;font-size:15px;cursor:pointer}
+.pcbtn.primary{background:var(--mint-deep);color:#fff}
+.pcbtn.alt{background:var(--ink);color:#fff}
+.pcbtn.ghostb{background:transparent;border:1px solid var(--mint-deep);color:var(--mint-deep)}
+.pccurrent{text-align:center;font-weight:800;font-size:14px;color:var(--mint-deep);padding:12px;background:#fff;border:1px dashed var(--mint-deep);border-radius:10px}
 .ok{display:none;text-align:center;padding:30px 0}
 .ok h2{font-size:1.5rem;font-weight:900;margin-bottom:10px}
 .ok p{color:var(--muted);font-size:15px}
@@ -167,46 +170,48 @@ function goCheckout(plan, btn){
 // ---------- plans / upgrade section ----------
 function plansHtml(forThanks){
   var intro = forThanks
-    ? '<h3>While we run your free check…</h3><p>Here is what each plan gives you. You are on the free one now. Move up any time.</p>'
-    : '<h3>See what each plan gives you</h3><p>You are on the free check. The other plans give you more. Here is a simple side-by-side.</p>';
-  // rows: [feature label, free, report, watchdog, dfy]  (true = yes, false = no)
-  var rows = [
-    ["See if AI names you or a competitor", true, true, true, true],
-    ["A full list of every place AI leaves you out", false, true, false, true],
-    ["The exact wrong facts AI says about you", false, true, false, true],
-    ["A step-by-step plan to fix it", false, true, false, true],
-    ["We make the first fixes for you", false, true, false, true],
-    ["We watch AI every month and warn you", false, false, true, true],
-    ["We tell you if a rival passes you", false, false, true, true],
-    ["We do all the fixes for you, every month", false, false, false, true],
-    ["We prove your name is climbing", false, false, false, true],
-    ["You only pay if it works that month", false, false, false, true]
+    ? '<h3>While we run your free check…</h3><p>You are on the free plan now. Here is what each one gives you. Move up any time.</p>'
+    : '<h3>See what each plan gives you</h3><p>You are on the free check. Each plan below gives you more. Green check means you get it. Red X means you do not.</p>';
+  // features in order
+  var F = [
+    "See if AI names you or a competitor",
+    "A full list of every place AI leaves you out",
+    "The exact wrong facts AI says about you",
+    "A step-by-step plan to fix it",
+    "We make the first fixes for you",
+    "We watch AI every month and warn you",
+    "We do all the fixes for you, every month",
+    "You only pay if it works that month"
   ];
-  function cell(v){ return v ? '<span class="yes">✓</span>' : '<span class="no">✕</span>'; }
-  var head = ''
-    + '<thead><tr>'
-    + '<th class="lab">What you get</th>'
-    + '<th>Free check<span class="pr">$0</span><span class="curtag">you are here</span></th>'
-    + '<th class="feat">Full report<span class="pr">$1,500</span></th>'
-    + '<th>Watchdog<span class="pr">$79/mo</span></th>'
-    + '<th>Done For You<span class="pr">$2,500/mo</span></th>'
-    + '</tr></thead>';
-  var body = '<tbody>';
-  rows.forEach(function(r){
-    body += '<tr><td class="lab">'+r[0]+'</td><td>'+cell(r[1])+'</td><td>'+cell(r[2])+'</td><td>'+cell(r[3])+'</td><td>'+cell(r[4])+'</td></tr>';
-  });
-  body += '</tbody>';
-  return ''
-  + '<div class="ph">'+intro+'</div>'
-  + '<div class="cmpwrap"><table class="cmp">'+head+body+'</table></div>'
-  + '<p class="vs">The $1,500 report comes back to you if you go monthly. So if you continue, the report is basically free.</p>'
-  + '<div class="ctarow">'
-  +   '<button class="btn" onclick="goCheckout(\'report\',this)">Get the full report · $1,500</button>'
-  + '</div><div class="coflash"></div>'
-  + '<div class="ctarow">'
-  +   '<button class="btn ghostb" onclick="goCheckout(\'watchdog\',this)">Add Watchdog · $79/mo</button>'
-  +   '<button class="btn alt" onclick="goCheckout(\'dfy\',this)">Go Done For You · $2,500/mo</button>'
-  + '</div><div class="coflash"></div>';
+  var plans = [
+    {key:'free',  name:'Free check', price:'$0',        cls:'current', sub:'Where you are now. A quick look at where you stand.',
+     has:[1,0,0,0,0,0,0,0]},
+    {key:'report',name:'Full report',price:'$1,500',    cls:'feature', sub:'The whole picture, plus we fix the first things for you. Comes back to you if you go monthly.',
+     has:[1,1,1,1,1,0,0,0], cta:'Get the report · $1,500', btn:'primary'},
+    {key:'watchdog',name:'AI Watchdog',price:'$79/mo',  cls:'',        sub:'We keep an eye on AI for you and warn you the moment it gets you wrong.',
+     has:[1,0,0,0,0,1,0,0], cta:'Add Watchdog · $79/mo', btn:'ghostb'},
+    {key:'dfy',   name:'Done For You', price:'$2,500/mo',cls:'',        sub:'We run the whole thing every month and prove your name is climbing.',
+     has:[1,1,1,1,1,1,1,1], cta:'Go Done For You · $2,500/mo', btn:'alt'}
+  ];
+  function card(p){
+    var feats = F.map(function(name,i){
+      var on = p.has[i]===1;
+      return '<li class="'+(on?'':'off')+'"><span class="mk '+(on?'y':'n')+'">'+(on?'✓':'✕')+'</span>'+name+'</li>';
+    }).join('');
+    var action = (p.key==='free')
+      ? '<div class="pccurrent">✓ Your current plan</div>'
+      : '<button class="pcbtn '+p.btn+'" onclick="goCheckout(\''+p.key+'\',this)">'+p.cta+'</button><div class="coflash"></div>';
+    var tag = (p.key==='free') ? '<span class="pctag">current</span>' : '';
+    return '<div class="pcard '+p.cls+'">'
+      + '<div class="pchead"><span class="pcname">'+p.name+'</span> '+tag+' <span class="pcprice">'+p.price+'</span></div>'
+      + '<div class="pcsub">'+p.sub+'</div>'
+      + '<ul class="pcfeat">'+feats+'</ul>'
+      + action
+      + '</div>';
+  }
+  return '<div class="ph">'+intro+'</div>'
+    + plans.map(card).join('')
+    + '<p class="foot" style="margin-top:6px">The $1,500 report comes back to you if you go monthly. So if you continue, the report is basically free.</p>';
 }
 function renderPlans(){
   var below=document.getElementById('plansBelow'); if(below) below.innerHTML=plansHtml(false);
@@ -238,22 +243,21 @@ function submitForm(){
   var prev=btn.textContent; btn.textContent='Sending…'; btn.disabled=true;
 
   if(!ENDPOINT){
-    // No endpoint set yet: still confirm so the page works, but warn in console.
     console.warn('No ENDPOINT set in the form. Submission was not delivered. Paste your webhook/Formspree URL into ENDPOINT.');
     showThanks(); return;
   }
 
-  fetch(ENDPOINT, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify(payload)
-  })
-  .then(function(r){ if(!r.ok) throw new Error('bad status'); return r; })
-  .then(function(){ showThanks(); })
-  .catch(function(){
-    btn.textContent=prev; btn.disabled=false;
-    alert('Something went wrong sending that. Please email us directly and we will run your check.');
-  });
+  // Zapier catch hooks don't send CORS headers, so post no-cors + form-encoded.
+  // The data reaches Zapier; we can't read the opaque response, so completion = success.
+  var form = new URLSearchParams();
+  Object.keys(payload).forEach(function(k){ form.append(k, payload[k]==null?'':payload[k]); });
+
+  fetch(ENDPOINT, { method:'POST', mode:'no-cors', body: form })
+    .then(function(){ showThanks(); })
+    .catch(function(){
+      btn.textContent=prev; btn.disabled=false;
+      alert('Something went wrong sending that. Please email us directly and we will run your check.');
+    });
 }
 
 function showThanks(){
