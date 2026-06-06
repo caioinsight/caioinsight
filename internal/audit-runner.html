@@ -84,16 +84,49 @@ textarea{resize:vertical;min-height:60px;font-family:var(--sans)}
       <div class="field"><label>Brand</label><input id="brand" placeholder="e.g. Bobbie" oninput="onSetup()"></div>
       <div class="field"><label>Category</label>
         <select id="cat" onchange="onSetup()">
-          <option value="formula">Baby formula</option>
-          <option value="food">Baby food / pouches</option>
-          <option value="diapers">Diapers</option>
-          <option value="wipes">Baby wipes</option>
-          <option value="snacks">Toddler snacks</option>
-          <option value="skincare">Baby skincare / bath</option>
-          <option value="vitamins">Baby / kids vitamins</option>
+          <optgroup label="Consumables">
+            <option value="formula">Baby formula</option>
+            <option value="food">Baby food / pouches</option>
+            <option value="diapers">Diapers</option>
+            <option value="wipes">Baby wipes</option>
+            <option value="snacks">Toddler snacks</option>
+            <option value="skincare">Baby skincare / bath</option>
+            <option value="vitamins">Baby / kids vitamins</option>
+          </optgroup>
+          <optgroup label="Gear & travel">
+            <option value="carseats">Car seats</option>
+            <option value="strollers">Strollers / travel systems</option>
+            <option value="carriers">Carriers / wraps</option>
+            <option value="travel">Travel gear (bags, accessories)</option>
+          </optgroup>
+          <optgroup label="Nursery & furniture">
+            <option value="furniture">Nursery furniture (cribs, gliders)</option>
+            <option value="mattress">Crib mattresses</option>
+            <option value="monitors">Baby monitors</option>
+            <option value="bedding">Bedding / sleep sacks</option>
+          </optgroup>
+          <optgroup label="Feeding & nursing">
+            <option value="bottles">Bottles / sippy cups</option>
+            <option value="breastpumps">Breast pumps</option>
+            <option value="highchairs">High chairs</option>
+          </optgroup>
+          <optgroup label="Apparel & footwear">
+            <option value="clothing">Baby / kids clothing</option>
+            <option value="footwear">Kids footwear</option>
+          </optgroup>
+          <optgroup label="Play & other">
+            <option value="toys">Toys / games</option>
+            <option value="bath">Bath / potty</option>
+            <option value="safety">Baby-proofing / safety</option>
+            <option value="other">Other (type below)</option>
+          </optgroup>
         </select>
       </div>
     </div>
+    <div class="fieldrow" id="otherRow" style="display:none">
+      <div class="field"><label>Describe the category (since you picked Other)</label><input id="catother" placeholder="e.g. cloth diapers, teething products, maternity" oninput="onSetup()"></div>
+    </div>
+    <div class="fieldrow"></div>
     <div class="fieldrow">
       <div class="field"><label>Top competitor (the one you keep losing to)</label><input id="comp" placeholder="e.g. Kendamil" oninput="queueSave()"></div>
     </div>
@@ -153,13 +186,42 @@ const NEED = {
   wipes:{good:"for sensitive skin", bad:"alcohol"},
   snacks:{good:"that are nut-free", bad:"added sugar"},
   skincare:{good:"for eczema", bad:"fragrance"},
-  vitamins:{good:"for picky eaters", bad:"sugar"}
+  vitamins:{good:"for picky eaters", bad:"sugar"},
+  carseats:{good:"for small cars", bad:"a complicated install"},
+  strollers:{good:"for travel", bad:"bulk"},
+  carriers:{good:"for newborns", bad:"back strain"},
+  travel:{good:"for flying with a baby", bad:"bulk"},
+  furniture:{good:"for small nurseries", bad:"toxic finishes"},
+  mattress:{good:"for newborn safety", bad:"toxic foam"},
+  monitors:{good:"with the best range", bad:"wifi security issues"},
+  bedding:{good:"for safe sleep", bad:"loose fabric"},
+  bottles:{good:"for breastfed babies", bad:"colic"},
+  breastpumps:{good:"for working moms", bad:"noise"},
+  highchairs:{good:"for small spaces", bad:"hard-to-clean crevices"},
+  clothing:{good:"for sensitive skin", bad:"synthetic fabric"},
+  footwear:{good:"for wide feet", bad:"stiff soles"},
+  toys:{good:"for development", bad:"toxic plastics"},
+  bath:{good:"for newborns", bad:"slipping"},
+  safety:{good:"for babyproofing", bad:"hard installation"},
+  other:{good:"for newborns", bad:"poor quality"}
 };
-const CATNAME = {formula:"baby formula",food:"baby food",diapers:"diapers",wipes:"baby wipes",snacks:"toddler snacks",skincare:"baby skincare",vitamins:"kids vitamins"};
+const CATNAME = {
+  formula:"baby formula",food:"baby food",diapers:"diapers",wipes:"baby wipes",
+  snacks:"toddler snacks",skincare:"baby skincare",vitamins:"kids vitamins",
+  carseats:"car seats",strollers:"strollers",carriers:"baby carriers",travel:"baby travel gear",
+  furniture:"nursery furniture",mattress:"crib mattresses",monitors:"baby monitors",bedding:"baby bedding",
+  bottles:"baby bottles",breastpumps:"breast pumps",highchairs:"high chairs",
+  clothing:"baby clothes",footwear:"kids shoes",toys:"baby toys",bath:"baby bath products",
+  safety:"baby safety products",other:"products"
+};
+function catLabel(){
+  if(state.cat==='other'){ return (state.catother&&state.catother.trim()) ? state.catother.trim() : 'products'; }
+  return CATNAME[state.cat]||'products';
+}
 
 // type: 'rec' = brand should be named (feeds score1); 'brand' = brand-specific (feeds score2 cite + score4 accuracy)
 function queryList(brand, catKey){
-  const c = CATNAME[catKey]||"product"; const n = NEED[catKey]||{good:"",bad:""};
+  const c = catLabel(); const n = NEED[catKey]||{good:"",bad:""};
   const b = brand||"[brand]";
   return [
     {id:0,type:'rec',  t:`best ${c} 2026`},
@@ -188,7 +250,7 @@ const SCHEMA = [
 let state=null;
 const KEY='cowy_audit_v1';
 function blank(){
-  return {brand:'',cat:'formula',comp:'',truth:'',
+  return {brand:'',cat:'formula',catother:'',comp:'',truth:'',
     q:{}, // id -> {named:null, others:'', acc:null, notes:''}
     schema:{} // id -> bool
   };
@@ -200,14 +262,20 @@ async function load(){
   document.getElementById('cat').value=state.cat||'formula';
   document.getElementById('comp').value=state.comp||'';
   document.getElementById('truth').value=state.truth||'';
+  const co=document.getElementById('catother'); if(co) co.value=state.catother||'';
+  toggleOther();
   renderQueries(); renderSchema(); score();
+}
+function toggleOther(){
+  const row=document.getElementById('otherRow');
+  if(row) row.style.display = (val('cat')==='other') ? 'flex' : 'none';
 }
 let t=null;
 async function save(){ try{ document.getElementById('savedot').textContent='saving…'; await window.storage.set(KEY,JSON.stringify(state)); document.getElementById('savedot').textContent='saved'; }catch(e){ document.getElementById('savedot').textContent='save failed'; } }
-function queueSave(){ state.brand=val('brand'); state.cat=val('cat'); state.comp=val('comp'); state.truth=val('truth'); clearTimeout(t); t=setTimeout(save,400); }
-function val(id){ return document.getElementById(id).value; }
+function queueSave(){ state.brand=val('brand'); state.cat=val('cat'); const co=document.getElementById('catother'); state.catother=co?co.value:''; state.comp=val('comp'); state.truth=val('truth'); clearTimeout(t); t=setTimeout(save,400); }
+function val(id){ const e=document.getElementById(id); return e?e.value:''; }
 
-function onSetup(){ state.brand=val('brand'); state.cat=val('cat'); renderQueries(); queueSave(); }
+function onSetup(){ state.brand=val('brand'); state.cat=val('cat'); const co=document.getElementById('catother'); state.catother=co?co.value:''; toggleOther(); renderQueries(); queueSave(); }
 
 function renderQueries(){
   const list=queryList(state.brand, state.cat);
@@ -236,7 +304,12 @@ function renderQueries(){
     `;
     wrap.appendChild(div);
     // copy
-    div.querySelector('.copyq').onclick=()=>{ navigator.clipboard&&navigator.clipboard.writeText(q.t); };
+    div.querySelector('.copyq').onclick=()=>{
+      const txt=q.t; let ok=false;
+      try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt); ok=true; } }catch(e){}
+      if(!ok){ try{ const ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select(); ok=document.execCommand('copy'); document.body.removeChild(ta); }catch(e){} }
+      const el=div.querySelector('.copyq'); const p=el.textContent; el.textContent= ok?'copied ✓':'select & copy'; setTimeout(()=>el.textContent=p,1400);
+    };
     // named seg
     div.querySelectorAll('[data-yn]').forEach(btn=>{
       if(rec.named===btn.dataset.yn) btn.classList.add(btn.dataset.yn==='yes'?'on-yes':'on-no');
@@ -293,7 +366,7 @@ function score(){
 function genReport(){
   const sc=score();
   const list=queryList(state.brand,state.cat);
-  const b=state.brand||'[Brand]'; const c=CATNAME[state.cat]; const comp=state.comp||'[competitor]';
+  const b=state.brand||'[Brand]'; const c=catLabel(); const comp=state.comp||'[competitor]';
   // gather missing-rec examples and wrong-fact examples
   const missing=list.filter(q=>q.type==='rec'&&state.q[q.id]&&state.q[q.id].named==='no');
   const wrong=list.filter(q=>q.type==='brand'&&state.q[q.id]&&(state.q[q.id].acc==='minor'||state.q[q.id].acc==='major'));
