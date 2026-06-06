@@ -73,6 +73,7 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
 .billtoggle button.on{background:var(--mint-deep);color:#fff}
 .billtoggle button .save{font-size:10px;font-family:var(--mono);opacity:.9;display:block;font-weight:500}
 .pcprice .persub{display:block;font-size:11px;font-family:var(--mono);color:var(--muted);font-weight:500;margin-top:2px;text-align:right}
+.savepill{display:inline-block;background:rgba(95,191,155,.16);color:var(--mint-deep);font-weight:800;font-size:12px;border-radius:8px;padding:4px 10px;margin-bottom:10px}
 .ok{display:none;text-align:center;padding:6px 0 4px}
 .okcard{background:var(--mint-soft);border:1px solid var(--mint-deep);border-radius:18px;padding:28px 22px;margin-bottom:8px}
 .okmark{width:54px;height:54px;border-radius:50%;background:var(--mint-deep);color:#fff;font-size:28px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
@@ -227,15 +228,17 @@ function plansHtml(forThanks){
   }
   // ---- subscription cards (price depends on billing) ----
   function subCard(o){
-    var price, persub, key, label;
+    var price, persub, key, label, saveline='';
     if(billing==='annual'){
       price = o.yr; persub = o.yrPer; key = o.key+'_annual'; label = o.name+' · '+o.yr+'/yr';
+      saveline = '<div class="savepill">Save '+o.save+' a year vs monthly</div>';
     } else {
-      price = o.mo; persub = ''; key = o.key+'_monthly'; label = o.name+' · '+o.mo+'/mo';
+      price = o.mo; persub = '/mo'; key = o.key+'_monthly'; label = o.name+' · '+o.mo+'/mo';
     }
     var priceBlock = '<span class="pcprice">'+price+(persub?'<span class="persub">'+persub+'</span>':'')+'</span>';
     return '<div class="pcard '+(o.cls||'')+'">'
       + '<div class="pchead"><span class="pcname">'+o.name+'</span> '+priceBlock+'</div>'
+      + saveline
       + '<div class="pcsub">'+o.sub+'</div>'
       + '<ul class="pcfeat">'+feats(o.has)+'</ul>'
       + '<button class="pcbtn '+o.btn+'" onclick="goCheckout(\''+key+'\',this)">'+label+'</button><div class="coflash"></div></div>';
@@ -244,9 +247,9 @@ function plansHtml(forThanks){
     + '<button class="'+(billing==='monthly'?'on':'')+'" onclick="setBilling(\'monthly\')">Monthly</button>'
     + '<button class="'+(billing==='annual'?'on':'')+'" onclick="setBilling(\'annual\')">Annual <span class="save">save 15%</span></button>'
     + '</div>';
-  var watchdog = subCard({key:'watchdog', name:'AI Watchdog', mo:'$79', yr:'$806', yrPer:'~$67/mo, billed yearly',
+  var watchdog = subCard({key:'watchdog', name:'AI Watchdog', mo:'$79', yr:'$806', yrPer:'~$67/mo, billed yearly', save:'$142',
     cls:'', btn:'ghostb', sub:'We keep an eye on AI for you and warn you the moment it gets you wrong.', has:[1,0,0,0,0,1,0,0]});
-  var dfy = subCard({key:'dfy', name:'Done For You', mo:'$2,500', yr:'$25,500', yrPer:'~$2,125/mo, billed yearly',
+  var dfy = subCard({key:'dfy', name:'Done For You', mo:'$2,500', yr:'$25,500', yrPer:'~$2,125/mo, billed yearly', save:'$4,500',
     cls:'', btn:'alt', sub:'We run the whole thing every month and prove your name is climbing.', has:[1,1,1,1,1,1,1,1]});
 
   return '<div class="ph">'+intro+'</div>'
