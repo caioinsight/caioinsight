@@ -135,11 +135,11 @@ textarea{resize:vertical;min-height:60px;font-family:var(--sans)}
     <div class="steplabel">Step 5 · Generate the filled report</div>
     <div class="toolbar">
       <button class="btn" onclick="genReport()">Generate report text</button>
-      <button class="btn ghost" onclick="copyReport()">Copy report</button>
-      <button class="btn ghost" onclick="resetAudit()">Start a new audit</button>
+      <button class="btn ghost" onclick="copyReport(this)">Copy report</button>
+      <button class="btn ghost" onclick="resetAudit(this)">Start a new audit</button>
     </div>
-    <div class="report" id="reportOut" style="display:none"></div>
-    <div class="note">This produces the real, filled findings to paste into your report template or the Notion report. Numbers come from what you actually recorded, not placeholders.</div>
+    <textarea class="report" id="reportOut" style="display:none;width:100%" readonly onclick="this.select()"></textarea>
+    <div class="note">This produces the real, filled findings to paste into your report template or the Notion report. If the Copy button is blocked by the preview, tap inside the box, select all, and copy. Numbers come from what you actually recorded, not placeholders.</div>
   </div>
 
 </div>
@@ -339,11 +339,32 @@ function genReport(){
   r+=`This report is yours to keep. To run the full plan, monitor monthly, and prove the lift: the Done For You plan is $2,500/mo. The $1,500 for this report is credited toward your first month.\n`;
 
   const out=document.getElementById('reportOut');
-  out.style.display='block'; out.textContent=r; lastReport=r;
+  out.style.display='block'; out.value=r; out.style.height='340px'; lastReport=r;
 }
 let lastReport='';
-function copyReport(){ if(!lastReport) genReport(); navigator.clipboard&&navigator.clipboard.writeText(lastReport); }
-async function resetAudit(){ if(!confirm('Start a new audit? This clears the current brand, answers, and score.')) return; state=blank(); await save(); load(); document.getElementById('reportOut').style.display='none'; lastReport=''; }
+function copyReport(btn){
+  if(!lastReport) genReport();
+  const out=document.getElementById('reportOut');
+  out.style.display='block';
+  let ok=false;
+  // try modern clipboard
+  try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(lastReport); ok=true; } }catch(e){}
+  // fallback: select the textarea + execCommand
+  if(!ok){ try{ out.focus(); out.select(); out.setSelectionRange(0,lastReport.length); ok=document.execCommand('copy'); }catch(e){} }
+  if(btn){ const p=btn.textContent; btn.textContent= ok?'Copied ✓':'Select the box & copy'; setTimeout(()=>btn.textContent=p,1800); }
+  if(!ok){ out.focus(); out.select(); }
+}
+let resetArmed=false;
+function resetAudit(btn){
+  if(!resetArmed){ resetArmed=true; const p=btn.textContent; btn.textContent='Tap again to confirm'; setTimeout(()=>{ if(resetArmed){ resetArmed=false; btn.textContent=p; } },2500); return; }
+  resetArmed=false;
+  state=blank(); save();
+  document.getElementById('brand').value=''; document.getElementById('cat').value='formula';
+  document.getElementById('comp').value=''; document.getElementById('truth').value='';
+  renderQueries(); renderSchema(); score();
+  const out=document.getElementById('reportOut'); out.style.display='none'; out.value=''; lastReport='';
+  if(btn) btn.textContent='Start a new audit';
+}
 
 function esc(s){ return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 load();
