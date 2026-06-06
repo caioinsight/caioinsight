@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cowy AI Visibility Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--mint:#A3E2C9;--mint-deep:#5FBF9B;--mint-soft:#E7F6EF;--ink:#1C2521;--paper:#EEF5F0;--card:#FFFFFF;--border:#DDEAE3;--muted:#5E726A;--sans:'Nunito',sans-serif;--mono:'Geist Mono',monospace;--bad:#B5482F;--bad-bg:#FBE9E7;--bad-bd:#F3C6BE}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+.page{max-width:760px;margin:0 auto;padding:50px 30px 90px}
+.head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.head .wm{font-weight:900;font-size:1.4rem}
+.rtype{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mint-deep);font-weight:500;margin-bottom:30px}
+.meta{font-size:13px;color:var(--muted);margin-bottom:30px;font-family:var(--mono)}
+h1{font-size:1.7rem;font-weight:900;letter-spacing:-.02em;line-height:1.2;margin:30px 0 14px}
+h2{font-size:1.15rem;font-weight:900;margin:34px 0 12px;letter-spacing:-.01em}
+p{margin-bottom:12px;font-size:15px}
+.lead{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--mint-deep);border-radius:12px;padding:20px 22px;font-size:16px;font-weight:700;margin-bottom:10px}
+.scorewrap{display:flex;align-items:center;gap:20px;background:var(--ink);color:#fff;border-radius:16px;padding:24px 26px;margin:16px 0 8px}
+.scorewrap .big{font-size:3rem;font-weight:900;line-height:1;color:var(--mint)}
+.scorewrap .of{font-size:1rem;color:rgba(255,255,255,.6);font-weight:700}
+.scorewrap .sl{font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.5}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--border)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td{font-weight:600}
+.q{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.q .qq{font-family:var(--mono);font-size:13px;font-weight:500;margin-bottom:8px}
+.q .qa{font-size:14px;color:var(--muted)}
+.q.bad{border-color:var(--bad-bd);background:var(--bad-bg)}
+.q.bad .qa{color:var(--bad)}
+.tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:6px;font-family:var(--mono)}
+.tag.out{background:var(--bad-bg);color:var(--bad);border:1px solid var(--bad-bd)}
+.tag.in{background:var(--mint-soft);color:#1C5C44;border:1px solid var(--mint-deep)}
+ol,ul{margin:10px 0 14px 20px}li{margin-bottom:7px;font-size:15px}
+.done li{list-style:none;position:relative;padding-left:26px}
+.done li::before{content:"✓";position:absolute;left:0;color:var(--mint-deep);font-weight:900}
+.next{background:var(--mint-soft);border:1px solid var(--mint-deep);border-radius:14px;padding:22px 24px;margin:20px 0}
+.next h2{margin-top:0}
+.cta{background:var(--card);border:1px dashed var(--mint-deep);border-radius:10px;padding:14px 16px;font-weight:700;font-size:14.5px;margin-top:12px}
+.devnote{font-size:12.5px;color:var(--muted);font-style:italic;border-top:1px solid var(--border);margin-top:36px;padding-top:18px}
+.fill{background:#FFF6D6;padding:0 4px;border-radius:3px}
+@media print{body{background:#fff}.page{padding:0}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="head"><span class="wm">🐮 cowy</span></div>
+  <div class="rtype">AI Visibility Report</div>
+  <div class="meta">Prepared for: <span class="fill">[Brand Name]</span> · <span class="fill">[Date]</span> · Category: <span class="fill">[Baby formula]</span></div>
+
+  <div class="lead">When parents ask AI which <span class="fill">[formula]</span> to buy, <span class="fill">[Brand]</span> is named in <span class="fill">2 of 12</span> test questions. Your closest competitor is named in <span class="fill">9</span>. This report shows why, and the fixes that close the gap.</div>
+
+  <h2>Your AI Visibility Score</h2>
+  <div class="scorewrap">
+    <div><span class="big">34</span><span class="of"> / 100</span></div>
+    <div class="sl">Low today, which means most of the opportunity is still in front of you. Here is where the points are going.</div>
+  </div>
+  <table>
+    <tr><th>Area</th><th>Score</th><th>What it means</th></tr>
+    <tr><td>Gets named in answers</td><td>3 / 25</td><td>AI rarely lists you when parents ask for a recommendation</td></tr>
+    <tr><td>Likely to be cited</td><td>6 / 25</td><td>AI struggles to pull facts from your pages</td></tr>
+    <tr><td>Labels AI can read</td><td>9 / 25</td><td>Some product data is missing or unreadable</td></tr>
+    <tr><td>Safety &amp; ingredient accuracy</td><td>16 / 25</td><td>One wrong claim found (see below)</td></tr>
+  </table>
+
+  <h2>What we asked AI, and what came back</h2>
+  <p>We ran the real questions your buyers ask, on ChatGPT and Perplexity.</p>
+  <div class="q">
+    <div class="qq">"best organic baby formula 2026"</div>
+    <div class="qa">Named: <span class="fill">[Competitor A]</span>, <span class="fill">[Competitor B]</span>, <span class="fill">[Competitor C]</span>. <span class="tag out">Your brand: not named</span></div>
+  </div>
+  <div class="q bad">
+    <div class="qq">"is [Brand] formula palm-oil free?"</div>
+    <div class="qa">AI answered <span class="fill">[the wrong thing]</span>. This is incorrect. <span class="fill">[The true answer is X.]</span> A parent acting on this gets the wrong information. <span class="tag out">Fact to fix</span></div>
+  </div>
+  <div class="q">
+    <div class="qq">"best formula for sensitive tummies"</div>
+    <div class="qa">Named: <span class="fill">[Competitor A]</span>, <span class="fill">[Competitor D]</span>. <span class="tag out">Your brand: not named</span></div>
+  </div>
+
+  <h2>Why this is happening</h2>
+  <ol>
+    <li><b>Your product labels are thin.</b> AI reads hidden data on your pages to know ingredients, price, and ratings. Several key fields are empty, so AI skips you when comparing.</li>
+    <li><b>Few outside sites vouch for you.</b> AI trusts brands that parenting sites, Reddit, and review platforms talk about. Right now, mostly only your own site mentions you.</li>
+    <li><b>One ingredient fact is wrong in AI's memory.</b> The error above is the most urgent. It is a trust problem, not just a missed sale.</li>
+  </ol>
+
+  <h2>Your 90-day fix plan</h2>
+  <table>
+    <tr><th>Priority</th><th>Fix</th><th>Effort</th><th>Who</th></tr>
+    <tr><td>1</td><td>Correct the ingredient facts AI is citing</td><td>Low</td><td>We ship it</td></tr>
+    <tr><td>2</td><td>Fill in product labels AI can read</td><td>Medium</td><td>We ship it</td></tr>
+    <tr><td>3</td><td>Add FAQ content answering real parent questions</td><td>Medium</td><td>We ship it</td></tr>
+    <tr><td>4</td><td>Build presence on the parenting sites AI trusts</td><td>Ongoing</td><td>We guide</td></tr>
+    <tr><td>5</td><td>Strengthen review volume and freshness</td><td>Ongoing</td><td>We guide</td></tr>
+  </table>
+
+  <h2>Already done for you</h2>
+  <ul class="done">
+    <li>Corrected the ingredient claim on <span class="fill">[3]</span> product pages</li>
+    <li>Added readable labels to your <span class="fill">[5]</span> top sellers</li>
+    <li>Drafted <span class="fill">[6]</span> buyer-question FAQs, ready to publish</li>
+  </ul>
+
+  <div class="next">
+    <h2>What happens next</h2>
+    <p>This report is yours to keep. If you want us to run the full plan, watch your results each month, and prove the lift, that is the Done For You plan at $2,500/mo. The $1,500 you paid for this report comes off your first month.</p>
+    <div class="cta">Reply to the email this came from and we will take it from there. No call needed.</div>
+  </div>
+
+  <p class="devnote">For your developer: every fix above includes the exact code and validation steps in the linked appendix. Send this report straight to them and they can act on it.</p>
+</div>
+</body>
+</html>
