@@ -9,7 +9,7 @@
 <style>
 :root{
   --mint:#A3E2C9; --mint-deep:#5FBF9B; --mint-soft:#E7F6EF; --charcoal:#1C2521;
-  --ink:#1C2521; --paper:#EEF5F0; --bg:#C9D6CE; --card:#FFFFFF; --border:#DDEAE3;
+  --ink:#1C2521; --paper:#EEF5F0; --bg:#D4DED7; --card:#FFFFFF; --border:#DDEAE3;
   --muted:#5E726A; --soft:#EEF7F2; --green:#3C9A6E; --red:#C2604A;
   --shadow:0 16px 44px rgba(28,37,33,.10);
   --mono:'Geist Mono',monospace; --sans:'Nunito',sans-serif;
@@ -22,9 +22,9 @@ img,svg,video{max-width:100%;height:auto}
 .wrap{max-width:1080px;margin:0 auto;padding:0 26px}
 a{color:inherit;text-decoration:none}
 .mono{font-family:var(--mono)}
-.lockup{display:flex;align-items:center;gap:7.5px}
+.lockup{display:flex;align-items:center;gap:5.6px}
 .lockup img{display:block}
-.lockup .wm{font-weight:900;font-size:1.5rem;letter-spacing:-.01em;color:var(--ink);margin-left:-2px}
+.lockup .wm{font-weight:900;font-size:1.5rem;letter-spacing:-.01em;color:var(--ink);margin-left:-4px}
 .btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding:13px 22px;border-radius:12px;border:none;cursor:pointer;transition:transform .15s, box-shadow .15s;font-family:var(--sans)}
 .btn-primary{background:var(--charcoal);color:#fff}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(28,37,33,.25)}
@@ -199,8 +199,8 @@ footer .flinks a:hover{color:var(--ink)}
 .section-pad{padding-top:72px}
 
 /* --- mobile fixes --- */
-@media(max-width:820px){
-  .hero-grid{grid-template-columns:1fr;gap:32px}
+@media(max-width:860px){
+  .hero-grid{grid-template-columns:1fr!important;gap:32px}
   .hero{padding:36px 0 40px}
   h1{font-size:clamp(2rem,8vw,2.6rem)}
   .lead{font-size:16px;max-width:100%}
@@ -208,6 +208,14 @@ footer .flinks a:hover{color:var(--ink)}
   .hero-cta .btn{justify-content:center;width:100%}
   .wrap{padding:0 18px}
   .answer-card{max-width:100%}
+  /* collapse every multi-column block so nothing exceeds the viewport */
+  .checks,.ladder,.tiers,.pitch,.calc,.wedge,.about,.gapblk{grid-template-columns:1fr!important}
+  /* tame the big padded dark panels on small screens */
+  .wedge,.calc{padding:26px!important}
+  .pitch-vis{aspect-ratio:auto;min-height:200px}
+  /* never let decorative glows or wide children force horizontal scroll */
+  section,header,footer,.wrap,.wedge,.calc,.pitch,.pitch-vis,.tiers,.ladder{max-width:100%;overflow-x:clip}
+  .hl{white-space:normal}
 }
 
 /* hamburger + mobile menu */
@@ -223,6 +231,42 @@ footer .flinks a:hover{color:var(--ink)}
 @media(max-width:820px){
   .hamb{display:flex}
   nav .wrap{height:64px}
+}
+
+/* --- stats band --- */
+.statband{background:var(--charcoal);color:#fff;padding:64px 0}
+.statband .eyebrow{color:var(--mint)}
+.statband h2{font-size:clamp(1.6rem,3.6vw,2.2rem);font-weight:900;letter-spacing:-.02em;line-height:1.18;max-width:760px;margin:8px 0 6px}
+.statband .sublead{color:rgba(255,255,255,.7);font-size:16px;max-width:640px;margin-bottom:34px}
+.statgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden}
+.stat{background:var(--charcoal);padding:24px 18px}
+.stat .n{font-size:1.9rem;font-weight:900;letter-spacing:-.02em;color:var(--mint);line-height:1}
+.stat .l{font-size:13px;color:rgba(255,255,255,.82);margin-top:8px;line-height:1.45}
+.statclose{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:30px}
+.statclose p{font-size:1.35rem;font-weight:800;letter-spacing:-.01em}
+.statclose .src{font-size:11px;color:rgba(255,255,255,.5);font-family:var(--mono);max-width:100%;line-height:1.5}
+@media(max-width:860px){
+  .statgrid{grid-template-columns:repeat(2,1fr)}
+  .statband{padding:44px 0}
+  .stat .n{font-size:1.6rem}
+}
+
+/* --- pricing groups + toggle --- */
+.grouplabel-h{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:30px 0 16px}
+.grouplabel-h::before{content:"";flex:0 0 22px;height:1px;background:var(--border)}
+.tiers-once{grid-template-columns:repeat(2,1fr)!important;max-width:680px}
+.tiers-sub{grid-template-columns:repeat(2,1fr)!important;max-width:680px}
+.billtoggle-h{display:inline-flex;gap:5px;background:var(--card);border:1px solid var(--border);border-radius:11px;padding:4px;margin-left:auto}
+.billtoggle-h button{border:none;background:transparent;border-radius:7px;padding:7px 13px;font-family:var(--sans);font-weight:800;font-size:12px;color:var(--muted);cursor:pointer;letter-spacing:0;text-transform:none}
+.billtoggle-h button.on{background:var(--mint-deep);color:#fff}
+.billtoggle-h .save{font-size:10px;opacity:.95;font-weight:600}
+.saveline{font-weight:700}
+.tiers-sub .price small{font-size:14px;color:var(--muted);font-weight:700}
+.pfine{font-size:12px;color:var(--muted);margin-top:10px;text-align:center;line-height:1.5}
+@media(max-width:860px){
+  .grouplabel-h{flex-wrap:wrap}
+  .billtoggle-h{margin-left:0}
+  .tiers-once,.tiers-sub{grid-template-columns:1fr!important;max-width:100%}
 }
 </style>
 </head>
@@ -286,6 +330,32 @@ footer .flinks a:hover{color:var(--ink)}
     </div>
   </div>
 </header>
+
+<section class="statband">
+  <div class="wrap">
+    <div class="eyebrow">The shift is already here</div>
+    <h2>Parents are asking AI what to buy. The brands it names are winning the cart.</h2>
+    <p class="sublead">This isn't a someday problem. It's happening on every phone, in every nursery group chat, right now. The only question is whether AI is naming you, or naming someone else.</p>
+    <div class="statgrid">
+      <div class="stat"><div class="n">61%</div><div class="l">of shoppers now use AI tools like ChatGPT to research products and brands.</div></div>
+      <div class="stat"><div class="n">80%</div><div class="l">plan to use generative AI to shop in 2026, up sharply year over year.</div></div>
+      <div class="stat"><div class="n">23&times;</div><div class="l">higher conversion from AI-referred visitors versus traditional search.</div></div>
+      <div class="stat"><div class="n">48%</div><div class="l">of Google searches now show an AI Overview, over 70% for parent research queries.</div></div>
+      <div class="stat"><div class="n">61%</div><div class="l">drop in organic click-through once an AI Overview appears, and baby brands get hit hardest.</div></div>
+      <div class="stat"><div class="n">40 hrs</div><div class="l">the average parent spends researching baby products before buying, more than any other shopper.</div></div>
+      <div class="stat"><div class="n">98%</div><div class="l">of shoppers verify an AI recommendation before they buy, so wrong facts cost you the sale.</div></div>
+      <div class="stat"><div class="n">83%</div><div class="l">of ChatGPT's shopping picks pull straight from your product feed, accuracy is everything.</div></div>
+      <div class="stat"><div class="n">3&ndash;4&times;</div><div class="l">more visibility in AI recommendations for brands with clean, structured product data.</div></div>
+      <div class="stat"><div class="n">35%</div><div class="l">more clicks for brands that get cited inside the AI answer instead of left out.</div></div>
+    </div>
+    <div class="statclose">
+      <p>Are you ready to be discovered?</p>
+      <a href="#grader" class="btn btn-mint btn-lg">See where you stand, free &rarr;</a>
+    </div>
+    <div class="statclose"><div class="src">Sources: Capital One Shopping &amp; Omnisend AI shopping reports 2026; Ahrefs &amp; Seer Interactive, 2025&ndash;2026; Babylist; Idea Grove 2026 consumer study. Figures are industry-wide indicators, not guarantees for any one store.</div></div>
+  </div>
+</section>
+
 
 <div class="strip">
   <div class="wrap">
@@ -476,7 +546,8 @@ footer .flinks a:hover{color:var(--ink)}
       <h2>Clear pricing. No monthly plan until you have seen the work.</h2>
       <p>Start free. Keep an eye on things for the price of a couple of coffees. Or have us run the whole thing. You move up only when it makes sense for you.</p>
     </div>
-    <div class="tiers">
+    <div class="grouplabel-h">Pay once</div>
+    <div class="tiers tiers-once">
       <div class="tier">
         <div class="tname">Quick Check</div>
         <div class="tsub">See if AI names you at all.</div>
@@ -505,13 +576,22 @@ footer .flinks a:hover{color:var(--ink)}
           <li><b>Credited back if you go monthly</b></li>
         </ul>
         <a href="#grader" class="btn btn-primary">Get the report</a>
-        <div style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center;line-height:1.5">Go monthly within 7 days and the $1,500 comes off your bill. The report pays for itself.</div>
+        <div class="pfine">Go monthly within 7 days and the $1,500 comes off your bill. The report pays for itself.</div>
       </div>
+    </div>
+
+    <div class="grouplabel-h">Subscribe
+      <span class="billtoggle-h">
+        <button class="on" id="moBtn" onclick="setBill('mo')">Monthly</button>
+        <button id="yrBtn" onclick="setBill('yr')">Annual <span class="save">save 15%</span></button>
+      </span>
+    </div>
+    <div class="tiers tiers-sub">
       <div class="tier">
         <div class="tname">AI Watchdog</div>
         <div class="tsub">Get told the moment AI gets you wrong.</div>
-        <div class="price">$79<small>/mo</small></div>
-        <div class="pnote">cancel anytime</div>
+        <div class="price"><span data-mo="$79" data-yr="$806">$79</span><small data-mo="/mo" data-yr="/yr">/mo</small></div>
+        <div class="pnote"><span class="saveline" data-mo="cancel anytime" data-yr="~$67/mo &middot; save $142 a year">cancel anytime</span></div>
         <ul>
           <li>We watch AI answers about your brand</li>
           <li>Alert if AI states a wrong fact about you</li>
@@ -524,8 +604,8 @@ footer .flinks a:hover{color:var(--ink)}
       <div class="tier">
         <div class="tname">Done For You</div>
         <div class="tsub">Watch your name climb into the answers.</div>
-        <div class="price">$2,500<small>/mo</small></div>
-        <div class="pnote">no long contract</div>
+        <div class="price"><span data-mo="$2,500" data-yr="$25,500">$2,500</span><small data-mo="/mo" data-yr="/yr">/mo</small></div>
+        <div class="pnote"><span class="saveline" data-mo="no long contract" data-yr="~$2,125/mo &middot; save $4,500 a year">no long contract</span></div>
         <ul>
           <li>A monthly scoreboard: your name vs theirs</li>
           <li>Two to four fixes shipped every month</li>
@@ -666,6 +746,16 @@ syncCat();calc();
 <script>
 function toggleMenu(){var m=document.getElementById('mobileMenu');var b=document.getElementById('hambBtn');var open=m.classList.toggle('show');b.classList.toggle('open',open);b.setAttribute('aria-expanded',open?'true':'false');}
 function closeMenu(){var m=document.getElementById('mobileMenu');var b=document.getElementById('hambBtn');m.classList.remove('show');b.classList.remove('open');b.setAttribute('aria-expanded','false');}
+</script>
+
+<script>
+function setBill(period){
+  var mo=document.getElementById('moBtn'), yr=document.getElementById('yrBtn');
+  if(mo&&yr){mo.classList.toggle('on',period==='mo');yr.classList.toggle('on',period==='yr');}
+  document.querySelectorAll('.tiers-sub [data-'+period+']').forEach(function(el){
+    el.innerHTML = el.getAttribute('data-'+period);
+  });
+}
 </script>
 </body>
 </html>
