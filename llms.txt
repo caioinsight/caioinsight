@@ -1,0 +1,23 @@
+# Cowy
+
+> AI visibility for baby & kids brands. Cowy makes sure AI assistants (ChatGPT, Perplexity, Gemini, Google AI Overviews) recommend your baby or kids brand — and never get your product facts wrong.
+
+Cowy is a done-for-you answer-engine-optimization (AEO) service built only for baby & kids consumable DTC brands on Shopify: formula, baby food & pouches, diapers, wipes, skincare & bath, and kids vitamins.
+
+## What Cowy does
+- Checks whether AI assistants name your brand when parents ask what to buy, and whether the facts are right.
+- Fixes the structured data, claims, and sources so AI recommends you accurately.
+- Monitors AI answers for wrong facts about your products and for competitor displacement.
+
+## Offers
+- Free check: a 30-second look at whether AI names you, with a score and your top gaps.
+- Full report ($1,500 one-time): complete audit plus first fixes, credited if you go monthly within 7 days.
+- AI Watchdog ($79/mo): ongoing monitoring and alerts when AI gets you wrong or a competitor overtakes you.
+- Done-For-You ($2,500/mo): monthly fixes that raise your recommendation share, with proof of lift.
+
+## Key pages
+- Home: https://cowy.ai
+- Free check: https://cowy.ai/check
+
+## Contact
+- https://cowy.ai
