@@ -38,12 +38,12 @@ Mint #A3E2C9, mint-deep #5FBF9B, page bg gradient ~#EFF6F2 -> #E4EFE9, ink #1C25
 - Internal tools (live): cowy.ai/internal/{intelligence-dashboard,console,audit-runner,action-board}.html
 - AEO infra (live): FAQ + Organization/Service/FAQPage JSON-LD on homepage; robots.txt (allows AI crawlers); llms.txt.
 - Notion: Cowy Clients tracker — prospects, video scripts, video playbook, keyword/AEO criteria, master state.
-- TWO STATE HOMES: Notion (human-readable) + this repo. (ideabrowser RETIRED from workflow.)
+- SYSTEMS OF RECORD (one job each, see FILING.md in Cowy folder): repo = production + canonical COWY_STATE.md; Notion = cockpit (CRM, final reports, research, playbooks); Cowy folder = operating layer (live working state copy, in-flight drafts, templates I fill, 00_inbox). Repo is canonical for state; Notion Master State + local copy are mirrors I keep synced (repo wins on conflict). NOTE: no GitHub write path yet (token dead, no connector) — local copy is freshest between pushes; push to repo to make official.
 - SECURITY: never store the GitHub token in any doc. The token previously pasted in chat is broad-scope and is now rotated/dead; the new one lives outside docs (password manager / repo secret).
 
 ## Status (2026-06-06)
 LIVE: cowy.ai site (positioning, 6-stat band, sticky nav, brown logo, gradient bg + button depth, pricing groups + annual toggle, 4-rung how-it-works ladder incl. Watchdog, FAQ + schema, robots/llms.txt). Intel dashboard updated. Keyword/AEO criteria + business model codified. 6 video scripts saved (Notion + repo examples/).
-OPEN / NEXT: 5 Stripe payment links -> wire into intake form; finish Zapier -> Notion intake; legal pages (fill brackets + lawyer); Tubby Todd Path B audit (run the 12 queries); build pillar + cluster pages; finish rotating GitHub token + store securely; trademark "Cowy".
+OPEN / NEXT: 5 Stripe payment links -> wire into intake form; finish Zapier -> Notion intake; legal pages (fill brackets + lawyer); Tubby Todd Path B audit (run the 12 queries); build pillar + cluster pages; finish rotating GitHub token + store securely; wire a GitHub connector so the assistant can sync local->repo; trademark "Cowy".
 
 ## Session protocol (/start)
 On /start: read this doc + (if file tools available) the repo + relevant Notion pages (Cowy Clients tracker). Then reply with a 3-line status — what's live / what's in progress / top 3 next actions — and wait.
@@ -61,4 +61,5 @@ Update the Status section + add a dated changelog line INLINE, in the same turn,
 ideabrowser is RETIRED from the workflow (idea discovery/validation complete; keyword tool gated; its context files only fire inside ideabrowser skills, not Cowork/Projects). Keyword volume/competition validation is Ahrefs' job. Workflow container: Cowork (primary, included on Max) + a lightweight Project for quick asks; both share this /start brain.
 
 ## Changelog
+- 2026-06-06 — Filing system established: Cowy folder skeleton created (00_inbox, clients, prospects, content/{pillar-cluster,video,linkedin,email}, templates, ops, assets/brand) + FILING.md map; systems-of-record defined (repo canonical for state, Notion = cockpit, folder = operating layer); confirmed Cowy folder is a plain folder, not a clone of caioinsight. OPEN: wire a GitHub connector so I can sync local->repo directly.
 - 2026-06-06 — Site polish + positioning locked; AEO infra (FAQ/schema/llms.txt) live; how-it-works ladder gained Watchdog rung; keyword/AEO criteria + business model codified; cross-chat state/workflow system created; COWY_STATE.md added to repo via web UI (token rotated/dead).
