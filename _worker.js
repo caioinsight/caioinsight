@@ -6,11 +6,18 @@
 
 const USERNAME = "caioadmin";
 
+// Internal/founder-only paths. Anything matching here requires Basic Auth.
+function isGated(pathname) {
+  return pathname.startsWith("/internal/")
+    || pathname === "/dashboard.html"
+    || pathname === "/glossary.html";
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.pathname.startsWith("/internal/")) {
+    if (isGated(url.pathname)) {
       const pass = env.INTERNAL_PASSWORD;
       const expected = pass ? "Basic " + btoa(`${USERNAME}:${pass}`) : null;
       const provided = request.headers.get("Authorization") || "";
