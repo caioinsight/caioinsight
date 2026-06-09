@@ -1,0 +1,14 @@
+# Files the Worker must NOT serve publicly at cowy.ai/<path>.
+# The marketing site (index.html, site/, brand-kit/) and the gated internal/ tools stay served.
+
+# Business brain + working docs
+COWY_STATE.md
+FILING.md
+README.md
+
+# Build / deploy config
+wrangler.jsonc
+package.json
+package-lock.json
+node_modules/
+_worker.js
