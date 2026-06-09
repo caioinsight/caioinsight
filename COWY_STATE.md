@@ -5,18 +5,18 @@ Single source of truth for the Cowy business. The cofounder brain. Updated inlin
 Last updated: 2026-06-09
 
 ## What Cowy is
-Done-for-you AEO / AI-visibility service for baby & kids consumable DTC brands on Shopify. Makes AI assistants (ChatGPT, Perplexity, Gemini, Google AI Overviews) recommend the brand AND get its facts right. Sells accuracy + recommendation share (being chosen + never misquoted), not generic visibility. Founder: Patrick O'Brien (Carlsbad CA), solo operator, replacing ~$160K salary.
+Done-for-you AEO / AI-visibility service for baby & kids consumable DTC brands on Shopify. Makes AI assistants (ChatGPT, Perplexity, Gemini, Google AI Overviews) recommend the brand AND get its facts right. Sells branded ACCURACY: when AI talks about your baby/kids brand, it tells the truth — find every wrong answer, fix the sources behind it, prove the correction. (PIVOT v2, 2026-06-09: dropped the "get recommended / AI-visibility" promise — un-winnable/un-provable for a small founder brand, and commoditized by Shopify/Perplexity free programs; accuracy on BRANDED queries is winnable, provable, and a real safety/liability stake on kids products.) Founder: Patrick O'Brien (Carlsbad CA), solo operator, replacing ~$160K salary.
 
 ## Positioning & voice
-- Headline (live): "61% of parents now ask AI what to buy. Does it recommend you, and get you right?"
-- Eyebrow: "AI Visibility for Baby & Kids Brands"
+- Headline (live): "When parents ask AI about your baby brand, does it get the facts right?" (was the "61% / recommend you" line — 61% was unverified, removed)
+- Eyebrow: "AI Accuracy for Baby & Kids Brands"
 - Voice: plain, parent-aware, accuracy-led, anti-hype, no fluff.
 
 ## Niche (do not broaden lightly)
 Baby & kids consumables on Shopify: formula, baby food & pouches, diapers, wipes, skincare & bath, kids vitamins. Adjacent expansion later (pet, supplements, clean beauty). Tooling stays category-agnostic.
 
 ## Offer ladder / pricing
-- Free check — 30s AI visibility check + score + top gaps (lead magnet).
+- Free check — 30s AI accuracy check (what AI gets wrong about you) + top gaps (lead magnet).
 - Full Report — $1,500 one-time; audit + first fixes; credited if monthly within 7 days.
 - AI Watchdog — $79/mo (or $806/yr); monitoring + alerts; strategic SaaS hinge.
 - Done-For-You — $2,500/mo (or $25,500/yr); monthly fixes + proof of lift; "no lift you don't pay."
