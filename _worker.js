@@ -34,7 +34,13 @@ export default {
       }
     }
 
-    // Authorized (or public path) — serve the static asset.
-    return env.ASSETS.fetch(request);
+    // Serve the static asset; force gated/dynamic pages to always revalidate (no stale dashboard).
+    const resp = await env.ASSETS.fetch(request);
+    if (isGated(url.pathname)) {
+      const r = new Response(resp.body, resp);
+      r.headers.set("Cache-Control", "no-store, must-revalidate");
+      return r;
+    }
+    return resp;
   },
 };
