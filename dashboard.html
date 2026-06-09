@@ -140,7 +140,7 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;background:#070D1A;color:#
     <button class="vert-btn" id="btn-cannabis" onclick="setVertical('cannabis')">Cannabis CPG</button>
   </div>
   <div class="datebadge">
-    June 1, 2026 · 6:00 AM
+    <span id="dd-date">June 1, 2026 · 6:00 AM</span>
     <span class="live">● LIVE</span>
   </div>
 </div>
@@ -1027,6 +1027,52 @@ showContent('dtc', 'overview');
     </div>
   </div>
 </div>
+
+<!-- DD-RENDER -->
+<script>
+(function(){
+  var CHANNEL_MAP = '<div class="sec-title section-gap"><span>Channel Availability Map</span><div class="sec-line sec-line-cannabis"></div></div>'
+    + '<div class="channel-grid">'
+    + '<div class="channel-card"><div class="channel-name">Email / SMS</div><div class="channel-status status-ok">✓ Fully available</div></div>'
+    + '<div class="channel-card"><div class="channel-name">Instagram</div><div class="channel-status status-warn">⚠ Organic only</div></div>'
+    + '<div class="channel-card"><div class="channel-name">Meta ads</div><div class="channel-status status-blocked">✗ Blocked</div></div>'
+    + '<div class="channel-card"><div class="channel-name">Google ads</div><div class="channel-status status-blocked">✗ Blocked</div></div>'
+    + '<div class="channel-card"><div class="channel-name">X / Twitter</div><div class="channel-status status-ok">✓ Paid allowed</div></div>'
+    + '<div class="channel-card"><div class="channel-name">Loyalty</div><div class="channel-status status-ok">✓ High ROI gap</div></div>'
+    + '<div class="channel-card"><div class="channel-name">SEO / GEO</div><div class="channel-status status-ok">✓ Fully available</div></div>'
+    + '<div class="channel-card"><div class="channel-name">Events</div><div class="channel-status status-ok">✓ High trust</div></div>'
+    + '<div class="channel-card"><div class="channel-name">TikTok</div><div class="channel-status status-blocked">✗ Blocked</div></div>'
+    + '</div>';
+  var VERT;
+  function esc(s){return (s==null?'':String(s)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function cc(){return VERT==='cannabis'?' card-cannabis':'';}
+  function card(c){return '<div class="card'+cc()+'"><div class="pill pill-'+esc(c.level)+'">'+esc(c.level)+' · '+esc(c.source)+'</div><div class="card-h3">'+esc(c.headline)+'</div><div class="card-body">'+esc(c.body)+'</div></div>';}
+  function comp(c){return '<div class="card'+cc()+'"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem"><div style="font-weight:600;font-size:.95rem;color:#EEF2F8">'+esc(c.name)+'</div><div class="pill pill-'+esc(c.threat)+'" style="margin-bottom:0">'+esc(c.threat)+' threat</div></div><div class="card-body"><strong style="color:#EEF2F8">What changed:</strong> '+esc(c.changed)+'</div><div class="win-box win-box-'+VERT+'"><strong>How to win:</strong> '+esc(c.howToWin)+'</div></div>';}
+  function metric(m){return '<div class="metric'+(VERT==='cannabis'?' metric-cannabis':'')+'"><div class="metric-n">'+esc(m.n)+'</div><div class="metric-l">'+esc(m.l)+'</div></div>';}
+  function secTitle(t){return '<div class="sec-title"><span>'+esc(t)+'</span><div class="sec-line'+(VERT==='cannabis'?' sec-line-cannabis':'')+'"></div></div>';}
+  function idea(i){var chips=(i.chips||[]).map(function(c,ix){var cl=ix===2?'chip-green':('chip-'+VERT);return '<span class="chip '+cl+'">'+esc(c)+'</span>';}).join('');return '<div class="card'+cc()+'"><div class="card-label">'+esc(i.label)+'</div><div class="card-h3">'+esc(i.title)+'</div><div class="card-body">'+esc(i.body)+'</div><div class="meta-row">'+chips+'</div></div>';}
+  function set(id,h){var el=document.getElementById(id); if(el) el.innerHTML=h;}
+  function renderVert(v,d){
+    VERT=v;
+    var ls=d.landscape||[], comps=d.competitors||[];
+    var ov='<div class="priority-box priority-box-'+v+'"><div class="priority-label priority-label-'+v+'">⚡ Today\'s Priority</div><div class="priority-text">'+esc(d.priority)+'</div></div>';
+    ov+='<div class="metrics-row">'+(d.metrics||[]).map(metric).join('')+'</div>';
+    ov+=secTitle(v==='cannabis'?'Landscape + Compliance Shifts':'Landscape Shifts');
+    ov+=ls.slice(0,3).map(card).join('');
+    ov+='<div class="sec-title section-gap"><span>Top Idea Today</span><div class="sec-line'+(v==='cannabis'?' sec-line-cannabis':'')+'"></div></div>';
+    ov+=idea(d.topIdea||{});
+    set(v+'-overview', ov);
+    var land=secTitle(v==='cannabis'?'Compliance + Landscape Shifts':"Today's Landscape Shifts")+ls.map(card).join('');
+    if(v==='cannabis') land+=CHANNEL_MAP;
+    set(v+'-landscape', land);
+    set(v+'-competitors', secTitle('Competitor Intelligence')+comps.map(comp).join(''));
+  }
+  fetch('dashboard-data.json?cb='+Date.now()).then(function(r){return r.json();}).then(function(d){
+    var dt=document.getElementById('dd-date'); if(dt) dt.textContent=d.date;
+    renderVert('dtc', d.dtc||{}); renderVert('cannabis', d.cannabis||{});
+  }).catch(function(e){console.warn('dashboard-data load failed; showing seeded HTML', e);});
+})();
+</script>
 
 </body>
 </html>

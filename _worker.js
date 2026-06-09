@@ -10,7 +10,8 @@ const USERNAME = "caioadmin";
 function isGated(pathname) {
   return pathname.startsWith("/internal/")
     || pathname === "/dashboard.html"
-    || pathname === "/glossary.html";
+    || pathname === "/glossary.html"
+    || pathname === "/dashboard-data.json";
 }
 
 export default {

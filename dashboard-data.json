@@ -1,0 +1,156 @@
+{
+  "date": "June 9, 2026 · 6:00 AM PT",
+  "generatedNote": "seed (carried over from prior run; first automated research refresh pending)",
+  "dtc": {
+    "priority": "URGENT: Cloudflare blocks AI crawlers by default on every new domain — caioinsight.ai runs on Cloudflare Workers. Verify OAI-SearchBot, PerplexityBot, and Claude-SearchBot are not blocked under Security → Bots → Bot Fight Mode. Brands using Cloudflare are invisible to every AI engine until this is corrected. This is now Signal 0 in every client audit — check before anything else.",
+    "metrics": [
+      {
+        "n": "4",
+        "l": "Landscape shifts"
+      },
+      {
+        "n": "$186K",
+        "l": "Y1 forecast"
+      },
+      {
+        "n": "1H",
+        "l": "High threats"
+      },
+      {
+        "n": "3",
+        "l": "Pivots"
+      },
+      {
+        "n": "5",
+        "l": "Validated ideas"
+      }
+    ],
+    "landscape": [
+      {
+        "level": "high",
+        "source": "Shopify Dev Blog",
+        "headline": "Cloudflare silently blocking AI crawlers on 22% of the web — caioinsight.ai affected",
+        "body": "Large-scale 2026 research confirms ChatGPT carousels are a structured retrieval layer on Google Shopping organic index. Top 40 Google Shopping rank = carousel eligibility. This means Signal 6 remediation is Google Shopping feed optimization + OAI-SearchBot access + JSON-LD Product schema. Not a black box. Actionable and concrete for every audit client."
+      },
+      {
+        "level": "low",
+        "source": "Semrush Changelog",
+        "headline": "Shopify Catalog commoditizes basic GEO — diagnostic gap shifts to completeness and compliance",
+        "body": "Shopify now auto-generates native /llms.txt and /agents.md routes for merchant stores. This partially closes Signal 2 automatically for Shopify merchants. Audit implication: check whether the auto-generated file is complete and accurate, not just present. Most auto-generated llms.txt files are incomplete stubs. Quality gap = billable remediation work."
+      },
+      {
+        "level": "high",
+        "source": "Perplexity Blog",
+        "headline": "ChatGPT Instant Checkout: fewer than 30 Shopify merchants live — window is wide open",
+        "body": "Fewer than 30 of Shopify's millions of merchants went live with ChatGPT Instant Checkout. The agentic commerce story is much earlier-stage than the market narrative suggests. The window to position as the diagnostic infrastructure layer is wide open."
+      },
+      {
+        "level": "medium",
+        "source": "Search Engine Land + Evertune",
+        "headline": "Fritz AI, Ryze AI enter Shopify GEO — all priced $1M+ revenue, $200K–$2M unserved",
+        "body": "Agency directories now list 12–15 dedicated GEO agencies. Most focus on enterprise or B2B. Gap in $200K–$2M founder-run DTC remains unserved. Monitor weekly. Window is narrowing but still open."
+      }
+    ],
+    "topIdea": {
+      "label": "Validated Business Idea #1",
+      "title": "GEO Infrastructure Licensing Kit",
+      "body": "A $497 white-label licensing package giving agencies the four-layer diagnostic framework, Vector Alignment Score rubric, Schema Remediation Log templates, and the new Google Shopping feed audit checklist. Agencies are being asked about GEO by every client. None have a deliverable. Fully brandable, async delivery model.",
+      "chips": [
+        "Profitability 9/10",
+        "Ease 8/10",
+        "$2,000–$15,000/mo"
+      ]
+    },
+    "competitors": [
+      {
+        "name": "Metricus",
+        "threat": "medium",
+        "changed": "No new updates this week. Shopify Catalog commoditization is compressing their schema-fix value proposition. Watch for a pivot to broader GEO advisory or pricing compression.",
+        "howToWin": "Metricus fixes one structural layer. Map all four: vector proximity, RAG retrieval probability, compliance friction, schema drift. The diagnostic brief is the product — not the fix."
+      },
+      {
+        "name": "DTCCOO",
+        "threat": "low",
+        "changed": "No changes detected this week",
+        "howToWin": "No action needed. Continue positioning GEO layer as primary differentiator."
+      },
+      {
+        "name": "Hawke Media",
+        "threat": "medium",
+        "changed": "Added 'AI Search Optimization' as a service line — $3,500/month",
+        "howToWin": "They charge $3,500 for execution. You charge $399 for diagnosis first, then $2,000 for execution. Trust-reversal model remains the structural advantage."
+      }
+    ]
+  },
+  "cannabis": {
+    "priority": "Cloudflare Bot Fight Mode is even more critical for compliance-constrained brands — regulated category content is already suppressed by safety guardrails. Having Cloudflare also blocking crawlers creates a double-omission problem. Audit this first on every regulated client before any other GEO work.",
+    "metrics": [
+      {
+        "n": "3",
+        "l": "Compliance updates"
+      },
+      {
+        "n": "2H",
+        "l": "High threats"
+      },
+      {
+        "n": "3",
+        "l": "Pivots"
+      },
+      {
+        "n": "5",
+        "l": "Validated ideas"
+      }
+    ],
+    "landscape": [
+      {
+        "level": "high",
+        "source": "CA Dept of Cannabis Control",
+        "headline": "CA AB-45 updated guidance restricts health claims in email subject lines",
+        "body": "Any claim language in subject lines implying therapeutic benefit is now flagged. Review all active flows and campaigns. Update before next send or risk account suspension with your ESP."
+      },
+      {
+        "level": "medium",
+        "source": "Leafly Industry Report",
+        "headline": "Perplexity now citing dispensary brands in 'best cannabis' queries — compliance-constrained brands invisible",
+        "body": "AI shopping agents are beginning to surface cannabis products in legal states. Brands with clean schema and compliant product descriptions are being cited. This is the GEO window for cannabis."
+      },
+      {
+        "level": "low",
+        "source": "MJBizDaily",
+        "headline": "SMS opt-in compliance standards tightening across cannabis platforms",
+        "body": "Alpine IQ and Springbig both updated their SMS compliance modules. No immediate action needed but review your opt-in language against new TCPA guidance."
+      }
+    ],
+    "topIdea": {
+      "label": "Validated Business Idea #1",
+      "title": "Cannabis Compliance-Safe GEO Audit",
+      "body": "A $499 audit specifically for compliance-constrained cannabis CPG brands — scores owned-channel performance, compliance risk level, and AI visibility across legal-state queries.",
+      "chips": [
+        "Profitability 9/10",
+        "Ease 8/10",
+        "$3,000–$18,000/mo"
+      ]
+    },
+    "competitors": [
+      {
+        "name": "Springbig",
+        "threat": "medium",
+        "changed": "Updated compliance module with new CA/CO state rules — now auto-flags non-compliant copy before send",
+        "howToWin": "Springbig is a platform tool, not a strategy layer. You provide the strategic diagnosis they can't — why the channel mix is wrong, what owned channels are underbuilt, and how to build AI visibility compliantly."
+      },
+      {
+        "name": "Alpine IQ",
+        "threat": "low",
+        "changed": "No new marketing strategy features. Platform-only focus remains.",
+        "howToWin": "Alpine IQ serves operators. You serve founders who need strategy on top of the platform. No direct overlap."
+      },
+      {
+        "name": "Generic fractional CMOs",
+        "threat": "high",
+        "changed": "Several generalist fractional CMOs now claiming cannabis expertise on LinkedIn without compliance depth",
+        "howToWin": "Lead with the compliance-first angle in all positioning. 'Every recommendation is platform-compliant and state-aware' is your moat. A generalist can't credibly say that."
+      }
+    ]
+  }
+}

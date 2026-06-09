@@ -12,3 +12,7 @@ package.json
 package-lock.json
 node_modules/
 _worker.js
+CAIO_STATE.md
+PIVOT_LOG.md
+caioinsight-context.md
+CLAUDE.md
