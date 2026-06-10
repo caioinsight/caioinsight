@@ -32,10 +32,10 @@ PROMPT = f"""You are the research engine for an internal (gated, private) intell
 Today is {date_str}. Use web search to find REAL, recent (last ~1-3 days) developments. Hard facts only — never invent. If you cannot verify something, leave it out. Cite the real source name in each item's "source" field.
 
 Produce intel for TWO verticals:
-1. dtc — DTC / Shopify founders ($200K-$2M revenue) and AI/agentic commerce: ChatGPT shopping & Instant Checkout, Perplexity, Google AI Overviews, Shopify AI features, GEO/AEO tooling, competitor/agency moves.
-2. cannabis — Cannabis CPG marketing for compliance-constrained brands: state regulatory/compliance changes (CA DCC, TCPA/SMS, advertising rules), AI-visibility/GEO developments, platform moves (Springbig, Alpine IQ, Leafly, Weedmaps).
+1. dtc — DTC / Shopify founders ($200K-$2M). Focus on AI ACCURACY: where AI gets brands' product facts wrong and the liability that creates (a brand owns what its AI/chatbot says, per Air Canada 2024), agentic-commerce shifts (ChatGPT, Perplexity, Google AI Overviews, Shopify) that change what AI states about products, and competitor/agency moves in AI accuracy. Frame around getting the facts right, NOT 'get recommended'.
+2. cannabis — Cannabis CPG, compliance-constrained. Focus on COMPLIANCE & ACCURACY liability: state regulatory changes (CA DCC, TCPA/SMS, ad rules, Schedule III) and AI hallucination/compliance liability (AI stating wrong THC/CBD or health claims, or surfacing a brand in unlicensed states). NOTE: AI rarely recommends cannabis at all (ChatGPT surfaces ~1.2% of dispensaries), so frame around accuracy/compliance liability, NOT visibility.
 
-For each vertical assemble: one `priority` (single most important action today), 3-4 `landscape` shifts, a `topIdea` (a validated business idea with profitability/ease scores and a $ range in chips), and 2-3 `competitors` (name, threat level, what changed, how to win).
+For each vertical assemble: one `priority` (single most important accuracy/compliance action today — the wrong or risky thing AI is saying that a brand must fix), 3-4 `landscape` shifts, a `topIdea` (a validated business idea with profitability/ease scores and a $ range in chips), and 2-3 `competitors` (name, threat level, what changed, how to win).
 
 Update the metric numbers to reflect what you actually found. Keep the dtc metrics labels: ["Landscape shifts","Y1 forecast","High threats","Pivots","Validated ideas"] (Y1 forecast stays "$186K"). Keep cannabis metric labels: ["Compliance updates","High threats","Pivots","Validated ideas"].
 
