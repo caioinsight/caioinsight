@@ -1,126 +1,120 @@
 {
   "date": "June 10, 2026 · 6:00 AM PT",
-  "generatedNote": "auto-generated 2026-06-10T22:18:01Z",
+  "generatedNote": "auto-generated 2026-06-10T13:00:00Z",
   "dtc": {
-    "priority": "Audit each client's Shopify Agentic Storefront status (now on by default across ChatGPT, Copilot, Google AI Mode and Gemini) and confirm product feeds, structured data and referral attribution are clean — this is the single highest-leverage AI-visibility lever live right now and most founders don't know it's already running.",
+    "priority": "Get every client's product catalog feed-ready for Shopify Agentic Storefronts NOW. OpenAI has retreated from Instant Checkout to focus on product discovery, so the winnable surface today is being the brand AI engines cite in product answers — not the checkout. Audit feeds, schema, and review volume this week.",
     "metrics": [
-      {"n":"4","l":"Landscape shifts"},
-      {"n":"$186K","l":"Y1 forecast"},
-      {"n":"1H","l":"High threats"},
-      {"n":"3","l":"Pivots"},
-      {"n":"5","l":"Validated ideas"}
+      {"n": "4", "l": "Landscape shifts"},
+      {"n": "$186K", "l": "Y1 forecast"},
+      {"n": "1H", "l": "High threats"},
+      {"n": "3", "l": "Pivots"},
+      {"n": "5", "l": "Validated ideas"}
     ],
     "landscape": [
       {
-        "level":"high",
-        "source":"Shopify News (shopify.com/news)",
-        "headline":"Agentic Storefronts now default — products surface in ChatGPT, Copilot, Google AI Mode & Gemini",
-        "body":"Since March 2026 Shopify merchants' products are discoverable in major AI assistants by default, managed from Shopify Admin with no separate apps and no extra transaction fees. Orders carry ChatGPT referral attribution. Shopify reports AI-driven traffic up ~8x YoY and orders from AI search up ~15x since Jan 2025. This is the core surface our AEO work optimizes for."
+        "level": "high",
+        "source": "Shopify News",
+        "headline": "Agentic Storefronts now live across ChatGPT, Copilot, Google AI Mode & Gemini",
+        "body": "Shopify merchants get out-of-the-box access to major AI channels managed centrally from Shopify Admin. A new Agentic plan even lets non-Shopify brands push products into the catalog to surface inside ChatGPT, Gemini and Copilot. This is the single biggest distribution shift for baby/kids DTC — clients need their feeds clean and structured to be eligible."
       },
       {
-        "level":"high",
-        "source":"PR Newswire / CMSWire (Jun 3, 2026)",
-        "headline":"Sitecore acquires Scrunch for ~$225M — AI-search visibility consolidates upmarket",
-        "body":"Sitecore is folding Scrunch's AI customer-experience / Agent Experience Platform into its enterprise DXP. Signals that enterprise budget is flowing into AI-visibility and that point tools are getting absorbed — leaves the founder-led $200K–$2M DTC segment underserved by the consolidating enterprise players. Deal value ~$225M [reported by Bloomberg, per PRNewswire]."
+        "level": "high",
+        "source": "CNBC / Modern Retail",
+        "headline": "OpenAI retreats on Instant Checkout, pivots ChatGPT to product discovery",
+        "body": "OpenAI said the first Instant Checkout 'did not offer the level of flexibility we aspire to,' so merchants now use their own checkout while OpenAI focuses on discovery. Implication: the AEO battleground is citation/recommendation in the answer, not the buy button — exactly Cowy's lane."
       },
       {
-        "level":"medium",
-        "source":"GEO tooling roundups (Scrunch, Geoptie, NoGood)",
-        "headline":"Profound cements lead as enterprise AI-visibility platform on $35M Sequoia Series B",
-        "body":"Profound now monitors 10+ engines (ChatGPT/GPT-5.2, Claude, Perplexity, Google AI Overviews, Gemini, Copilot, DeepSeek, Grok). Ahrefs has entered with Brand Radar AI-visibility features. Tooling is maturing fast at the top — our edge stays in done-for-you execution for founders who won't run an enterprise dashboard themselves."
+        "level": "medium",
+        "source": "ALM Corp analysis (20.9M keywords)",
+        "headline": "Google AI Overviews now appear on 14% of shopping queries",
+        "body": "A 5.6x increase in four months per an analysis of 20.9M shopping keywords. Baby/kids research-heavy queries (safety, materials, age-appropriateness) are prime AI Overview territory, raising the value of structured, citable content."
       },
       {
-        "level":"medium",
-        "source":"eMarketer / GEO statistics roundups 2026",
-        "headline":"AI Overviews reshape transactional clicks — higher conversion, fewer clicks",
-        "body":"2026 data cited across roundups: AI Overviews drive ~34% higher conversion on transactional queries while overall CTR drops ~34.5% when an AI summary appears. Implication for DTC: being the cited source inside the answer matters more than blue-link rank. [stat sources are secondary roundups — treat as directional, not audited]"
+        "level": "medium",
+        "source": "Perplexity / TechBuzz",
+        "headline": "Perplexity adds PayPal in-chat checkout, memory personalization & virtual try-on",
+        "body": "Perplexity shopping is now personalized via memory and supports PayPal-powered in-chat purchase. Another AI surface where product feeds and review signals decide visibility. [unverified] exact US rollout breadth for apparel try-on beyond initial launch."
       }
     ],
     "topIdea": {
-      "label":"Productized service",
-      "title":"Agentic Storefront Readiness Sprint for Shopify DTC founders",
-      "body":"A fixed-scope 2-week audit + remediation: validate Agentic Storefront is live, clean product feeds and structured/schema data, fix attribution, and benchmark citation share across ChatGPT/Perplexity/Google AI Mode. Lands squarely on the default rollout most founders haven't acted on. Recurring monitoring upsell after the sprint.",
-      "chips":["Profitability 8/10","Ease 7/10","$3K–$8K per sprint"]
+      "label": "TOP IDEA",
+      "title": "Agentic Storefront Readiness Audit (productized, baby/kids)",
+      "body": "A fixed-scope service that gets a baby/kids Shopify brand cited in AI product discovery: clean product feed + structured/schema data + review-volume seeding + AI-citation baseline across ChatGPT, Gemini, Perplexity and Google AI Overviews. Sells against the live Shopify Agentic Storefront rollout — urgent, concrete, done-for-you.",
+      "chips": ["Profitability 8/10", "Ease 7/10", "$2K–$5K/mo"]
     },
     "competitors": [
       {
-        "name":"Profound",
-        "threat":"high",
-        "changed":"Reinforced #1 enterprise position on a $35M Sequoia Series B; 10+ engine coverage incl. GPT-5.2.",
-        "howToWin":"Don't compete on dashboards. Sell outcome-based done-for-you execution to sub-$2M founders Profound's PLG/enterprise motion ignores; use their data narrative as market validation."
+        "name": "Scrunch",
+        "threat": "high",
+        "changed": "Positioned as the most complete AI-native AEO/GEO platform for 2026 (4.6/5 G2), pairing multi-LLM monitoring with auditing, optimization and AI content delivery.",
+        "howToWin": "They sell software; Cowy sells done-for-you. Win on a managed service layer plus tight baby/kids vertical focus — interpretation and execution, not another dashboard the founder has to run."
       },
       {
-        "name":"Charle Agency / Pennock (DTC-focused GEO shops)",
-        "threat":"medium",
-        "changed":"Positioning hard as GEO specialists for ecommerce/DTC and beauty/skincare brands.",
-        "howToWin":"Out-niche on baby & kids DTC on Shopify with category-specific citation playbooks and faster, fixed-price sprints rather than retainer-heavy agency engagements."
+        "name": "DTC SEO Agency (Austin)",
+        "threat": "medium",
+        "changed": "Formally expanded its ecommerce search offering to include AI Search, AEO and GEO attribution (Jan 2026 announcement).",
+        "howToWin": "Generalist ecommerce SEO shop. Out-niche them on baby/kids Shopify with founder-led speed and AEO-first (not SEO-bolt-on) positioning."
       },
       {
-        "name":"Sitecore (post-Scrunch)",
-        "threat":"low",
-        "changed":"Acquired Scrunch (~$225M) to push AI-search visibility into its enterprise DXP.",
-        "howToWin":"Irrelevant to founder-led DTC on price and complexity — use as proof the category is real when selling SMB founders; never meet them on enterprise RFPs."
+        "name": "Otterly / AIclicks",
+        "threat": "low",
+        "changed": "Cheap entry-level AI-visibility monitoring (Otterly from $29/mo) gaining traction with lean teams.",
+        "howToWin": "Bundle monitoring inside the retainer so the client never logs in — Cowy delivers the action and the report, not raw tracking."
       }
     ]
   },
   "cannabis": {
-    "priority": "Brief clients that the April 2026 Schedule III move does NOT unlock AI visibility or open SMS/ad channels — engines still refuse ~28% of cannabis prompts. Prioritize compliant, citation-ready owned content (lab data, education, structured product info) over any assumption that rescheduling loosens marketing rules.",
+    "priority": "Do NOT let clients bank on Schedule III to fix AI visibility. With ~28% of cannabis prompts producing AI refusals and ChatGPT recommending only 1.2% of locations, today's move is the fundamentals that actually earn citations: third-party review volume + editorial seeding + structured, citable content. Brief every compliance-constrained client this week.",
     "metrics": [
-      {"n":"3","l":"Compliance updates"},
-      {"n":"2H","l":"High threats"},
-      {"n":"3","l":"Pivots"},
-      {"n":"5","l":"Validated ideas"}
+      {"n": "3", "l": "Compliance updates"},
+      {"n": "2H", "l": "High threats"},
+      {"n": "3", "l": "Pivots"},
+      {"n": "5", "l": "Validated ideas"}
     ],
     "landscape": [
       {
-        "level":"high",
-        "source":"Cannabis Business Times / CaNORML / Shay Gilmore Law",
-        "headline":"Federal Schedule III order in effect; expedited adult-use hearing opens June 29",
-        "body":"An April 22, 2026 order moved FDA-approved and state-regulated medical cannabis from Schedule I to Schedule III. An expedited administrative hearing begins June 29, 2026 on whether broader rescheduling (incl. adult-use) follows; state-licensed medical operators can seek expedited DEA registration through June 27, 2026. Material shift in the federal backdrop, but adult-use marketing constraints remain."
+        "level": "high",
+        "source": "Shay Gilmore Law / DCC",
+        "headline": "Schedule III rescheduling + DCC emergency dual-license rule; June 29 adult-use hearing",
+        "body": "DOJ rescheduled medical marijuana to Schedule III (Apr 22, 2026); an expedited hearing on broadening to adult use begins June 29. California's DCC issued an emergency action (announced May 18) letting ~1,600 licensees hold separate adult-use and medical licenses simultaneously. Big operational shift, but does not loosen AI-platform content gating."
       },
       {
-        "level":"high",
-        "source":"MG Magazine / 5W AI Visibility Index — Cannabis (May 2026)",
-        "headline":"Schedule III won't fix AI visibility — ~28% of cannabis prompts still get refused or hedged",
-        "body":"5W's Q1 2026 index (ChatGPT, Claude, Perplexity, Google AI Overviews; 50+ consumer-intent prompts) found ~28% of cannabis prompts produce AI refusals, hedges or prominent disclaimers — the highest of any consumer category. MSOs Curaleaf, Trulieve and Green Thumb captured ~17.5% of category citations; Cookies leads branded products; Charlotte's Web holds the #1 CBD slot. Citation share is highly concentrated."
+        "level": "high",
+        "source": "5W PR AI Visibility Index / Hemp Gazette (SOCi)",
+        "headline": "Cannabis AI visibility declining despite Google gains; refusals dominate",
+        "body": "5W's Q1 2026 index (50+ consumer-intent prompts across ChatGPT, Claude, Perplexity, Google AIO) found ChatGPT recommends only 1.2% of locations, Perplexity 7.4%, Gemini 11%, and ~28% of cannabis prompts yield refusals/hedges — the highest of any consumer category. SOCi separately reports dispensary AI visibility falling even as Google search visibility rises. Winners just do the fundamentals consistently."
       },
       {
-        "level":"medium",
-        "source":"CA DCC rulemaking updates (announced Apr 30)",
-        "headline":"California DCC streamlines A/M license designation changes",
-        "body":"In response to federal rescheduling, the DCC announced a streamlined process letting cultivation licensees change adult-use (A) / medicinal (M) designation without waiting for renewal. Operationally relevant for CA clients repositioning toward medical channels post-Schedule III. [confirm exact effective date per client before advising]"
-      },
-      {
-        "level":"medium",
-        "source":"TCPA / FCC SMS rule coverage (Greenspoon Marder, cannabisregulations.ai)",
-        "headline":"One-to-one consent + fast revocation keep SMS a legal minefield for cannabis",
-        "body":"FCC's one-to-one consent rule (Jan 27, 2025) and mandatory fast opt-out/revocation (Apr 11, 2025) remain in force; carriers still largely block promotional cannabis SMS and 10DLC registration is required. TCPA exposure runs $500–$1,500 per message in class actions. Reinforces shifting acquisition spend from SMS blasts toward compliant owned/AI-discoverable content."
+        "level": "medium",
+        "source": "FCC / TCPA compliance guidance",
+        "headline": "Tighter SMS enforcement: one-to-one consent, 10DLC, carrier content blocks",
+        "body": "FCC one-to-one consent (consent can't be shared across partners) plus 10DLC registration is now table stakes; statutory damages run $500–$1,500 per message. Carrier content policies (CTIA) still block much cannabis SMS regardless of TCPA compliance — pushing brands toward owned, citable web content over outbound SMS."
       }
     ],
     "topIdea": {
-      "label":"Compliant content engine",
-      "title":"Citation-Ready Compliance Content for cannabis & CBD brands",
-      "body":"Build the owned, fact-dense assets AI engines will actually cite without tripping refusal filters: lab/COA data, dosing and safety education, structured product schema, and authority pages — engineered to win share in the ~72% of prompts engines do answer. Sidesteps the SMS/ad restrictions entirely by competing on credibility.",
-      "chips":["Profitability 7/10","Ease 6/10","$2.5K–$6K/mo"]
+      "label": "TOP IDEA",
+      "title": "Compliance-safe GEO package for cannabis CPG",
+      "body": "A done-for-you program built to win AI citations without tripping platform refusals: third-party review seeding, editorial/PR placements, and structured product content engineered to be quotable by ChatGPT, Gemini and Perplexity. Sold on the hard data that Schedule III won't move AI visibility — only earned citation signals will.",
+      "chips": ["Profitability 7/10", "Ease 5/10", "$3K–$6K/mo"]
     },
     "competitors": [
       {
-        "name":"5W PR / agencies publishing AI-visibility indices",
-        "threat":"high",
-        "changed":"Released the Cannabis AI Visibility Index (May 2026), claiming the measurement high ground.",
-        "howToWin":"Convert their published benchmarks into per-client gap analyses and done-for-you remediation — own the execution layer they only measure."
+        "name": "Profound",
+        "threat": "high",
+        "changed": "Generalist AI-search visibility platform actively marketing to brands tracking ChatGPT/Perplexity/Google AIO presence.",
+        "howToWin": "Software, not service, and not cannabis-aware. Win with compliance-constrained execution and citation-building most platforms can't safely advise on."
       },
       {
-        "name":"Alpine IQ & Springbig (dispensary CRM/SMS platforms)",
-        "threat":"high",
-        "changed":"Remain the default omnichannel/loyalty/SMS stack for dispensaries amid tightening TCPA rules.",
-        "howToWin":"Position AI-visibility/GEO as the complement to (not replacement for) their CRM — capture demand they create but can't serve as SMS deliverability degrades; pitch the compliant top-of-funnel they lack."
+        "name": "5W PR",
+        "threat": "high",
+        "changed": "Owns the narrative with its Cannabis AI Visibility Index, capturing the measurement story across the major engines.",
+        "howToWin": "They publish the index and chase large brands; Cowy executes done-for-you for the SMB/founder-led cannabis CPG tier they ignore — pair their data with our delivery."
       },
       {
-        "name":"Weedmaps / Leafly (consumer marketplaces)",
-        "threat":"medium",
-        "changed":"Still dominate cannabis marketplace traffic but are not optimized for AI-engine citation.",
-        "howToWin":"Sell brands direct-citation visibility in ChatGPT/Perplexity so they're less dependent on marketplace rankings and listing fees."
+        "name": "SOCi",
+        "threat": "medium",
+        "changed": "Published dispensary AI-visibility decline report; focused on local/multi-location presence.",
+        "howToWin": "They're location/listing-centric; Cowy wins at the brand-product citation level, which is where CPG (not dispensary) value sits."
       }
     ]
   }
