@@ -1,4 +1,4 @@
-# Cowy — we want AI assistants to read and cite our content.
+# Cowy. We want AI assistants to read our pages and get our facts right.
 User-agent: GPTBot
 Allow: /
 User-agent: OAI-SearchBot

@@ -22,7 +22,7 @@ A done for you AI accuracy service for baby and kids consumable DTC brands on Sh
 Pivot v2 (2026-06-09): we dropped the "get recommended" or "AI visibility" promise. It is un winnable and un provable for a small founder brand, and it is being commoditized by Shopify and Perplexity free programs. Accuracy on branded queries is winnable, provable, and a real safety and liability stake on kids products.
 
 ## Positioning
-- Headline, live: "When parents ask AI about your baby brand, does it get the facts right?"
+- Headline, live: "When parents ask AI about your baby and kids brand, does it get the facts right?"
 - Eyebrow: "AI Accuracy for Baby & Kids Brands"
 - Method: Find, Trace, Fix, Prove.
 
