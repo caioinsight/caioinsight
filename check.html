@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cowy · Start your AI visibility check</title>
+<title>Cowy · Start your AI accuracy check</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--mint:#A3E2C9;--mint-deep:#5FBF9B;--mint-soft:#E7F6EF;--ink:#1C2521;--paper:#EEF5F0;--card:#FFFFFF;--border:#DDEAE3;--muted:#5E726A;--sans:'Nunito',sans-serif;--mono:'Geist Mono',monospace}
@@ -90,7 +90,7 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
   <!-- intro + form: hidden after submit -->
   <div id="formzone">
     <div class="eyebrow">Start here</div>
-    <h1>Let us check your AI visibility.</h1>
+    <h1>Let us check what AI gets wrong about you.</h1>
     <p class="sub">Two minutes. We run your store through the questions parents ask AI, then send your report.</p>
     <p class="async-note">No call. No meeting. We reply by email.</p>
 
@@ -135,7 +135,7 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
         <textarea id="notes" placeholder="Optional. A recent launch, a fact AI keeps getting wrong, a goal."></textarea>
       </div>
       <button class="btn" onclick="submitForm()">Send my free check request</button>
-      <p class="foot">We reply within 2 business days with your results. The free check shows whether AI names you or a competitor. Want the whole picture now? See the plans below.</p>
+      <p class="foot">We reply within 2 business days with your results. The free check shows where AI gets your product facts wrong. Want the whole picture now? See the plans below.</p>
     </div>
   </div>
 
@@ -196,8 +196,8 @@ function plansHtml(forThanks){
     ? '<h3>While we run your free check…</h3><p>You are on the free plan now. Here is what each one gives you. Move up any time.</p>'
     : '<h3>See what each plan gives you</h3><p>You are on the free check. Each plan below gives you more. Green check means you get it. Red X means you do not.</p>';
   var F = [
-    "See if AI names you or a competitor",
-    "A full list of every place AI leaves you out",
+    "See where AI gets your facts wrong",
+    "A full list of every wrong, outdated, or missing fact",
     "The exact wrong facts AI says about you",
     "A step-by-step plan to fix it",
     "We make the first fixes for you",

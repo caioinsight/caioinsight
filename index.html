@@ -764,7 +764,7 @@ function calc(){
   var rev=parseFloat(document.getElementById('rev').value);
   var aipct=parseFloat(document.getElementById('cat').value)/100;
   // Fixed, stated assumption: of the parents researching with AI, a brand with
-  // weak AI visibility is typically missing from most answers. We use 0.6 as a
+  // weak AI accuracy means AI often states wrong or missing facts about a brand. We use 0.6 as a
   // conservative, transparent placeholder rather than asking the founder to guess.
   var missing=0.6;
   var atStake=rev*aipct*missing;
