@@ -24,7 +24,7 @@ date_str = today.strftime("%B %-d, %Y") + " · 6:00 AM PT"
 SCHEMA = """{
   "date": "<set by caller>",
   "generatedNote": "<ISO datetime>",
-  "dtc":      { "priority": str, "metrics": [{"n":str,"l":str} x5], "landscape": [{"level":"high|medium|low","source":str,"headline":str,"body":str} x3-4], "topIdea": {"label":str,"title":str,"body":str,"chips":[str,str,str]}, "competitors": [{"name":str,"threat":"high|medium|low","changed":str,"howToWin":str} x2-3] },
+  "dtc":      { "priority": str, "metrics": [{"n":str,"l":str} x5], "landscape": [{"level":"high|medium|low","source":str,"headline":str,"body":str} x3-4], "topIdea": {"label":str,"title":str,"body":str,"chips":[str,str,str]}, "competitors": [{"name":str,"threat":"high|medium|low","changed":str,"howToWin":str} x2-3], "pivots": [{"rank":int,"title":str,"timing":"GO NOW | SCHEDULE ~X wks/months","signal":str,"trap":str,"steps":[str x3-5]} x5] },
   "cannabis": { same shape as dtc }
 }"""
 
@@ -35,7 +35,7 @@ Produce intel for TWO verticals:
 1. dtc — DTC / Shopify founders ($200K-$2M). Focus on AI ACCURACY: where AI gets brands' product facts wrong and the liability that creates (a brand owns what its AI/chatbot says, per Air Canada 2024), agentic-commerce shifts (ChatGPT, Perplexity, Google AI Overviews, Shopify) that change what AI states about products, and competitor/agency moves in AI accuracy. Frame around getting the facts right, NOT 'get recommended'.
 2. cannabis — Cannabis CPG, compliance-constrained. Focus on COMPLIANCE & ACCURACY liability: state regulatory changes (CA DCC, TCPA/SMS, ad rules, Schedule III) and AI hallucination/compliance liability (AI stating wrong THC/CBD or health claims, or surfacing a brand in unlicensed states). NOTE: AI rarely recommends cannabis at all (ChatGPT surfaces ~1.2% of dispensaries), so frame around accuracy/compliance liability, NOT visibility.
 
-For each vertical assemble: one `priority` (single most important accuracy/compliance action today — the wrong or risky thing AI is saying that a brand must fix), 3-4 `landscape` shifts, a `topIdea` (a validated business idea with profitability/ease scores and a $ range in chips), and 2-3 `competitors` (name, threat level, what changed, how to win).
+For each vertical assemble: one `priority` (single most important accuracy/compliance action today — the wrong or risky thing AI is saying that a brand must fix), 3-4 `landscape` shifts, a `topIdea` (a validated business idea with profitability/ease scores and a $ range in chips), and 2-3 `competitors` (name, threat level, what changed, how to win). ALSO assemble `pivots`: the top 5 strategic moves for THIS vertical, ranked by constraint-fit (solo operator, cash-now) + speed-to-first-revenue + defensibility + evidence strength. Each pivot = {rank (1-5), title, timing ('GO NOW' or 'SCHEDULE ~X wks/months' with the trigger), signal (the specific dashboard data point driving it), trap (the main risk), steps ([3-5 concrete, practical execution steps])}. Apply the ACCURACY lens; for cannabis frame as compliance/accuracy liability, NOT visibility.
 
 Update the metric numbers to reflect what you actually found. Keep the dtc metrics labels: ["Landscape shifts","Y1 forecast","High threats","Pivots","Validated ideas"] (Y1 forecast stays "$186K"). Keep cannabis metric labels: ["Compliance updates","High threats","Pivots","Validated ideas"].
 

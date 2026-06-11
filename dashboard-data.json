@@ -4,11 +4,26 @@
   "dtc": {
     "priority": "Get every client's product catalog feed-ready for Shopify Agentic Storefronts NOW. OpenAI has retreated from Instant Checkout to focus on product discovery, so the winnable surface today is being the brand AI engines cite in product answers — not the checkout. Audit feeds, schema, and review volume this week.",
     "metrics": [
-      {"n": "4", "l": "Landscape shifts"},
-      {"n": "$186K", "l": "Y1 forecast"},
-      {"n": "1H", "l": "High threats"},
-      {"n": "3", "l": "Pivots"},
-      {"n": "5", "l": "Validated ideas"}
+      {
+        "n": "4",
+        "l": "Landscape shifts"
+      },
+      {
+        "n": "$186K",
+        "l": "Y1 forecast"
+      },
+      {
+        "n": "1H",
+        "l": "High threats"
+      },
+      {
+        "n": "3",
+        "l": "Pivots"
+      },
+      {
+        "n": "5",
+        "l": "Validated ideas"
+      }
     ],
     "landscape": [
       {
@@ -40,7 +55,11 @@
       "label": "TOP IDEA",
       "title": "Agentic Storefront Readiness Audit (productized, baby/kids)",
       "body": "A fixed-scope service that gets a baby/kids Shopify brand cited in AI product discovery: clean product feed + structured/schema data + review-volume seeding + AI-citation baseline across ChatGPT, Gemini, Perplexity and Google AI Overviews. Sells against the live Shopify Agentic Storefront rollout — urgent, concrete, done-for-you.",
-      "chips": ["Profitability 8/10", "Ease 7/10", "$2K–$5K/mo"]
+      "chips": [
+        "Profitability 8/10",
+        "Ease 7/10",
+        "$2K–$5K/mo"
+      ]
     },
     "competitors": [
       {
@@ -61,15 +80,94 @@
         "changed": "Cheap entry-level AI-visibility monitoring (Otterly from $29/mo) gaining traction with lean teams.",
         "howToWin": "Bundle monitoring inside the retainer so the client never logs in — Cowy delivers the action and the report, not raw tracking."
       }
+    ],
+    "pivots": [
+      {
+        "rank": 1,
+        "title": "Agentic Storefront Readiness Audit (flagship)",
+        "timing": "GO NOW",
+        "signal": "Agentic Storefronts went live across ChatGPT, Copilot, Google AI Mode & Gemini this week; OpenAI pivoted to product discovery. Clean, accurate product data is the winnable surface — and the first-mover window is open now.",
+        "trap": "Frame it as accuracy (correct, complete product facts), not a me-too 'get cited' GEO audit.",
+        "steps": [
+          "Build a fixed 12-query audit: ask each engine the questions parents ask about the brand's products; log every wrong, missing, or misattributed fact.",
+          "Check the product feed + Product JSON-LD schema, llms.txt completeness, and OAI-/PerplexityBot access.",
+          "Score third-party review volume and source coverage (what AI actually reads).",
+          "Package as a 48-hour fixed-price brief: what's wrong, why, the fix, and a re-check date.",
+          "Send to 3 warm Tier-1 prospects (e.g. Tubby Todd) this week, each with one real finding."
+        ]
+      },
+      {
+        "rank": 2,
+        "title": "Watchdog monitoring upsell",
+        "timing": "SCHEDULE ~3-6 wks",
+        "signal": "Google AI Overviews now hit 14% of shopping queries and agentic storefronts are live — what AI says drifts constantly, so a one-time fix can't hold.",
+        "trap": "Don't launch monitoring before you have audit clients to convert.",
+        "steps": [
+          "Reuse each client's 12 audit queries as the monitored set.",
+          "Re-run weekly and diff answers for new errors or competitor displacement.",
+          "Price as a $79-149/mo add-on, sold at report delivery as 'keep it accurate'.",
+          "Alert the moment a wrong fact appears."
+        ]
+      },
+      {
+        "rank": 3,
+        "title": "DIY accuracy/feed kit ($200-400)",
+        "timing": "SCHEDULE ~2-4 wks",
+        "signal": "With agentic storefronts live, far more brands need feed/schema readiness than can afford done-for-you.",
+        "trap": "Don't productize before the audit method is proven on 2-3 clients.",
+        "steps": [
+          "Validate the audit method on 2-3 paying clients first.",
+          "Template the checklist + schema snippets + an llms.txt generator.",
+          "Sell self-serve at checkout; disclose any tool-affiliate fees.",
+          "Use the free check as top-of-funnel."
+        ]
+      },
+      {
+        "rank": 4,
+        "title": "Fold Google AI Overviews into the audit",
+        "timing": "GO NOW",
+        "signal": "AI Overviews now appear on 14% of shopping queries — a growing surface where wrong facts about a brand show straight to parents.",
+        "trap": "Don't sell it as a separate product; it's one engine in the audit set.",
+        "steps": [
+          "Add Google AI Overviews to the audit engine checklist.",
+          "Flag where AIO states wrong or outdated facts vs the brand's own site.",
+          "Recommend schema + concise on-page answers AIO can quote correctly."
+        ]
+      },
+      {
+        "rank": 5,
+        "title": "Proprietary 'AI Accuracy Index' (moat)",
+        "timing": "SCHEDULE ~6-8 wks",
+        "signal": "Platform competitors (Scrunch, Profound) can't be out-tooled, but a niche accuracy benchmark is an asset you can own.",
+        "trap": "Building pre-revenue is the classic founder trap — references and cash first.",
+        "steps": [
+          "Start only after 1-2 paying references.",
+          "Define the metric: % of branded queries AI gets right, by category.",
+          "Seed it from audit data you already collect.",
+          "Use it later as a marketing magnet and sellable dataset."
+        ]
+      }
     ]
   },
   "cannabis": {
     "priority": "Do NOT let clients bank on Schedule III to fix AI visibility. With ~28% of cannabis prompts producing AI refusals and ChatGPT recommending only 1.2% of locations, today's move is the fundamentals that actually earn citations: third-party review volume + editorial seeding + structured, citable content. Brief every compliance-constrained client this week.",
     "metrics": [
-      {"n": "3", "l": "Compliance updates"},
-      {"n": "2H", "l": "High threats"},
-      {"n": "3", "l": "Pivots"},
-      {"n": "5", "l": "Validated ideas"}
+      {
+        "n": "3",
+        "l": "Compliance updates"
+      },
+      {
+        "n": "2H",
+        "l": "High threats"
+      },
+      {
+        "n": "3",
+        "l": "Pivots"
+      },
+      {
+        "n": "5",
+        "l": "Validated ideas"
+      }
     ],
     "landscape": [
       {
@@ -95,7 +193,11 @@
       "label": "TOP IDEA",
       "title": "Compliance-safe GEO package for cannabis CPG",
       "body": "A done-for-you program built to win AI citations without tripping platform refusals: third-party review seeding, editorial/PR placements, and structured product content engineered to be quotable by ChatGPT, Gemini and Perplexity. Sold on the hard data that Schedule III won't move AI visibility — only earned citation signals will.",
-      "chips": ["Profitability 7/10", "Ease 5/10", "$3K–$6K/mo"]
+      "chips": [
+        "Profitability 7/10",
+        "Ease 5/10",
+        "$3K–$6K/mo"
+      ]
     },
     "competitors": [
       {
@@ -115,6 +217,71 @@
         "threat": "medium",
         "changed": "Published dispensary AI-visibility decline report; focused on local/multi-location presence.",
         "howToWin": "They're location/listing-centric; Cowy wins at the brand-product citation level, which is where CPG (not dispensary) value sits."
+      }
+    ],
+    "pivots": [
+      {
+        "rank": 1,
+        "title": "AI Compliance & Accuracy Audit (drop visibility)",
+        "timing": "GO NOW",
+        "signal": "~28% of cannabis prompts return AI refusals and ChatGPT recommends only 1.2% of locations — visibility is dead. The real exposure is what AI says when it does mention you or the category, and you own it (Air Canada precedent).",
+        "trap": "Thin brand-level surface — anchor on category + compliance liability, not 'get cited'.",
+        "steps": [
+          "Run branded + category queries across engines; log refusals, wrong THC/CBD facts, non-compliant health claims, and unlicensed-state surfacing.",
+          "Score hallucination/compliance liability by state.",
+          "Map the sources AI reads (reviews, directories, press) and where they're wrong or missing.",
+          "Deliver a compliance-first 90-day fix plan in 48 hours; price $499 + retainer.",
+          "Pitch both the marketing AND the legal/compliance budget."
+        ]
+      },
+      {
+        "rank": 2,
+        "title": "Earn-citations fundamentals (reviews + editorial seeding)",
+        "timing": "GO NOW",
+        "signal": "Today's priority: don't bank on Schedule III; the move is the fundamentals that earn correct citations — third-party review volume, editorial seeding, structured citable content.",
+        "trap": "Don't promise rankings; promise accurate, compliant source coverage.",
+        "steps": [
+          "Audit third-party review volume and accuracy across legal-state platforms.",
+          "Seed structured, claim-compliant product facts where AI reads.",
+          "Build citable, compliant content on owned pages.",
+          "Re-check what AI says monthly and prove the change."
+        ]
+      },
+      {
+        "rank": 3,
+        "title": "SMS compliance add-on",
+        "timing": "SCHEDULE ~2-4 wks",
+        "signal": "Tighter SMS enforcement (one-to-one consent, 10DLC, carrier content blocks) hits a top cannabis growth lever and creates fresh compliance risk.",
+        "trap": "Stay in your lane: compliance review, not full SMS management.",
+        "steps": [
+          "Offer an SMS compliance check: consent language, 10DLC registration, carrier-block-prone content.",
+          "Bundle with the audit or sell standalone.",
+          "Refer out execution; own the compliance strategy layer."
+        ]
+      },
+      {
+        "rank": 4,
+        "title": "Schedule III readiness advisory",
+        "timing": "SCHEDULE (~Jun 29 hearing)",
+        "signal": "Schedule III rescheduling + DCC emergency dual-license rule and the June 29 adult-use hearing make this a claim-language inflection point.",
+        "trap": "Rescheduling won't fix AI visibility — frame as claim-language risk, not hype.",
+        "steps": [
+          "Prep a claim-language risk checklist for the rescheduling scenarios.",
+          "Audit clients' active flows and pages for soon-to-be non-compliant claims.",
+          "Time outreach to the June 29 hearing news."
+        ]
+      },
+      {
+        "rank": 5,
+        "title": "Compliance alert newsletter ($47/mo, passive)",
+        "timing": "SCHEDULE ~4-8 wks",
+        "signal": "Constant regulatory churn (DCC, TCPA/SMS, Schedule III) and no compliance-first cannabis marketing newsletter exists.",
+        "trap": "Don't start before you have audit clients as the seed audience.",
+        "steps": [
+          "Seed from audit clients + the daily intel you already gather.",
+          "Send a weekly state-by-state compliance + AI-accuracy alert.",
+          "Charge $47/mo; it scales passively once the content engine runs."
+        ]
       }
     ]
   }
