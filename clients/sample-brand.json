@@ -1,0 +1,63 @@
+{
+  "brand": "Sample Brand",
+  "category": "baby formula",
+  "date": "June 11, 2026",
+  "facts_wrong": "4 of 12",
+  "engines": "ChatGPT, Perplexity, Gemini, and Google AI Overviews",
+  "score": {
+    "overall": 41,
+    "note": "Low today means AI is getting several facts wrong about you, so most of the upside is still in front of you. Here is where the points are going.",
+    "areas": [
+      {
+        "area": "Facts AI gets right",
+        "score": "11 / 25",
+        "note": "AI states four wrong or outdated facts about your products"
+      },
+      {
+        "area": "Sources AI can read",
+        "score": "8 / 25",
+        "note": "Your product data is thin in places, so AI fills the gaps with guesses"
+      },
+      {
+        "area": "Product labels AI can read",
+        "score": "12 / 25",
+        "note": "Some key fields are missing, so AI cannot confirm the facts"
+      },
+      {
+        "area": "Safety and ingredient accuracy",
+        "score": "10 / 25",
+        "note": "Two wrong claims found, which is a trust and safety issue"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "query": "is Sample Brand formula dairy-free?",
+      "wrong": "that it is dairy-free",
+      "verdict": "That is incorrect.",
+      "truth": "The Stage 1 formula contains milk-based whey.",
+      "impact": "A parent avoiding dairy could act on this and buy the wrong product.",
+      "status": "wrong"
+    },
+    {
+      "query": "what age is Sample Brand formula suitable from?",
+      "wrong": "from 6 months",
+      "verdict": "That is incorrect.",
+      "truth": "It is suitable from birth.",
+      "impact": "AI is steering away newborn buyers, which is your largest segment.",
+      "status": "wrong"
+    },
+    {
+      "query": "is Sample Brand formula organic?",
+      "wrong": "that it is USDA Organic certified",
+      "truth": "That certification is correct and current.",
+      "impact": "This is one AI gets right, so the goal is to keep it accurate as your catalog changes.",
+      "status": "ok"
+    }
+  ],
+  "done": {
+    "pages": 3,
+    "labels": 5,
+    "faqs": 6
+  }
+}

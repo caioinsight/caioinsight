@@ -16,3 +16,11 @@ CAIO_STATE.md
 PIVOT_LOG.md
 caioinsight-context.md
 CLAUDE.md
+
+# Internal working dirs (never serve publicly)
+prompts/
+templates/
+scripts/
+clients/
+prospects/
+ops/
