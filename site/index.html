@@ -111,7 +111,7 @@ section.blk{padding:72px 0;border-bottom:1px solid var(--border)}
 .tier li::before{content:'';position:absolute;left:0;top:13px;width:13px;height:7px;border-left:2px solid var(--mint-deep);border-bottom:2px solid var(--mint-deep);transform:rotate(-45deg)}
 .tier .btn{width:100%;justify-content:center}
 @media(max-width:760px){.tiers{grid-template-columns:1fr}}
-.pitch{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center}
+.pitch{display:grid;grid-template-columns:1fr;gap:42px;align-items:center;max-width:680px}
 .pitch-vis{background:var(--charcoal);border-radius:18px;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .pitch-vis::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(163,226,201,.25),transparent 60%)}
 .play{width:64px;height:64px;border-radius:50%;background:var(--mint);display:flex;align-items:center;justify-content:center;z-index:1;cursor:pointer;transition:transform .2s}
@@ -646,9 +646,6 @@ footer .flinks a:hover{color:var(--ink)}
           <li><b>You see the fix</b> in a sample report, then decide. No pressure, no meeting.</li>
         </ol>
         <a href="#top" class="btn btn-mint btn-lg" style="margin-top:22px">Get my free check + video &rarr;</a>
-      </div>
-      <div class="pitch-vis">
-        <div class="play"><svg width="22" height="22" viewBox="0 0 24 24" fill="#1C2521"><path d="M8 5v14l11-7z"/></svg></div>
       </div>
     </div>
   </div>
