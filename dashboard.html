@@ -1083,5 +1083,9 @@ showContent('dtc', 'overview');
 })();
 </script>
 
+
+<script>/* cowy-auto-refresh: reloads the page when the tab is refocused after going stale, so an already-open dashboard pulls the latest dashboard-data.json */
+(function(){var loadedAt=Date.now();var STALE=5*60*1000;function maybe(){if(document.visibilityState==='visible'&&Date.now()-loadedAt>STALE){location.reload();}}document.addEventListener('visibilitychange',maybe);setInterval(maybe,60*1000);})();
+</script>
 </body>
 </html>
