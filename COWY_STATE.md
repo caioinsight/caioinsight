@@ -41,6 +41,7 @@ Baby and kids consumables on Shopify: formula, baby food and pouches, diapers, w
 The DTC and cannabis intelligence lives in the gated dashboard at cowy.ai/dashboard.html, not on the public Cowy site. Cannabis is framed as compliance and accuracy liability, never visibility, because AI surfaces only about 1.2 percent of dispensaries on ChatGPT and the rate is falling.
 
 ## Saved prompts (repo prompts/ directory)
+- /verify, at prompts/verify.md. Launch-readiness deep scan of all assets (business-plan truth, accuracy, consistency, brand voice, launch ready). Reports findings, then offers to fix.
 - /pivot, at prompts/pivot.md. Ranks the top 5 pivots per vertical from the latest dashboard-data.json and recommends go now versus schedule.
 - /activate, at prompts/activate.md. Implements the GO NOW pivots across all business assets, with a required accuracy and house style review before it asks for approval to push.
 - Older CAIO hub and spoke set: CAIO_AUDIT, CAIO_CAMPAIGN, CAIO_INTEL, CAIO_PIVOT, CAIO_POST, CAIO_RESEARCH, CAIO_SITE, CAIO_STRATEGY.
