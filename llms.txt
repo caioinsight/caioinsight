@@ -1,8 +1,8 @@
 # Cowy
 
-> AI accuracy for baby & kids brands. Cowy makes sure that when AI assistants (ChatGPT, Perplexity, Gemini, Google AI Overviews) talk about your baby or kids brand, they get the facts right — finding every wrong, outdated, or misattributed answer, fixing the sources behind it, and proving the correction.
+> AI accuracy for baby & kids brands. Cowy makes sure that when AI assistants (ChatGPT, Perplexity, Gemini, Google AI Overviews) talk about your baby or kids brand, they get the facts right. We find every wrong, outdated, or misattributed answer, fix the sources behind it, and prove the correction.
 
-Cowy is a done-for-you service built only for baby & kids consumable DTC brands on Shopify: formula, baby food & pouches, diapers, wipes, skincare & bath, and kids vitamins. The job is accuracy, not visibility — making sure AI never misstates your ingredients, age ranges, certifications, or claims.
+Cowy is a done-for-you service built only for baby & kids consumable DTC brands on Shopify: formula, baby food & pouches, diapers, wipes, skincare & bath, and kids vitamins. The job is keeping what AI says about your products accurate. That means your ingredients, your age ranges, your certifications, and your claims.
 
 ## What Cowy does
 - Checks what AI assistants say about your products and flags every wrong, outdated, or misattributed fact.
