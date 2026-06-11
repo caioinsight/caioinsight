@@ -125,6 +125,11 @@ textarea{resize:vertical;min-height:84px;font-weight:600}
         <input type="text" id="q" placeholder="e.g. is this formula palm-oil free?">
       </div>
       <div class="field">
+        <label>Your top 1 to 3 products, with price and rough monthly units</label>
+        <div class="hint">Optional, and it lets us put a dollar figure on what each AI error costs you. Example: All Over Ointment, $36, about 5,000 a month.</div>
+        <input type="text" id="units" placeholder="e.g. All Over Ointment, $36, about 5,000 a month">
+      </div>
+      <div class="field">
         <label>Your name &amp; email <span class="req">*</span></label>
         <div class="hint">Where we send your report.</div>
         <input type="text" id="name" placeholder="Name" style="margin-bottom:10px">
@@ -278,6 +283,7 @@ function submitForm(){
     category: cat,
     competitors: document.getElementById('comp').value.trim(),
     buyer_question: document.getElementById('q').value.trim(),
+    product_units: document.getElementById('units').value.trim(),
     contact_name: nameEl ? nameEl.value.trim() : '',
     contact_email: email,
     notes: document.getElementById('notes').value.trim(),

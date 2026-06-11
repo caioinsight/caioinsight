@@ -49,6 +49,33 @@ def finding_blocks(findings):
     return "\n".join(out)
 
 
+def stakes_box(st):
+    price = st["price"]; lo = st.get("deter_low", 1); hi = st.get("deter_high", 3)
+    real = st.get("units_monthly") is not None
+    units = st.get("units_monthly") if real else st.get("units_example", 0)
+    rl = round(price * units * lo / 100.0); rh = round(price * units * hi / 100.0)
+    if real:
+        units_lbl = "{:,} a month, the figure you gave".format(units)
+        caveat = "Based on the units you provided."
+        rev_lbl = "Revenue exposed: ${:,} to ${:,} a month.".format(rl, rh)
+    else:
+        units_lbl = "{:,} a month, an illustration to replace with your number".format(units)
+        caveat = "The dollar range uses an assumed volume. Swap in your real monthly units and it updates."
+        rev_lbl = "Revenue exposed: about ${:,} to ${:,} a month at an illustrative {:,} units.".format(rl, rh, units)
+    return ('<div class="stakes" style="border:1px solid #e6e6e6;border-radius:14px;padding:20px 22px;margin:24px 0;background:#f6faf9">'
+        '<h2 style="margin-top:0">What these gaps are worth</h2>'
+        '<p>Here is the revenue exposed to the gaps above, as a model you can check. It is exposure, not a billed loss, and every input is yours or labeled as an assumption.</p>'
+        '<table><tr><th>Input</th><th>Value</th></tr>'
+        '<tr><td>Affected product</td><td>' + esc(st["product"]) + '</td></tr>'
+        '<tr><td>Price</td><td>$' + esc(price) + '</td></tr>'
+        '<tr><td>Monthly units</td><td>' + units_lbl + '</td></tr>'
+        '<tr><td>Buyers misdirected by a wrong answer</td><td>' + esc(lo) + ' to ' + esc(hi) + ' percent, a conservative assumption</td></tr>'
+        '</table>'
+        '<p style="font-size:1.2rem;font-weight:800;margin:12px 0 0">' + rev_lbl + '</p>'
+        '<p style="font-size:13px;color:#666;margin-top:6px">' + caveat + ' The AI Accuracy Report is $1,500 once, and it credits toward your first month if you continue.</p>'
+        '</div>')
+
+
 def between(s, start, end, new):
     a = s.index(start) + len(start)
     b = s.index(end)
@@ -138,6 +165,8 @@ def main():
         s = between(s, "<!--FILL:scores-->", "<!--/FILL:scores-->", score_rows(sc["areas"]))
     if data.get("findings"):
         s = between(s, "<!--FILL:findings-->", "<!--/FILL:findings-->", finding_blocks(data["findings"]))
+    if data.get("stakes") and data.get("mode") != "freecheck":
+        s = s.replace("<!--/FILL:findings-->", "<!--/FILL:findings-->\n  " + stakes_box(data["stakes"]), 1)
 
     out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(
         ROOT, "outputs", re.sub(r"[^a-z0-9]+", "-", brand.lower()).strip("-") + "-accuracy-report.html")
