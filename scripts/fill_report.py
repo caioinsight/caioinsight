@@ -49,6 +49,19 @@ def finding_blocks(findings):
     return "\n".join(out)
 
 
+def cta_buttons(cta):
+    btns = []
+    if cta.get("dfy_url"):
+        btns.append('<a href="' + esc(cta["dfy_url"]) + '" style="display:inline-block;background:var(--ink);color:#fff;font-weight:800;font-size:15px;padding:14px 26px;border-radius:10px;text-decoration:none;margin:5px">Start Done For You, $2,500 a month &rarr;</a>')
+    if cta.get("watchdog_url"):
+        btns.append('<a href="' + esc(cta["watchdog_url"]) + '" style="display:inline-block;background:var(--card);color:var(--ink);border:2px solid var(--mint-deep);font-weight:800;font-size:15px;padding:12px 24px;border-radius:10px;text-decoration:none;margin:5px">Just monitor, AI Watchdog $79 a month</a>')
+    if not btns:
+        return None
+    return ('<div class="cta" style="border:none;background:transparent;padding:0;text-align:center">'
+            + "".join(btns)
+            + '<div style="font-size:12.5px;color:var(--muted);margin-top:10px;font-weight:600">Secure checkout through Stripe. No call needed.</div></div>')
+
+
 def stakes_box(st):
     price = st["price"]; lo = st.get("deter_low", 1); hi = st.get("deter_high", 3)
     real = st.get("units_monthly") is not None
@@ -167,6 +180,10 @@ def main():
         s = between(s, "<!--FILL:findings-->", "<!--/FILL:findings-->", finding_blocks(data["findings"]))
     if data.get("stakes") and data.get("mode") != "freecheck":
         s = s.replace("<!--/FILL:findings-->", "<!--/FILL:findings-->\n  " + stakes_box(data["stakes"]), 1)
+    if data.get("cta"):
+        cb = cta_buttons(data["cta"])
+        if cb:
+            s = re.sub(r'<div class="cta">.*?</div>', lambda m: cb, s, count=1, flags=re.S)
 
     out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(
         ROOT, "outputs", re.sub(r"[^a-z0-9]+", "-", brand.lower()).strip("-") + "-accuracy-report.html")

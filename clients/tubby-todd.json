@@ -70,5 +70,9 @@
     "units_example": 5000,
     "deter_low": 1,
     "deter_high": 3
+  },
+  "cta": {
+    "dfy_url": "https://buy.stripe.com/REPLACE-WITH-YOUR-DONE-FOR-YOU-LINK",
+    "watchdog_url": "https://buy.stripe.com/REPLACE-WITH-YOUR-WATCHDOG-LINK"
   }
 }
