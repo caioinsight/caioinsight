@@ -57,28 +57,19 @@ Want the full report, or want to talk it through by email first?
 
 ---
 
-## 3. AI Accuracy Report delivery ($1,500)
+## 3. AI Accuracy Report delivery, stakes first ($1,500)
 
-Subject: Your AI Accuracy Report for [Brand]
+Subject: The riskiest thing AI tells parents about [Brand]
 
 Hi [Name],
 
-Your AI Accuracy Report is attached. It covers what ChatGPT, Perplexity, Gemini,
-and Google AI Overviews say about [Brand], your accuracy score, every wrong or
-outdated fact, the source behind each one, and a 90-day fix plan ranked by what
-costs you the most.
+Your full AI Accuracy Report is attached. Before you open it, here is the finding that matters most. [One or two sentences: the single worst thing AI gets wrong about a product, and what it costs you.]
 
-The fastest wins are on page [X]. You can hand the report to your developer as is,
-or we can do the work for you.
+That one is fixable, and it is not the only gap. The report covers [N] more, traces each to the source AI reads, and ranks the fixes by what costs you the most. AI gets a lot about [Brand] right, so this is about closing specific gaps, not starting over.
 
-Two ways to keep AI accurate from here:
+If you want us to make the fixes, watch the engines each month, and prove each correction, that is Done For You at $2,500 a month, or AI Watchdog at $79 a month for monitoring alone. The $1,500 for this report credits toward your first month.
 
-- AI Watchdog, $79 a month. We re-check your products every month and alert you
-  when AI starts getting something wrong, so a new error never sits live for long.
-- Done For You, $2,500 a month. We fix the sources, publish the corrections, and
-  prove the change each month. Your $1,500 report fee credits toward your first month.
-
-Want me to set up either one?
+Want me to start?
 
 [Your name]
 
