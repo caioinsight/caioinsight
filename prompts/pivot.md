@@ -23,3 +23,13 @@ TASK:
 DISCIPLINE: hard facts only; every load-bearing claim ties to a dashboard data point or cited source; label anything unverifiable [ASSUMPTION] with the cheapest test to confirm it; never inflate a market; PIVOT_LOG is the override authority.
 
 OUTPUT: a ranked list (1–5) with the fields above, then the two closing calls. Tight and decision-ready.
+
+
+## House style (non-negotiable, no AI tells)
+Any copy you write or update for any asset must read like a person wrote it.
+- No em dashes or en dashes (the long dash characters or their HTML entities). Use a period, a comma, or the word "and".
+- No one or two word sentence fragments and no staccato triads. Write complete sentences.
+- No mid sentence colon used as a dramatic pivot, no "it is not X, it is Y" filler, no rhythmic paired or tripled phrases.
+- No AI openers ("in today's world"), no hype words (revolutionary, seamless, unlock, supercharge, elevate), no filler (very, really, simply, just).
+- Hard facts only, cited. Match brand voice: Cowy is plain, parent aware, accuracy led, anti hype; the CAIO dashboard is direct, operator to operator, hard numbers.
+- Read it aloud before shipping. If it sounds like AI wrote it, rewrite it.
