@@ -8,6 +8,8 @@
 ## 2026
 
 ### June 2026
+- 2026-06-09: POSITIONING PIVOT — visibility -> ACCURACY. Dropped 'get recommended / AI visibility'; sell making sure AI tells the truth about the brand (find wrong answers, fix the sources, prove the correction). Shipped live to cowy.ai homepage + dashboard pitches.
+- 2026-06-09: CANNABIS reframed to COMPLIANCE & ACCURACY MONITORING (not visibility). Stress test: AI barely surfaces cannabis (SOCi 2026: ChatGPT ~1.2%, Perplexity 7.4%, Gemini 11% of dispensaries vs Google 35.9%, and declining; citations concentrate among big MSOs). So 'get recommended' is un-deliverable for small cannabis brands; lead with hallucination/compliance liability instead (you own what AI says; wrong THC/CBD or unlicensed-state claims = regulatory/platform risk).
 - 2026-06-01: Hub and spoke prompt library approved — building /prompts/ directory
 - 2026-06-01: Token confirmed at $0.09/audit — labor is real margin risk, not tokens
 - 2026-06-01: Subdomain architecture rejected — all verticals use subdirectories
