@@ -31,3 +31,16 @@ _Captured 2026-06-11. Live browser captures. Honest verbatim only, no fabricatio
 
 ## Gemini
 - Logged in and answered ("Tubby Todd Ointment: Eczema Treatment?"), but the response sits in shadow DOM and could not be extracted cleanly this run. Not scored.
+
+## Catalog extension (2026-06-11, Google AI Overviews)
+Tubby Todd has 20+ products. Beyond the hero All Over Ointment, scanned three more on Google:
+- Bye-Bye Cradle Cap: active = Zinc Pyrithione 0.95%. CORRECT (ground truth 0.95% pyrithione zinc, OTC).
+- Sweet Cheeks Diaper Paste: 14% non-nano zinc oxide. CORRECT (ground truth 14% zinc oxide, OTC).
+- Everyday Lotion: fragrance-free plus Lavender Rosemary and Sweet Peach + Jasmine. CORRECT and verified on the product page (Sweet Peach + Jasmine is a real Meri Meri collab scent, more complete than the brand's own best-sellers copy).
+
+## Two self-corrections (caught during the catalog scan)
+1. The earlier "outdated original formula without colloidal oatmeal" finding was WRONG. Tubby Todd genuinely sells an All Over Ointment Original Formula ($22, no oatmeal, non-OTC). Google was correct. Finding removed from the report.
+2. The candidate "AI invented a Sweet Peach + Jasmine scent" was also WRONG. The scent is real. Not a finding.
+
+## Honest conclusion
+For a well-documented brand like Tubby Todd, Google AI Overviews is accurate across products, including the two OTC drug actives. The verified gaps concentrate on Perplexity (fragrance omission, treatment downplay) and on the recommendation omission, not on hard specs. Score raised to 78 of 100. A full audit would test every individual SKU across all four engines; on this evidence it would mostly confirm accuracy and catch the Perplexity gaps.
