@@ -1,0 +1,33 @@
+# Tubby Todd — AI Accuracy Capture Log (full report basis)
+_Captured 2026-06-11. Live browser captures. Honest verbatim only, no fabrication._
+
+## Ground truth (tubbytodd.com, All Over Ointment Eczema Treatment)
+- Active ingredient: colloidal oatmeal 1% (FDA OTC skin protectant, eczema). It is an OTC "Eczema Treatment".
+- Steroid-free, gluten-free, dairy-free, paraben-free, no SLS/SLES. Hypoallergenic. Pediatrician + dermatologist tested. Gentle enough for newborns.
+- National Eczema Association Seal of Acceptance (shown on packaging).
+- Two versions: Fragrance-Free AND Lavender Rosemary (scented; contains fragrance + lavender oils).
+- Made in USA: not stated on the product page (left unverified, not scored).
+
+## Google AI Overviews (11 queries, captured verbatim)
+- Good for baby eczema: YES, correct; cites 1% colloidal oatmeal FDA-approved. BUT a "Cons" line: "Not a Medication: While it is a great emollient for maintenance and mild dryness, it usually does not clear up severe, active flare-ups."
+- Fragrance-free: YES, names fragrance-free + Lavender Rosemary versions. Also surfaced an "Original Formula (Fragrance-Free): the classic multipurpose balm without colloidal oatmeal" (outdated; current AOO has colloidal oatmeal).
+- Active ingredient: 1% Colloidal Oatmeal, FDA-approved skin protectant for eczema. Correct.
+- Steroid-free: YES, correct.
+- Safe for newborns: YES, correct, "from day one".
+- Best baby eczema cream for newborns: named Aveeno, Mustela Stelatopia+, Eucerin. Tubby Todd NOT named.
+- NEA: YES, "officially awarded the National Eczema Association Seal of Acceptance". Correct.
+- Gluten-free: YES, also dairy/steroid/paraben-free. Correct.
+- Made in USA: "Yes, proudly made in the United States" (unverified by us).
+- vs Aveeno: balanced; Tubby Todd "premium, plant-based balm... for stubborn flare-ups". Fair.
+- Treatment vs moisturizer: "officially classified and formulated as an eczema treatment rather than just a basic moisturizer... NEA Seal". Correct (contradicts the "Not a Medication" line above).
+
+## Perplexity (captured verbatim)
+- Fragrance-free: "Yes, Tubby Todd All Over Ointment is fragrance free... There is also a separate fragrance-free version marketed for sensitive or eczema-prone skin." Never mentions the Lavender Rosemary scented version; implies all variants are fragrance-free.
+- Treatment vs moisturizer: "best viewed as supportive care for mild eczema or flare-ups, not a medical treatment in the prescription sense." Undersells the OTC eczema-treatment classification.
+- Best fragrance-free baby eczema cream for newborns: gated by sign-in this run. Prior free check (2026-06-10): ranked Aveeno first, Tubby Todd as a "good alternative".
+
+## ChatGPT (logged out, partial)
+- Treatment vs moisturizer: "Tubby Todd markets its current All Over Ointment as both a moisturizer and an eczema treatment." Correct. Answer truncated by the logged-out limit before the fragrance part.
+
+## Gemini
+- Logged in and answered ("Tubby Todd Ointment: Eczema Treatment?"), but the response sits in shadow DOM and could not be extracted cleanly this run. Not scored.

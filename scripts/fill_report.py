@@ -107,6 +107,26 @@ def main():
             'full report includes the exact change and how to verify it, so you or your developer can '
             'act on it directly.</p>' % price, s, count=1, flags=re.S)
 
+    if data.get("mode") != "freecheck":
+        if data.get("lead"):
+            lead = esc(data["lead"])
+            s = re.sub(r'<div class="lead">.*?</div>',
+                       lambda m: '<div class="lead">' + lead + '</div>', s, count=1, flags=re.S)
+        if data.get("stage") == "diagnostic":
+            done_new = ('<h2>What we fix first</h2>\n  <ul class="done">\n'
+                '    <li>Correct the facts AI is getting wrong on the pages and listings it reads</li>\n'
+                '    <li>Add the missing product details so AI stops filling gaps with guesses</li>\n'
+                '    <li>Strengthen the third-party sources AI trusts so the right answer sticks</li>\n  </ul>')
+            s = re.sub(r'<h2>Already done for you</h2>.*?</ul>', lambda m: done_new, s, count=1, flags=re.S)
+            next_new = ('<h2>What happens next</h2>\n    <p>This report is the diagnosis. If you want us to make '
+                'the fixes, watch the engines each month, and prove each correction, that is the Done For You '
+                'plan at $2,500 a month, or AI Watchdog at $79 a month for monitoring alone. The $1,500 for '
+                'this report credits toward your first month if you continue.</p>\n    <div class="cta">Reply '
+                'to the email this came from and we will start. No call needed.</div>\n  </div>\n\n  '
+                '<p class="devnote">Every fix in this report includes the exact change and how to verify it, '
+                'so you or your developer can act on it directly.</p>')
+            s = re.sub(r'<h2>What happens next</h2>.*?they can act on it\.</p>', lambda m: next_new, s, count=1, flags=re.S)
+
     sc = {} if data.get("mode") == "freecheck" else data.get("score", {})
     if sc.get("overall") is not None:
         s = re.sub(r'<span class="big">\d+</span>',
