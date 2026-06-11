@@ -39,7 +39,7 @@ For each vertical assemble: one `priority` (single most important accuracy/compl
 
 Update the metric numbers to reflect what you actually found. Keep the dtc metrics labels: ["Landscape shifts","Y1 forecast","High threats","Pivots","Validated ideas"] (Y1 forecast stays "$186K"). Keep cannabis metric labels: ["Compliance updates","High threats","Pivots","Validated ideas"].
 
-Output ONLY a single JSON object, no prose, no markdown fences, matching exactly this schema:
+HOUSE STYLE (applies to every string you write): no em dashes or en dashes (use a period, comma, or 'and'), no one or two word fragments, no hype words, complete sentences, hard facts only. Output ONLY a single JSON object, no prose, no markdown fences, matching exactly this schema:
 {SCHEMA}
 Set "date" to "{date_str}" and "generatedNote" to "auto-generated {today.isoformat()}"."""
 
