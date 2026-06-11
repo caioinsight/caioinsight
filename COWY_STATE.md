@@ -57,7 +57,7 @@ The DTC and cannabis intelligence lives in the gated dashboard at cowy.ai/dashbo
 
 ## Status, 2026-06-11
 Live and accuracy aligned: homepage, free check, intake, report template, llms.txt, and the dashboard pitch and Pivot Plan tab. The flagship AI Accuracy Audit is active. The first real free check ran on Tubby Todd, and the finding was that two engines disagree on whether the All Over Ointment is an eczema treatment.
-Open: revoke the cowy-dashboard-bot token, finish GitHub Actions (add the workflow file and the ANTHROPIC_API_KEY secret), review the June 11 auto generated pivots before activating any, and finish the copy voice cleanup (remove em dashes and fragments per the house style).
+Open blockers for launch: create the five Stripe payment links and wire them into check.html, fill the legal placeholders in terms.html and refund.html (legal business name, state, contact email, effective date), revoke the cowy-dashboard-bot token, and finish GitHub Actions (add the workflow file and the ANTHROPIC_API_KEY secret). Copy voice is clean and all visibility framing is removed from the public pages.
 
 ## Session protocol (/start)
 On /start, read this doc, the repo, and the relevant Notion pages (the Cowy Clients tracker). Then reply with a three line status (what is live, what is in progress, top three next actions) and wait.
@@ -66,6 +66,7 @@ On /start, read this doc, the repo, and the relevant Notion pages (the Cowy Clie
 No hallucination, hard facts only. Validate output before presenting it. Trusted sources only, and cite non obvious facts. No speculation, and mark unknowns as assumptions. Enforce the house style on all copy. Confirm before anything destructive, anything that spends money, anything outbound, and any change to the public site.
 
 ## Changelog (condensed)
+- 2026-06-11 (pm): removed the last visibility framing from every public page (free check section, FAQ and its JSON-LD, the steps, the grader copy, and the intake labels), widened the /verify scan to catch broader visibility phrasings, shipped a one command report fill (scripts/fill_report.py with template anchors, clients/, and a sample), added the customer email template set at ops/email-templates.md, and stopped serving the internal dirs (prompts, templates, scripts, clients, prospects, ops) publicly.
 - 2026-06-11: reconciled this doc into one clean canonical version, added the house style rule and the single edit path rule that fixes the drift, added a review gate to /activate, and reviewed the June 11 auto pivots.
 - 2026-06-10: activated the flagship AI Accuracy Audit across all assets (homepage product cards, report template, intake form, check.html, llms.txt), added the Pivot Plan dashboard tab and the /pivot and /activate prompts, and ran the first Tubby Todd free check.
 - 2026-06-09: shipped Pivot v2 from visibility to accuracy on the live site, reframed cannabis to compliance and accuracy, hardened security (private repo, gating, closed two public leaks), added a Tier field to the CRM, and built the pipeline dashboard.
