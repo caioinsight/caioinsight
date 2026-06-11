@@ -1,4 +1,4 @@
-# Tubby Todd — report delivery email (stakes first, review before sending)
+# Tubby Todd report delivery email (stakes first, review before sending)
 
 Subject: The riskiest thing AI tells parents about Tubby Todd
 
