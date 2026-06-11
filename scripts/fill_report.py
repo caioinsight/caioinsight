@@ -78,7 +78,36 @@ def main():
         if done.get(key) is not None:
             s = s.replace(ph, esc(done[key]))
 
-    sc = data.get("score", {})
+    if data.get("mode") == "freecheck":
+        eng = esc(data.get("engines", "Perplexity"))
+        price = esc(data.get("report_price", "$1,500"))
+        s = s.replace('<div class="rtype">AI Accuracy Report</div>',
+                      '<div class="rtype">AI Accuracy Free Check</div>')
+        s = re.sub(r'<div class="lead">.*?</div>',
+            '<div class="lead">This is a free check for %s. We asked %s the questions a parent '
+            'asks before buying, and we recorded what it said. Below are the answers that need '
+            'fixing. The full AI Accuracy Report checks twelve questions across ChatGPT, Perplexity, '
+            'Gemini, and Google AI Overviews, scores your accuracy, and traces every error to its '
+            'source.</div>' % (esc(brand), eng), s, count=1, flags=re.S)
+        s = re.sub(r'<h2>Your AI Accuracy Score</h2>.*?</table>',
+            '<h2>What this free check covers</h2>\n  <p>This sample looked at %s. We did not score '
+            'your full accuracy here. Your AI Accuracy Score across ChatGPT, Perplexity, Gemini, and '
+            'Google AI Overviews comes with the full report.</p>' % eng, s, count=1, flags=re.S)
+        s = re.sub(r'<h2>Already done for you</h2>.*?</ul>',
+            '<h2>What the full report adds</h2>\n  <ul class="done">\n'
+            '    <li>Runs all twelve buyer questions across ChatGPT, Perplexity, Gemini, and Google AI Overviews</li>\n'
+            '    <li>Scores your accuracy and traces every wrong answer to the source AI reads</li>\n'
+            '    <li>Gives you a ranked 90-day fix plan with the exact changes</li>\n  </ul>', s, count=1, flags=re.S)
+        s = re.sub(r'<h2>What happens next</h2>.*?they can act on it\.</p>',
+            '<h2>What happens next</h2>\n    <p>This free check is yours to keep. The full AI Accuracy '
+            'Report is %s. It covers all four engines, scores your accuracy, and gives you the exact '
+            'fixes. If you continue with a monthly plan, the report fee credits toward your first '
+            'month.</p>\n    <div class="cta">Reply to the email this came from and we will run the '
+            'full report. No call needed.</div>\n  </div>\n\n  <p class="devnote">Every fix in the '
+            'full report includes the exact change and how to verify it, so you or your developer can '
+            'act on it directly.</p>' % price, s, count=1, flags=re.S)
+
+    sc = {} if data.get("mode") == "freecheck" else data.get("score", {})
     if sc.get("overall") is not None:
         s = re.sub(r'<span class="big">\d+</span>',
                    '<span class="big">%s</span>' % esc(sc["overall"]), s, count=1)
