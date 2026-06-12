@@ -19,3 +19,5 @@ HARD RULES (non-negotiable):
 - Hard facts only. Every claim sourced and screenshotted.
 
 OUTPUT: a client JSON for scripts/fill_report.py with the findings found (status wrong, ok, or note), a coverage line (products and engines scanned), verified_on, and evidence_on_file set. The fill script blocks an unverified report with a draft banner.
+
+Tie the report to results. Provide causes (why each error happens, drawn from the real findings) and fix_plan (the ranked fixes) so the Why this is happening and 90-day fix plan sections are specific to what was found. For an accurate brand, leave causes and fix_plan out and those sections are omitted, never shown with generic boilerplate.

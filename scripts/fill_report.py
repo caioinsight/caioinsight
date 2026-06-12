@@ -237,6 +237,30 @@ def main():
         s = between(s, "<!--FILL:findings-->", "<!--/FILL:findings-->", finding_blocks(data["findings"]))
     if data.get("stakes") and data.get("mode") != "freecheck":
         s = s.replace("<!--/FILL:findings-->", "<!--/FILL:findings-->\n  " + stakes_box(data["stakes"]), 1)
+    # Why this is happening: render from causes, else remove (no false generic claims)
+    if data.get("causes"):
+        def _c(x):
+            if isinstance(x, dict):
+                return "<li><b>" + esc(x.get("title", "")) + "</b> " + esc(x.get("detail", "")) + "</li>"
+            return "<li>" + esc(x) + "</li>"
+        items = "".join(_c(x) for x in data["causes"])
+        s = re.sub(r'<h2>Why this is happening</h2>\s*<ol>.*?</ol>',
+                   lambda m: '<h2>Why this is happening</h2>\n  <ol>' + items + '</ol>', s, count=1, flags=re.S)
+    else:
+        s = re.sub(r'\s*<h2>Why this is happening</h2>\s*<ol>.*?</ol>', '', s, count=1, flags=re.S)
+
+    # 90-day fix plan: render from fix_plan, else remove
+    if data.get("fix_plan"):
+        rows = "".join(
+            "<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>" % (
+                i + 1, esc(p.get("fix", "")), esc(p.get("effort", "")), esc(p.get("who", "")))
+            for i, p in enumerate(data["fix_plan"]))
+        s = re.sub(r'<h2>Your 90-day fix plan</h2>\s*<table>.*?</table>',
+                   lambda m: '<h2>Your 90-day fix plan</h2>\n  <table>\n    <tr><th>Priority</th><th>Fix</th><th>Effort</th><th>Who</th></tr>' + rows + '</table>',
+                   s, count=1, flags=re.S)
+    else:
+        s = re.sub(r'\s*<h2>Your 90-day fix plan</h2>\s*<table>.*?</table>', '', s, count=1, flags=re.S)
+
     if data.get("cta"):
         cb = cta_buttons(data["cta"])
         if cb:
