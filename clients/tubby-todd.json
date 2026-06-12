@@ -65,11 +65,28 @@
   ],
   "category": "baby skincare and eczema care",
   "stakes": {
-    "product": "All Over Ointment",
-    "price": 36,
-    "units_example": 5000,
     "deter_low": 1,
-    "deter_high": 3
+    "deter_high": 3,
+    "products": [
+      {
+        "name": "All Over Ointment",
+        "price": 36,
+        "units": 5000,
+        "gap": true
+      },
+      {
+        "name": "Bye-Bye Cradle Cap",
+        "gap": false
+      },
+      {
+        "name": "Sweet Cheeks Diaper Paste",
+        "gap": false
+      },
+      {
+        "name": "Everyday Lotion",
+        "gap": false
+      }
+    ]
   },
   "cta": {
     "dfy_url": "https://buy.stripe.com/REPLACE-WITH-YOUR-DONE-FOR-YOU-LINK",

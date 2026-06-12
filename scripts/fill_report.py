@@ -63,39 +63,62 @@ def cta_buttons(cta):
 
 
 def stakes_box(st):
-    price = st["price"]; lo = st.get("deter_low", 1); hi = st.get("deter_high", 3)
-    real = st.get("units_monthly") is not None
-    units = st.get("units_monthly") if real else st.get("units_example", 0)
-    units_hint = "the figure you gave" if real else "assumption, replace with your number"
-    _u = units or 0
-    _rl = round(price * _u * lo / 100.0); _rh = round(price * _u * hi / 100.0)
-    init = "about ${:,} to ${:,} a month".format(min(_rl, _rh), max(_rl, _rh))
-    caveat = ("Edit any field and the number recalculates. These start from "
-              + ("the units you provided." if real else "an assumed volume, so swap in your real monthly units.")
-              + " The AI Accuracy Report is $1,500 once, and it credits toward your first month if you continue.")
-    inp = ("border:1px solid var(--border);border-radius:8px;padding:7px 9px;font:inherit;"
-           "font-weight:700;color:var(--ink);background:#fff")
-    box = (
-      '<div class="stakes" style="border:1px solid #e6e6e6;border-radius:14px;padding:20px 22px;margin:24px 0;background:#f6faf9">'
-      '<h2 style="margin-top:0">What these gaps are worth</h2>'
-      '<p>Here is the revenue exposed to the gaps above, as a model you can check. It is exposure, not a billed loss, and every input is yours or labeled as an assumption.</p>'
-      '<table><tr><th>Input</th><th>Value</th></tr>'
-      '<tr><td>Affected product</td><td><input id="cowyProd" type="text" value="' + esc(st["product"]) + '" style="' + inp + ';min-width:200px"></td></tr>'
-      '<tr><td>Price (USD)</td><td>$ <input id="cowyPrice" type="number" min="0" step="1" value="' + esc(price) + '" style="' + inp + ';width:90px"></td></tr>'
-      '<tr><td>Monthly units</td><td><input id="cowyUnits" type="number" min="0" step="1" value="' + esc(units) + '" style="' + inp + ';width:120px"> <span style="font-size:12.5px;color:var(--muted)">' + units_hint + '</span></td></tr>'
-      '<tr><td>Buyers misdirected by a wrong answer</td><td><input id="cowyLo" type="number" min="0" max="100" step="0.5" value="' + esc(lo) + '" style="' + inp + ';width:64px"> to <input id="cowyHi" type="number" min="0" max="100" step="0.5" value="' + esc(hi) + '" style="' + inp + ';width:64px"> percent, a conservative assumption</td></tr>'
-      '</table>'
-      '<p style="font-size:1.2rem;font-weight:800;margin:14px 0 0">Revenue exposed: <span id="cowyOut">' + init + '</span>.</p>'
-      '<p style="font-size:13px;color:#666;margin-top:6px">' + caveat + '</p>'
-      '</div>'
-      '<script>(function(){'
-      'function f(n){return "$"+Math.round(n).toLocaleString("en-US");}'
-      'function g(id){return parseFloat((document.getElementById(id)||{}).value)||0;}'
-      'function calc(){var p=g("cowyPrice"),u=g("cowyUnits"),lo=g("cowyLo"),hi=g("cowyHi");'
-      'var rl=p*u*lo/100,rh=p*u*hi/100;var lo2=Math.min(rl,rh),hi2=Math.max(rl,rh);'
-      'var o=document.getElementById("cowyOut");if(o)o.textContent="about "+f(lo2)+" to "+f(hi2)+" a month";}'
-      '["cowyPrice","cowyUnits","cowyLo","cowyHi"].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener("input",calc);});'
-      'calc();})();</script>')
+    lo = st.get("deter_low", 1); hi = st.get("deter_high", 3)
+    def numfmt(x): return "{:,}".format(int(round(x)))
+    def pct(x): return ("%g" % x)
+    if st.get("products"):
+        products = st["products"]
+    else:
+        products = [{"name": st.get("product", "Your product"), "price": st.get("price", 0),
+                     "units": st.get("units_monthly") or st.get("units_example", 0), "gap": True}]
+    inp = "border:1px solid var(--border);border-radius:8px;padding:6px 8px;font:inherit;font-weight:700;color:var(--ink);background:#fff"
+    rows = ""; meta = []; init_lines = []; tl = 0.0; th = 0.0
+    for i, p in enumerate(products):
+        gap = p.get("gap", True); name = esc(p["name"])
+        meta.append({"i": i, "name": p["name"], "gap": bool(gap)})
+        if gap:
+            price = p.get("price", 0) or 0; units = p.get("units", 0) or 0
+            el = price * units * lo / 100.0; eh = price * units * hi / 100.0
+            tl += el; th += eh
+            rows += ('<div style="margin:8px 0;line-height:1.7">'
+                     '<label style="font-weight:800"><input type="checkbox" id="cowyChk' + str(i) + '" checked style="margin-right:8px;vertical-align:middle">' + name + '</label> '
+                     'at $<input id="cowyPrice' + str(i) + '" type="number" min="0" step="1" value="' + esc(price) + '" style="' + inp + ';width:78px"> on '
+                     '<input id="cowyUnits' + str(i) + '" type="number" min="0" step="1" value="' + esc(units) + '" style="' + inp + ';width:104px"> units a month '
+                     '<span style="font-size:12px;color:var(--muted)">(units illustrative)</span></div>')
+            init_lines.append(p["name"] + ": $" + numfmt(price) + " on " + numfmt(units) + " units at " + pct(lo) + " to " + pct(hi) + " percent gives $" + numfmt(min(el, eh)) + " to $" + numfmt(max(el, eh)) + " a month")
+        else:
+            rows += ('<div style="margin:8px 0;line-height:1.7">'
+                     '<label style="font-weight:800"><input type="checkbox" id="cowyChk' + str(i) + '" checked style="margin-right:8px;vertical-align:middle">' + name + '</label> '
+                     '<span style="color:var(--muted)">no gaps found on the engines we checked, $0</span></div>')
+            init_lines.append(p["name"] + ": no gaps found on the engines we checked, $0")
+    init_lines.append("Units are illustrative, replace with your figures. The deterrence rate is a conservative assumption. Exposure is revenue at risk, not a billed loss.")
+    init_total = "about $" + numfmt(min(tl, th)) + " to $" + numfmt(max(tl, th)) + " a month"
+    init_ul = "".join("<li>" + esc(x) + "</li>" for x in init_lines)
+    meta_json = json.dumps(meta)
+    box = ('<div class="stakes" style="border:1px solid #e6e6e6;border-radius:14px;padding:20px 22px;margin:24px 0;background:#f6faf9">'
+           '<h2 style="margin-top:0">What these gaps are worth</h2>'
+           '<p>Here is the revenue exposed across the products we audited, as a model you can check. Pick any product or combination, and edit the numbers. It is exposure, not a billed loss.</p>'
+           '<div style="font-weight:700;margin:6px 0 2px">Products included, all audited products selected by default</div>'
+           + rows
+           + '<div style="margin:12px 0 2px">Buyers misdirected by a wrong answer: '
+             '<input id="cowyLo" type="number" min="0" max="100" step="0.5" value="' + esc(lo) + '" style="' + inp + ';width:60px"> to '
+             '<input id="cowyHi" type="number" min="0" max="100" step="0.5" value="' + esc(hi) + '" style="' + inp + ';width:60px"> percent, a conservative assumption</div>'
+           + '<p style="font-size:1.25rem;font-weight:800;margin:14px 0 4px">Total revenue exposed: <span id="cowyOut">' + init_total + '</span>.</p>'
+           + '<div style="font-weight:700;font-size:13.5px;margin-top:10px">Assumptions and calculation</div>'
+           + '<ul id="cowyCalc" style="font-size:13px;color:#555;margin:4px 0 0;padding-left:18px">' + init_ul + '</ul>'
+           + '</div>'
+           + '<script>(function(){var P=' + meta_json + ';'
+             'function f(n){return "$"+Math.round(n).toLocaleString("en-US");}'
+             'function g(id){var e=document.getElementById(id);return e?parseFloat(e.value)||0:0;}'
+             'function calc(){var lo=g("cowyLo"),hi=g("cowyHi"),tl=0,th=0,lines=[];'
+             'P.forEach(function(p){var c=document.getElementById("cowyChk"+p.i);if(!c||!c.checked)return;'
+             'if(p.gap){var pr=g("cowyPrice"+p.i),u=g("cowyUnits"+p.i),el=pr*u*lo/100,eh=pr*u*hi/100;tl+=el;th+=eh;'
+             'lines.push(p.name+": $"+pr.toLocaleString("en-US")+" on "+u.toLocaleString("en-US")+" units at "+lo+" to "+hi+" percent gives "+f(Math.min(el,eh))+" to "+f(Math.max(el,eh))+" a month");}'
+             'else{lines.push(p.name+": no gaps found on the engines we checked, $0");}});'
+             'var o=document.getElementById("cowyOut");if(o)o.textContent="about "+f(Math.min(tl,th))+" to "+f(Math.max(tl,th))+" a month";'
+             'lines.push("Units are illustrative, replace with your figures. The deterrence rate is a conservative assumption. Exposure is revenue at risk, not a billed loss.");'
+             'var uu=document.getElementById("cowyCalc");if(uu)uu.innerHTML=lines.map(function(l){return "<li>"+l+"</li>";}).join("");}'
+             'document.addEventListener("input",calc);document.addEventListener("change",calc);calc();})();</script>')
     return box
 
 
