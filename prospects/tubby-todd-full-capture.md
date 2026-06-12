@@ -44,3 +44,11 @@ Tubby Todd has 20+ products. Beyond the hero All Over Ointment, scanned three mo
 
 ## Honest conclusion
 For a well-documented brand like Tubby Todd, Google AI Overviews is accurate across products, including the two OTC drug actives. The verified gaps concentrate on Perplexity (fragrance omission, treatment downplay) and on the recommendation omission, not on hard specs. Score raised to 78 of 100. A full audit would test every individual SKU across all four engines; on this evidence it would mostly confirm accuracy and catch the Perplexity gaps.
+
+## RE-VERIFICATION 2026-06-11 (triggered by client live check) — important
+A live re-check of the same queries shows the findings have decayed:
+- Perplexity "is the All Over Ointment fragrance-free?": NOW CORRECT. Names both the fragrance-free and Lavender + Rosemary scented versions, and that the scented one has fragrance and lavender oils. Earlier capture (omitting the scented version) does NOT reproduce today.
+- Perplexity "eczema treatment or just a moisturizer?": NOW CORRECT. "marketed as an eczema treatment and also as a moisturizer... not just a plain moisturizer." Earlier "not a medical treatment" framing does NOT reproduce.
+- Google "best baby eczema cream for newborns": STILL omits Tubby Todd (names Aveeno, Mustela, CeraVe). This is a visibility omission, not an accuracy error.
+
+CONCLUSION: As of 2026-06-11, there is NO material, current accuracy error standing for Tubby Todd on the queries checked. Two of three findings self-corrected within roughly a day. The report built on those findings must NOT be sent as a paid accuracy audit. This is direct evidence that (a) one-time audits decay fast, (b) every audit must be re-verified with screenshots on the day it ships, with a human sign-off, and (c) the durable product is monitoring (Watchdog), not a one-time snapshot. The Tubby Todd report is marked SUPERSEDED pending an honest rewrite or retirement.

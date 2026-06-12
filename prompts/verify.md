@@ -17,6 +17,8 @@ CHECKLIST (flag every hit with file, line, and a one-line fix)
 4. On brand voice (house style). No em dashes or en dashes (characters or HTML entities), no one or two word sentence fragments, no staccato triads, no mid sentence dramatic colon, no hype words (revolutionary, seamless, unlock, supercharge, elevate, game changer), no AI openers ("in today's world"), no filler (very, really, simply, just). Voice: Cowy is plain, parent aware, accuracy led, anti hype.
 5. Launch ready. No unfilled placeholder in a public page (square brackets such as [Brand] or [Date], TODO, lorem); the demo card placeholders like "your brand" are intentional. Pricing and CTAs point somewhere real. Payment links are wired or explicitly flagged as not wired. Legal pages (terms, refund) exist and are filled. Gating is correct (internal pages return 401, public pages 200). No secret in any file. robots.txt and llms.txt are present and current.
 
+6. Re-verified for sending (accuracy gate). Every finding in any client report was re-checked live the same day against the engine named, with a screenshot on file and a verified_on date set, and stale findings cut. scripts/fill_report.py must print GATE cleared, and an unverified report shows a red draft banner. AI answers are a dated snapshot and change over time, so any report older than its verified_on date is re-verified before it ships. Lead the offer with monitoring (AI Watchdog), since that is the durable protection.
+
 OUTPUT: a findings table grouped by severity (Blocker, Should-fix, Nice-to-have), each row with file, issue, and fix. End with a one-line launch verdict (Go or Fix-first) and the blocker count. Do not edit anything until the user approves the fixes.
 
 ## House style (non-negotiable, no AI tells)

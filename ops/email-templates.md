@@ -49,7 +49,7 @@ Each of these traces back to a source AI reads, and each is fixable.
 The full AI Accuracy Report is $1,500. It checks all twelve questions across
 ChatGPT, Perplexity, Gemini, and Google AI Overviews, scores your accuracy,
 traces every error to its source, and gives you the exact fixes. If you continue
-with a monthly plan, the report fee credits toward your first month.
+to Done For You within 7 days, the $1,500 report fee credits toward your first month.
 
 Want the full report, or want to talk it through by email first?
 
@@ -67,7 +67,7 @@ Your full AI Accuracy Report is attached. Before you open it, here is the findin
 
 That one is fixable, and it is not the only gap. The report covers [N] more, traces each to the source AI reads, and ranks the fixes by what costs you the most. AI gets a lot about [Brand] right, so this is about closing specific gaps, not starting over.
 
-If you want us to make the fixes, watch the engines each month, and prove each correction, that is Done For You at $2,500 a month, or AI Watchdog at $79 a month for monitoring alone. The $1,500 for this report credits toward your first month.
+If you want us to make the fixes, watch the engines each month, and prove each correction, that is AI Watchdog at $79 a month or $790 a year for monitoring, which is the durable product since AI answers change, or Done For You at $2,500 a month or $25,000 a year to make the fixes too. The $1,500 for this report credits toward your first month of Done For You if you upgrade within 7 days.
 
 Want me to start?
 
@@ -113,7 +113,7 @@ structured data, and we out-publish the third-party pages we cannot edit directl
 Week 4: we re-check every engine and send you a short report showing each fact
 that went from wrong to right, with the before and after.
 
-Your $1,500 report fee credits toward this first month. If you have a question
+Your $1,500 report fee credits toward this first month if you upgraded within 7 days. If you have a question
 between updates, reply here. We work by email so you never have to book a call.
 
 [Your name]

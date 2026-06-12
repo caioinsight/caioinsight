@@ -14,8 +14,8 @@ Find → Trace → Fix → Prove: find the wrong answers, trace them to their so
 
 ## Offers
 - Free check: a 30-second look at what AI gets wrong about you, with a score and your top gaps.
-- AI Accuracy Report ($1,500 one-time): complete audit plus first fixes, credited if you go monthly within 7 days.
-- AI Watchdog ($79/mo): ongoing monitoring and alerts when AI states a wrong fact about your products.
+- AI Accuracy Report ($1,500 one-time): a dated snapshot of what AI says, re-verified the day it ships, with the fixes. Credits toward the first month of Done For You if you upgrade within 7 days.
+- AI Watchdog ($79/mo or $790/yr): ongoing monitoring, the durable product since AI answers change. Alerts you the week AI states a wrong fact about your products.
 - Done-For-You ($2,500/mo): monthly fixes that keep AI accurate about your brand, with proof.
 
 ## Key pages

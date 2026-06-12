@@ -29,14 +29,16 @@ def score_rows(areas):
 def finding_blocks(findings):
     out = []
     for fd in findings:
-        ok = fd.get("status", "wrong") == "ok"
-        cls = "q" if ok else "q bad"
-        tag = ('<span class="tag good">Correct</span>' if ok
-               else '<span class="tag out">Fact to fix</span>')
-        if ok:
+        st = fd.get("status", "wrong")
+        if st == "ok":
+            cls = "q"; tag = '<span class="tag good">Correct</span>'
             body = "AI answered %s, which is right. %s %s" % (
                 esc(fd["wrong"]), esc(fd.get("truth", "")), esc(fd.get("impact", "")))
+        elif st == "note":
+            cls = "q"; tag = '<span class="tag" style="background:#FFF6D6;color:#7a5b00">Watch item, not an accuracy error</span>'
+            body = "%s %s %s" % (esc(fd.get("wrong", "")), esc(fd.get("truth", "")), esc(fd.get("impact", "")))
         else:
+            cls = "q bad"; tag = '<span class="tag out">Fact to fix</span>'
             body = "AI answered %s. %s %s %s" % (
                 esc(fd["wrong"]), esc(fd.get("verdict", "That is incorrect.")),
                 esc(fd.get("truth", "")), esc(fd.get("impact", "")))
@@ -71,6 +73,11 @@ def stakes_box(st):
     else:
         products = [{"name": st.get("product", "Your product"), "price": st.get("price", 0),
                      "units": st.get("units_monthly") or st.get("units_example", 0), "gap": True}]
+    if not any(p.get("gap", True) for p in products):
+        return ('<div class="stakes" style="border:1px solid #e6e6e6;border-radius:14px;padding:20px 22px;margin:24px 0;background:#f6faf9">'
+                '<h2 style="margin-top:0">What this is worth</h2>'
+                '<p>Nothing is wrong today, so there is no exposure to put a dollar figure on right now. AI answers change, often within days. When a real error appears, this is where we show what it costs, using your price and units. Monitoring is how you catch that first error in the week it shows up, before it costs a sale.</p>'
+                '</div>')
     inp = "border:1px solid var(--border);border-radius:8px;padding:6px 8px;font:inherit;font-weight:700;color:var(--ink);background:#fff"
     rows = ""; meta = []; init_lines = []; tl = 0.0; th = 0.0
     for i, p in enumerate(products):
@@ -145,6 +152,11 @@ def main():
         s = s.replace("[4 of 12]", esc(data["facts_wrong"]))
     if data.get("engines"):
         s = s.replace("on ChatGPT and Perplexity.", "on %s." % esc(data["engines"]))
+    if data.get("date"):
+        snap = ('<p class="snapshot" style="font-size:13px;color:var(--muted)">Snapshot captured and re-verified on '
+                + esc(data["date"]) + ', from the engine named on each line. AI answers change over time, which is why we '
+                're-verify every finding on the day we deliver and why ongoing monitoring matters.</p>')
+        s = s.replace('<!--FILL:findings-->', snap + '\n  <!--FILL:findings-->', 1)
 
     done = data.get("done", {})
     for ph, key in (("[3]", "pages"), ("[5]", "labels"), ("[6]", "faqs")):
@@ -174,7 +186,7 @@ def main():
         s = re.sub(r'<h2>What happens next</h2>.*?they can act on it\.</p>',
             '<h2>What happens next</h2>\n    <p>This free check is yours to keep. The full AI Accuracy '
             'Report is %s. It covers all four engines, scores your accuracy, and gives you the exact '
-            'fixes. If you continue with a monthly plan, the report fee credits toward your first '
+            'fixes. If you upgrade to Done For You within 7 days, the $1,500 report fee credits toward your first '
             'month.</p>\n    <div class="cta">Reply to the email this came from and we will run the '
             'full report. No call needed.</div>\n  </div>\n\n  <p class="devnote">Every fix in the '
             'full report includes the exact change and how to verify it, so you or your developer can '
@@ -186,18 +198,24 @@ def main():
             s = re.sub(r'<div class="lead">.*?</div>',
                        lambda m: '<div class="lead">' + lead + '</div>', s, count=1, flags=re.S)
         if data.get("stage") == "diagnostic":
-            done_new = ('<h2>What we fix first</h2>\n  <ul class="done">\n'
-                '    <li>Correct the facts AI is getting wrong on the pages and listings it reads</li>\n'
-                '    <li>Add the missing product details so AI stops filling gaps with guesses</li>\n'
-                '    <li>Strengthen the third-party sources AI trusts so the right answer sticks</li>\n  </ul>')
+            d = esc(data.get("date", "today"))
+            has_wrong = any(f.get("status", "wrong") == "wrong" for f in data.get("findings", []))
+            if has_wrong:
+                done_new = ('<h2>What we fix first</h2>\n  <ul class="done">\n'
+                    '    <li>Fix the facts on the sources you control, your product pages, structured data, and product feed, with your authorization</li>\n'
+                    '    <li>Add the missing details AI needs, so it stops filling gaps with guesses</li>\n'
+                    '    <li>For outside sites we cannot edit, submit corrections where a channel exists and publish the right answer so it outweighs the wrong one</li>\n  </ul>')
+                next_p = ('This report is a snapshot of what AI says, captured and re-verified on ' + d + '. AI answers change over time, often within days, so the durable answer is to keep watching and fix what is wrong. AI Watchdog at $79 a month or $790 a year re-checks the engines every month and tells you the week an answer goes wrong. Done For You at $2,500 a month or $25,000 a year adds the fixes and proves each correction. We fix the sources you own and authorize, and for outside sites we cannot edit we submit corrections where possible and out-publish the wrong answer. The $1,500 for this report credits toward your first month of Done For You if you upgrade within 7 days.')
+            else:
+                done_new = ('<h2>How we keep this accurate</h2>\n  <ul class="done">\n'
+                    '    <li>Re-check the questions parents ask across ChatGPT, Perplexity, Gemini, and Google AI Overviews every month</li>\n'
+                    '    <li>Flag the week an answer turns wrong, with the screenshot and the source behind it</li>\n'
+                    '    <li>Fix the sources you own and authorize when something does go wrong, and prove the correction</li>\n  </ul>')
+                next_p = ('This report is a snapshot of what AI says, captured and re-verified on ' + d + '. AI is accurate about your products right now. AI answers change over time, often within days, so the way to keep this clean is to keep watching. AI Watchdog at $79 a month or $790 a year re-checks the engines every month and tells you the week an answer goes wrong. Done For You at $2,500 a month or $25,000 a year adds the fixes and proves each correction. The $1,500 for this report credits toward your first month of Done For You if you upgrade within 7 days.')
             s = re.sub(r'<h2>Already done for you</h2>.*?</ul>', lambda m: done_new, s, count=1, flags=re.S)
-            next_new = ('<h2>What happens next</h2>\n    <p>This report is the diagnosis. If you want us to make '
-                'the fixes, watch the engines each month, and prove each correction, that is the Done For You '
-                'plan at $2,500 a month, or AI Watchdog at $79 a month for monitoring alone. The $1,500 for '
-                'this report credits toward your first month if you continue.</p>\n    <div class="cta">Reply '
+            next_new = ('<h2>What happens next</h2>\n    <p>' + next_p + '</p>\n    <div class="cta">Reply '
                 'to the email this came from and we will start. No call needed.</div>\n  </div>\n\n  '
-                '<p class="devnote">Every fix in this report includes the exact change and how to verify it, '
-                'so you or your developer can act on it directly.</p>')
+                '<p class="devnote">Every finding here was captured from the named engine on ' + d + ' and re-verified the same day. AI answers change, so we re-verify before every delivery.</p>')
             s = re.sub(r'<h2>What happens next</h2>.*?they can act on it\.</p>', lambda m: next_new, s, count=1, flags=re.S)
 
     sc = {} if data.get("mode") == "freecheck" else data.get("score", {})
@@ -218,6 +236,21 @@ def main():
         if cb:
             s = re.sub(r'<div class="cta">.*?</div>', lambda m: cb, s, count=1, flags=re.S)
 
+    warnings = []
+    for fd in data.get("findings", []):
+        if fd.get("status", "wrong") == "wrong" and not (fd.get("engine") or "(" in fd.get("query", "")):
+            warnings.append("finding has no engine named: " + fd.get("query", "?")[:45])
+    if not data.get("verified_on"):
+        warnings.append("verified_on not set: re-verify every finding live today and set it")
+    if not data.get("evidence_on_file"):
+        warnings.append("evidence_on_file not true: capture a screenshot per finding")
+    if warnings:
+        banner = ('<div style="background:#FBE9E7;border:1px solid #B5482F;color:#B5482F;padding:12px 16px;'
+                  'border-radius:10px;font-weight:800;margin:0 0 16px">DRAFT, not cleared to send. Re-verify every '
+                  'finding live today, attach a screenshot per finding, and set verified_on and evidence_on_file '
+                  'in the client file before delivering.</div>')
+        s = re.sub(r'<div class="rtype">', lambda m: banner + m.group(0), s, count=1)
+
     out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(
         ROOT, "outputs", re.sub(r"[^a-z0-9]+", "-", brand.lower()).strip("-") + "-accuracy-report.html")
     os.makedirs(os.path.dirname(out), exist_ok=True)
@@ -225,6 +258,11 @@ def main():
 
     leftover = sorted(set(re.findall(r"\[[A-Za-z0-9 ,.%/'-]+\]", s)))
     print("wrote", out)
+    if warnings:
+        print("GATE: NOT cleared to send (" + str(len(warnings)) + " issue(s)):")
+        for w in warnings: print("   -", w)
+    else:
+        print("GATE: cleared to send")
     print("STILL UNFILLED:", ", ".join(leftover) if leftover else "(none)")
 
 

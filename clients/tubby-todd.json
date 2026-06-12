@@ -1,78 +1,79 @@
 {
   "brand": "Tubby Todd",
   "date": "June 11, 2026",
+  "verified_on": "2026-06-11",
+  "evidence_on_file": true,
+  "category": "baby skincare and eczema care",
   "stage": "diagnostic",
   "engines": "Google AI Overviews and Perplexity, across the All Over Ointment and a sample of the catalog",
-  "lead": "Here is the riskiest thing AI tells parents about Tubby Todd today. When a parent asks whether the All Over Ointment is fragrance-free, Perplexity says yes and never mentions the Lavender Rosemary scented version, so a fragrance-reactive baby could end up with a scented product. That is the one safety-relevant gap, and it is fixable. Across the rest of the catalog the hard facts mostly hold up. Google states your active ingredients correctly, including the All Over Ointment, Bye-Bye Cradle Cap, and Sweet Cheeks Diaper Paste, and it gets your lotion scents right. The gaps that remain are on Perplexity and in how AI frames your products, and this report covers each one with the fix.",
+  "lead": "As of June 11, 2026, AI is largely accurate about Tubby Todd. We re-checked the questions parents ask across Google AI Overviews and Perplexity, and the engines state your hard facts correctly, including the active ingredient, the steroid-free and gluten-free status, newborn safety, the National Eczema Association seal, and both the fragrance-free and Lavender Rosemary versions. An earlier draft of this check flagged two problems on Perplexity, the fragrance answer and the treatment framing, and both had corrected themselves by the time we re-verified. That is exactly why a one-time check is only a snapshot and why monitoring is the real protection. The one item left is not an accuracy error. Google does not list Tubby Todd among its best for newborns picks.",
   "score": {
-    "overall": 78,
-    "note": "Tubby Todd is a strong performer. Google AI Overviews states the hard facts correctly across the products we checked. The lost points come from Perplexity omitting the scented version, both engines understating the All Over Ointment as a moisturizer rather than the OTC eczema treatment it is, and Tubby Todd being left off best for newborns lists.",
+    "overall": 92,
+    "note": "AI gets your facts right across the products we checked. The only open item is a visibility omission on one Google list, not a wrong fact, so there is little to fix and a lot to protect.",
     "areas": [
       {
         "area": "Facts AI gets right",
-        "score": "22 / 25",
+        "score": "24 / 25",
         "note": "Hard specs and active ingredients are correct across the products we checked"
       },
       {
         "area": "Sources AI reads",
-        "score": "19 / 25",
-        "note": "AI cites your own site and the National Eczema Association, with some forum-driven framing on Perplexity"
+        "score": "22 / 25",
+        "note": "AI cites your own site and the National Eczema Association"
       },
       {
         "area": "How AI classifies the product",
-        "score": "17 / 25",
-        "note": "AI sometimes labels the All Over Ointment as just a moisturizer, not the OTC eczema treatment it is"
+        "score": "23 / 25",
+        "note": "AI now describes the ointment as an eczema treatment and a moisturizer, which is right"
       },
       {
         "area": "Safety and fragrance accuracy",
-        "score": "20 / 25",
-        "note": "Perplexity omits the scented Lavender Rosemary version when asked about fragrance, the one safety-relevant gap"
+        "score": "23 / 25",
+        "note": "AI names both the fragrance-free and the scented version when asked about fragrance"
       }
     ]
   },
   "findings": [
     {
-      "query": "is the All Over Ointment fragrance-free? (Perplexity)",
-      "wrong": "that the ointment is fragrance-free, with a second fragrance-free version for sensitive skin",
-      "verdict": "That is incomplete and misleading.",
-      "truth": "Tubby Todd makes a Lavender Rosemary scented version of the All Over Ointment, which Perplexity never mentions.",
-      "impact": "A parent with a fragrance-reactive or eczema-prone baby could buy the scented version assuming it has no fragrance.",
-      "status": "wrong"
+      "query": "is the All Over Ointment fragrance-free? (Perplexity, re-verified June 11)",
+      "engine": "Perplexity",
+      "wrong": "that it comes in a fragrance-free version and a separate Lavender Rosemary scented version, and that the scented one contains fragrance and lavender oils",
+      "truth": "That matches your product page.",
+      "impact": "This is correct today. An earlier draft caught Perplexity omitting the scented version, and it has since corrected, which is the kind of drift monitoring keeps honest.",
+      "status": "ok"
     },
     {
-      "query": "is it a real eczema treatment? (Perplexity, and Google's eczema overview)",
-      "wrong": "that it is not a medication and not a medical treatment, better seen as supportive moisturizing care",
-      "verdict": "That understates it, and AI is inconsistent about it.",
-      "truth": "The All Over Ointment is an FDA over-the-counter eczema treatment with 1% colloidal oatmeal as the active ingredient and the National Eczema Association seal. Asked directly, Google states this correctly, so the framing depends on how the question is phrased.",
-      "impact": "When AI hedges on whether it is a real treatment, parents lean toward products AI labels as treatments.",
-      "status": "wrong"
-    },
-    {
-      "query": "best baby eczema cream for newborns (Google AI Overviews)",
-      "wrong": "with Aveeno, Mustela, and Eucerin named and Tubby Todd left off the list",
-      "verdict": "That omits a product that qualifies.",
-      "truth": "Tubby Todd is newborn-safe, uses the same colloidal oatmeal active, and carries the National Eczema Association seal, so it fits the list AI built.",
-      "impact": "You are invisible at the exact moment a parent asks AI what to buy.",
-      "status": "wrong"
+      "query": "is it an eczema treatment or just a moisturizer? (Perplexity, re-verified June 11)",
+      "engine": "Perplexity",
+      "wrong": "that it is marketed as an eczema treatment and a moisturizer, not just a plain moisturizer",
+      "truth": "That matches how you position the product, an over-the-counter eczema treatment with 1% colloidal oatmeal.",
+      "impact": "Correct today.",
+      "status": "ok"
     },
     {
       "query": "hard specs across the catalog (Google AI Overviews)",
+      "engine": "Google AI Overviews",
       "wrong": "the All Over Ointment at 1% colloidal oatmeal, Bye-Bye Cradle Cap at 0.95% pyrithione zinc, Sweet Cheeks Diaper Paste at 14% zinc oxide, and the Everyday Lotion scents",
-      "truth": "Every one of these matches Tubby Todd's own product pages, including the two over-the-counter drug actives.",
-      "impact": "This is what AI gets right, so the job is to keep it accurate as your catalog changes and to fix the gaps above.",
+      "truth": "Every one of these matches your product pages, including the two over-the-counter drug actives.",
+      "impact": "This is what AI gets right, and the job is to keep it that way as your catalog changes.",
       "status": "ok"
+    },
+    {
+      "query": "best baby eczema cream for newborns (Google AI Overviews, re-verified June 11)",
+      "engine": "Google AI Overviews",
+      "wrong": "Google names Aveeno, Mustela, and CeraVe and leaves Tubby Todd off its best for newborns list.",
+      "truth": "",
+      "impact": "This is a visibility gap, not a wrong fact about your product, and it is the hardest of these to move because it depends on the third-party sources Google ranks. We treat this as best-effort, not a guaranteed fix.",
+      "status": "note"
     }
   ],
-  "category": "baby skincare and eczema care",
   "stakes": {
     "deter_low": 1,
     "deter_high": 3,
     "products": [
       {
         "name": "All Over Ointment",
-        "price": 36,
-        "units": 5000,
-        "gap": true
+        "gap": false
       },
       {
         "name": "Bye-Bye Cradle Cap",

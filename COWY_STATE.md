@@ -21,16 +21,18 @@ A done for you AI accuracy service for baby and kids consumable DTC brands on Sh
 
 Pivot v2 (2026-06-09): we dropped the "get recommended" or "AI visibility" promise. It is un winnable and un provable for a small founder brand, and it is being commoditized by Shopify and Perplexity free programs. Accuracy on branded queries is winnable, provable, and a real safety and liability stake on kids products.
 
+Pivot v2.1 (2026-06-11): lead with monitoring. On a live re-check the Tubby Todd findings decayed within a day, Perplexity had self-corrected the fragrance and treatment answers, which proves a one time audit is only a snapshot. The durable product is AI Watchdog, and no report ships without a same day re-verification.
+
 ## Positioning
 - Headline, live: "When parents ask AI about your baby and kids brand, does it get the facts right?"
 - Eyebrow: "AI Accuracy for Baby & Kids Brands"
-- Method: Find, Trace, Fix, Prove.
+- Method: Find, Trace, Fix, Prove, and Watch. Lead with monitoring, because AI answers change and a one time check is only a snapshot.
 
 ## Flagship offer, active since 2026-06-10
 The AI Accuracy Audit, the activated Pivot 1.
 - What it is. A 48 hour fixed price audit of what AI says about a brand's products across ChatGPT, Perplexity, Gemini, and Google AI Overviews. We find every wrong, outdated, or misattributed fact, trace each one to the source AI reads, fix the sources we control, out publish the ones we do not, and prove the correction.
 - Why now. Agentic storefronts went live in June 2026 across the major engines, so accurate product data is the surface that matters.
-- Funnel. Free check, then the $1,500 AI Accuracy Report (credited toward the first month if they continue), then AI Watchdog at $79 a month, then Done For You at $2,500 a month.
+- Funnel and SKU scope. Free check on the top 5 flagship SKUs, then the $1,500 AI Accuracy Report on the top 20 (credits toward the first month of Done For You if upgraded within 7 days), then AI Watchdog at $79 a month or $790 a year on the top 10, then Done For You at $2,500 a month or $25,000 a year on the top 20. Annual is two months free. Lead with Watchdog, since monitoring is the durable product.
 - Deliverable. The AI Accuracy Report at templates/report-template.html.
 - First targets. Warm Tier 1 baby and kids prospects such as Tubby Todd, each with one real free check finding.
 
@@ -63,9 +65,10 @@ Open blockers for launch: create the five Stripe payment links and wire them int
 On /start, read this doc, the repo, and the relevant Notion pages (the Cowy Clients tracker). Then reply with a three line status (what is live, what is in progress, top three next actions) and wait.
 
 ## Operating discipline (always)
-No hallucination, hard facts only. Validate output before presenting it. Trusted sources only, and cite non obvious facts. No speculation, and mark unknowns as assumptions. Enforce the house style on all copy. Confirm before anything destructive, anything that spends money, anything outbound, and any change to the public site.
+No hallucination, hard facts only. Validate output before presenting it. Trusted sources only, and cite non obvious facts. No speculation, and mark unknowns as assumptions. Enforce the house style on all copy. Confirm before anything destructive, anything that spends money, anything outbound, and any change to the public site. Re-verify before send. No report ships without a same day live re-check of every finding, a screenshot per finding, a verified_on date, and the founder's sign-off. The fill script blocks an unverified report with a draft banner. Every report is a dated snapshot, because AI answers change, and the durable protection is monitoring.
 
 ## Changelog (condensed)
+- 2026-06-11 (pm, trust correction): a client live check showed two of three Tubby Todd findings had self-corrected within a day (Perplexity), so the report was wrong to ship. Corrected everything for consistency. Added a re-verify-before-send gate to scripts/fill_report.py (draft banner unless verified_on and evidence_on_file are set, snapshot stamping, a note status for visibility items, and a monitoring-first plus accurate-brand framing). Rewrote the Tubby Todd report honestly (AI is accurate, score 92, no fabricated exposure). Repositioned to lead with monitoring across COWY_STATE, llms.txt, the report template, the email templates, and /verify. Reconciled annual pricing to two months free ($790 and $25,000) and added it to both website pricing blocks, and removed the last visibility language from the homepage ladder and pricing cards.
 - 2026-06-11 (pm): made the report What happens next CTA a real Stripe checkout button (wired in fill_report.py from a client cta object with dfy_url and watchdog_url; falls back to the email line when no link is set). Fixed the homepage This is already a liability band, which left an empty gap with four cards in a three-column grid, by switching it to a clean two-by-two. Stripe links themselves still need to be created in Patrick's Stripe account.
 - 2026-06-11 (pm): extended the Tubby Todd audit beyond the hero SKU to a catalog sample (Bye-Bye Cradle Cap, Sweet Cheeks Diaper Paste, Everyday Lotion) on Google AI Overviews. Google states the hard specs correctly, including the two OTC drug actives. Corrected two of our own calls: the outdated-formula finding was wrong (the Original Formula is a real product) and the invented-scent candidate was wrong (Sweet Peach + Jasmine is real). Score revised up to 78 of 100, findings reduced to three real ones plus a catalog-correct note. Honest read: well-documented brands are mostly accurate, gaps cluster on Perplexity and framing, not hard specs.
 - 2026-06-11 (pm): added a transparent revenue-at-risk model. The report now shows a What these gaps are worth box driven by product price, monthly units, and a labeled conservative deterrence range, framed as exposure not billed loss, wired into scripts/fill_report.py from a client stakes object. Added an optional monthly-units field and payload to check.html and site/intake-form.html so the number comes from the brand. The Tubby Todd box renders an illustrative $1,800 to $5,400 a month at 5,000 units.
