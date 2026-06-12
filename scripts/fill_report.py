@@ -158,7 +158,8 @@ def main():
     if data.get("engines"):
         s = s.replace("on ChatGPT and Perplexity.", "on %s." % esc(data["engines"]))
     if data.get("date"):
-        snap = ('<p class="snapshot" style="font-size:13px;color:var(--muted)">Snapshot captured and re-verified on '
+        cov = (esc(data["coverage"]) + " ") if data.get("coverage") else ""
+        snap = ('<p class="snapshot" style="font-size:13px;color:var(--muted)">' + cov + 'Snapshot captured and re-verified on '
                 + esc(data["date"]) + ', from the engine named on each line. AI answers change over time, which is why we '
                 're-verify every finding on the day we deliver and why ongoing monitoring matters.</p>')
         s = s.replace('<!--FILL:findings-->', snap + '\n  <!--FILL:findings-->', 1)

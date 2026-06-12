@@ -44,6 +44,7 @@ The DTC and cannabis intelligence lives in the gated dashboard at cowy.ai/dashbo
 
 ## Saved prompts (repo prompts/ directory)
 - /verify, at prompts/verify.md. Launch-readiness deep scan of all assets (business-plan truth, accuracy, consistency, brand voice, launch ready). Reports findings, then offers to fix.
+- /scan, at prompts/scan.md. Runs an AI accuracy scan of a brand's leading products in priority order against the query bank across all engines, capturing and screenshotting every answer. Keeps going until 5 genuine re-verified errors are found or the in-scope products are exhausted, whichever comes first. Five is a stopping point, never a quota. Visibility omissions are watch items, not accuracy errors, and if fewer than 5 real errors exist it says so and leans on monitoring.
 - /pivot, at prompts/pivot.md. Ranks the top 5 pivots per vertical from the latest dashboard-data.json and recommends go now versus schedule.
 - /activate, at prompts/activate.md. Implements the GO NOW pivots across all business assets, with a required accuracy and house style review before it asks for approval to push.
 - Older CAIO hub and spoke set: CAIO_AUDIT, CAIO_CAMPAIGN, CAIO_INTEL, CAIO_PIVOT, CAIO_POST, CAIO_RESEARCH, CAIO_SITE, CAIO_STRATEGY.
