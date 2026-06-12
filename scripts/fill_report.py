@@ -66,27 +66,37 @@ def stakes_box(st):
     price = st["price"]; lo = st.get("deter_low", 1); hi = st.get("deter_high", 3)
     real = st.get("units_monthly") is not None
     units = st.get("units_monthly") if real else st.get("units_example", 0)
-    rl = round(price * units * lo / 100.0); rh = round(price * units * hi / 100.0)
-    if real:
-        units_lbl = "{:,} a month, the figure you gave".format(units)
-        caveat = "Based on the units you provided."
-        rev_lbl = "Revenue exposed: ${:,} to ${:,} a month.".format(rl, rh)
-    else:
-        units_lbl = "{:,} a month, an illustration to replace with your number".format(units)
-        caveat = "The dollar range uses an assumed volume. Swap in your real monthly units and it updates."
-        rev_lbl = "Revenue exposed: about ${:,} to ${:,} a month at an illustrative {:,} units.".format(rl, rh, units)
-    return ('<div class="stakes" style="border:1px solid #e6e6e6;border-radius:14px;padding:20px 22px;margin:24px 0;background:#f6faf9">'
-        '<h2 style="margin-top:0">What these gaps are worth</h2>'
-        '<p>Here is the revenue exposed to the gaps above, as a model you can check. It is exposure, not a billed loss, and every input is yours or labeled as an assumption.</p>'
-        '<table><tr><th>Input</th><th>Value</th></tr>'
-        '<tr><td>Affected product</td><td>' + esc(st["product"]) + '</td></tr>'
-        '<tr><td>Price</td><td>$' + esc(price) + '</td></tr>'
-        '<tr><td>Monthly units</td><td>' + units_lbl + '</td></tr>'
-        '<tr><td>Buyers misdirected by a wrong answer</td><td>' + esc(lo) + ' to ' + esc(hi) + ' percent, a conservative assumption</td></tr>'
-        '</table>'
-        '<p style="font-size:1.2rem;font-weight:800;margin:12px 0 0">' + rev_lbl + '</p>'
-        '<p style="font-size:13px;color:#666;margin-top:6px">' + caveat + ' The AI Accuracy Report is $1,500 once, and it credits toward your first month if you continue.</p>'
-        '</div>')
+    units_hint = "the figure you gave" if real else "assumption, replace with your number"
+    _u = units or 0
+    _rl = round(price * _u * lo / 100.0); _rh = round(price * _u * hi / 100.0)
+    init = "about ${:,} to ${:,} a month".format(min(_rl, _rh), max(_rl, _rh))
+    caveat = ("Edit any field and the number recalculates. These start from "
+              + ("the units you provided." if real else "an assumed volume, so swap in your real monthly units.")
+              + " The AI Accuracy Report is $1,500 once, and it credits toward your first month if you continue.")
+    inp = ("border:1px solid var(--border);border-radius:8px;padding:7px 9px;font:inherit;"
+           "font-weight:700;color:var(--ink);background:#fff")
+    box = (
+      '<div class="stakes" style="border:1px solid #e6e6e6;border-radius:14px;padding:20px 22px;margin:24px 0;background:#f6faf9">'
+      '<h2 style="margin-top:0">What these gaps are worth</h2>'
+      '<p>Here is the revenue exposed to the gaps above, as a model you can check. It is exposure, not a billed loss, and every input is yours or labeled as an assumption.</p>'
+      '<table><tr><th>Input</th><th>Value</th></tr>'
+      '<tr><td>Affected product</td><td><input id="cowyProd" type="text" value="' + esc(st["product"]) + '" style="' + inp + ';min-width:200px"></td></tr>'
+      '<tr><td>Price (USD)</td><td>$ <input id="cowyPrice" type="number" min="0" step="1" value="' + esc(price) + '" style="' + inp + ';width:90px"></td></tr>'
+      '<tr><td>Monthly units</td><td><input id="cowyUnits" type="number" min="0" step="1" value="' + esc(units) + '" style="' + inp + ';width:120px"> <span style="font-size:12.5px;color:var(--muted)">' + units_hint + '</span></td></tr>'
+      '<tr><td>Buyers misdirected by a wrong answer</td><td><input id="cowyLo" type="number" min="0" max="100" step="0.5" value="' + esc(lo) + '" style="' + inp + ';width:64px"> to <input id="cowyHi" type="number" min="0" max="100" step="0.5" value="' + esc(hi) + '" style="' + inp + ';width:64px"> percent, a conservative assumption</td></tr>'
+      '</table>'
+      '<p style="font-size:1.2rem;font-weight:800;margin:14px 0 0">Revenue exposed: <span id="cowyOut">' + init + '</span>.</p>'
+      '<p style="font-size:13px;color:#666;margin-top:6px">' + caveat + '</p>'
+      '</div>'
+      '<script>(function(){'
+      'function f(n){return "$"+Math.round(n).toLocaleString("en-US");}'
+      'function g(id){return parseFloat((document.getElementById(id)||{}).value)||0;}'
+      'function calc(){var p=g("cowyPrice"),u=g("cowyUnits"),lo=g("cowyLo"),hi=g("cowyHi");'
+      'var rl=p*u*lo/100,rh=p*u*hi/100;var lo2=Math.min(rl,rh),hi2=Math.max(rl,rh);'
+      'var o=document.getElementById("cowyOut");if(o)o.textContent="about "+f(lo2)+" to "+f(hi2)+" a month";}'
+      '["cowyPrice","cowyUnits","cowyLo","cowyHi"].forEach(function(id){var e=document.getElementById(id);if(e)e.addEventListener("input",calc);});'
+      'calc();})();</script>')
+    return box
 
 
 def between(s, start, end, new):
