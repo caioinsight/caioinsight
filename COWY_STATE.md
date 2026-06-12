@@ -24,7 +24,7 @@ Pivot v2 (2026-06-09): we dropped the "get recommended" or "AI visibility" promi
 Pivot v2.1 (2026-06-11): lead with monitoring. On a live re-check the Tubby Todd findings decayed within a day, Perplexity had self-corrected the fragrance and treatment answers, which proves a one time audit is only a snapshot. The durable product is AI Watchdog, and no report ships without a same day re-verification.
 
 ## Positioning
-- Headline, live: "When parents ask AI about your baby and kids brand, does it get the facts right?"
+- Headline, live: "When parents ask AI about your products, does it get the facts right?" The niche (baby and kids) lives in the eyebrow, title, and meta for SEO, keeping the H1 natural.
 - Eyebrow: "AI Accuracy for Baby & Kids Brands"
 - Method: Find, Trace, Fix, Prove, and Watch. Lead with monitoring, because AI answers change and a one time check is only a snapshot.
 
