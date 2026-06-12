@@ -1,4 +1,4 @@
-# /validate — Pre-commit validation for any pivot or new bet
+# /validate ,  Pre-commit validation for any pivot or new bet
 
 PURPOSE: Before building anything on a new idea, offer, or pivot, run it through a disciplined test with the kill number set in advance, so a failed test gets honored instead of rationalized. This exists because we once built for weeks on an unproven premise.
 
